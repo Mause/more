@@ -1,5 +1,4 @@
 ﻿package haxe.more.threading;
-import flash.ui.Keyboard;
 import haxe.more.threading.Threading;
 
 class BalancedThreadProcessor {
