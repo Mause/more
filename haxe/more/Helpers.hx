@@ -25,13 +25,22 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package haxe.more;
+import haxe.more.threading.ThreadShares;
 
 class Helpers {
+	static var init = (function() {
+		var max = 1;
+		while (max > 0) {
+			maxInt = max;
+			max = (max << 1) | 1;
+		}
+	})();
+	
 	/**
 		Get's the current time in miliseconds.
 	**/
-	public static var microtime(get_time, null):Float;
-	static function get_time():Float {
+	public static inline var microtime(get_time, null):Float;
+	static inline function get_time():Float {
 		#if flash
 		return flash.Lib.getTimer();
 		#elseif php
@@ -41,5 +50,6 @@ class Helpers {
 		#else
 		return Date.now().getTime();
 		#end
-	}		
+	}
+	public static var maxInt(default, null):Int;
 }

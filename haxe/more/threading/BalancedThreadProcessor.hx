@@ -25,6 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package haxe.more.threading;
+import haxe.more.Helpers;
 import haxe.more.threading.Threading;
 
 class BalancedThreadProcessor {
@@ -35,7 +36,7 @@ class BalancedThreadProcessor {
 	var _last:LinkedThreadListNode;
 	var _disposeAtExhaustion:Bool;
 
-	public function new(disposeAtExhaustion:Bool = false, threadShare = 128) {
+	public function new(disposeAtExhaustion:Bool = false) {
 		_last = _sentinel = new LinkedThreadListNode(null);
 		_disposeAtExhaustion = disposeAtExhaustion;
 		_karma = 0;
@@ -94,7 +95,7 @@ class BalancedThreadProcessor {
 		if (_karma <= 0) return false;
 		
 		// Start the payment of time here, saving the starting time in endTime.
-		var endTime = get_time() + _karma;
+		var endTime = Helpers.microtime + _karma;
 
 		// Prepare the threads
 		var current = _sentinel.next;
@@ -111,17 +112,17 @@ class BalancedThreadProcessor {
 			//Ok, this is where the real hard job is done
 			do {
 				if(current.timeLeft > 0) {
-					var startTime = get_time();
+					var startTime = Helpers.microtime;
 					if (current.thread(Std.int(current.timeLeft))) {
 						remove(current.thread);
 					} else {
-						current.timeLeft -= get_time() - startTime;
+						current.timeLeft -= Helpers.microtime - startTime;
 					}
 				}
 			} while ((current = current.next) != null);
-		} while (endTime > get_time());
+		} while (endTime > Helpers.microtime);
 		
-		_karma = endTime - get_time();
+		_karma = endTime - Helpers.microtime;
 		if (_karma > 0) _karma = 0;
 		
 		return false;
@@ -139,21 +140,6 @@ class BalancedThreadProcessor {
 		do {
 			current.relativeShare = current.share / totalShare;
 		} while ((current = current.next )!= null);
-	}
-	
-	/**
-		Get's the current time in miliseconds.
-	**/
-	function get_time():Float {
-		#if flash
-		return flash.Lib.getTimer();
-		#elseif php
-		return untyped __php__("microtime()");
-		#elseif cpp
-		return cpp.Sys.time();
-		#else
-		return Date.now().getTime();
-		#end
 	}	
 }
 class LinkedThreadListNode {
