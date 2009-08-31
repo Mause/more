@@ -1,55 +1,50 @@
 ﻿/**
- * ...
- * @author Mark
+ * Copyright (c) 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the University of California, Berkeley nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS "AS IS" AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE REGENTS AND CONTRIBUTORS BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package flash.more.precise;
 import flash.display.Sprite;
 import flash.display.Stage;
 import flash.events.Event;
 import flash.Lib;
 import flash.text.TextField;
-import flash.text.TextFormat;
-import flash.text.TextFormatAlign;
-import haxe.more.positioning.Alignment;
-import haxe.more.positioning.HorizontalAlignment;
-import haxe.more.positioning.VerticalAlignment;
 
 class FPSCounter extends Sprite {
 	private var oldTime:Int;
 	private var displayCounter:Int;
-	public var alignment(getAlignment, setAlignment):Alignment;
-	private var _alignment:Alignment;
 	private static inline var interval:Int = 10;
 	private var view:TextField;
-	public function new(?alignment:Alignment, ?stage:Stage):Void {
+	public function new():Void {
 		super();
-		if (alignment == null) {
-			alignment = new Alignment(HorizontalAlignment.left, VerticalAlignment.top);
-		}
-		if (stage != null) {
-			stage.addChild(this);
-		}
 		oldTime = Lib.getTimer();
 		addEventListener(Event.ENTER_FRAME, enterFrame);
 		
 		view = new TextField();
 		view.width = 190;
 		addChild(view);
-		this.alignment = alignment;
 		displayCounter = 0;
-	}
-	private function getAlignment():Alignment {
-		return _alignment;
-	}
-	private function setAlignment(value:Alignment):Alignment {
-		_alignment = value;
-		view.x = _alignment.horizontal == HorizontalAlignment.left ? 10 : _alignment.horizontal == HorizontalAlignment.middle ? stage.stageWidth / 2 - 190 / 2 : stage.stageWidth - 190 - 10;
-		view.y = _alignment.vertical == VerticalAlignment.top ? 10 : _alignment.vertical == VerticalAlignment.middle ? stage.stageHeight / 2 - 190 / 2 : stage.stageHeight - 190 - 10;
-		var format:TextFormat = new TextFormat();
-		format.align = _alignment.horizontal == left ? TextFormatAlign.LEFT : _alignment.horizontal == HorizontalAlignment.middle ? TextFormatAlign.CENTER : TextFormatAlign.RIGHT;
-		view.setTextFormat(format);
-		return value;
 	}
 	
 	private function enterFrame(e:Event):Void {
