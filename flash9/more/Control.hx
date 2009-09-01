@@ -15,76 +15,42 @@
  * limitations under the License.
  **/
 package flash.more;
-import flash.display.DisplayObject;
-import flash.events.KeyboardEvent;
-import flash.Lib;
-import flash.display.Stage;
 import flash.events.Event;
+import flash.events.EventDispatcher;
+import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
 
 class Control {
-	static var stage = Lib.current.stage;
-	public static inline var frameTimeSpan(gFrameTimeSpan, null):Float;
-	static inline function gFrameTimeSpan() return 1000 / stage.frameRate
+	var keys:Array<Bool>;
 	
-	/** Mouse **/
 	public var mouseDown(default, null):Bool;
 	public var mouseUp(default, null):Bool;
-	/**
-	 * Automatically resets after each frame.
-	 */
+	// Automatically resets after each frame.
 	public var mouseClicked(default, null):Bool;
 	
-	public function new(object:DisplayObject):Void {
-		object.addEventListener(MouseEvent.MOUSE_DOWN, mouseAction);
-		object.addEventListener(MouseEvent.MOUSE_UP, mouseAction);
-		object.addEventListener(Event.ENTER_FRAME, action);
+	public function new(object:EventDispatcher):Void {
+		object.addEventListener(MouseEvent.MOUSE_DOWN, mouseIsDown);
+		object.addEventListener(MouseEvent.MOUSE_UP, mouseIsUp);
+		object.addEventListener(MouseEvent.CLICK, mouseIsClicked);
+		object.addEventListener(Event.ENTER_FRAME, enterFrame);
 		mouseClicked = false;
-	}	
-	private function action(e:Event):Void {
-		switch(e.type) {
-			case Event.ENTER_FRAME:
-				mouseClicked = false;
+		
+		object.addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
+		object.addEventListener(KeyboardEvent.KEY_UP, keyUp);
+		var k = new Array<Bool>();
+		for (i in 0...256) {
+			k.push(false);
 		}
-	} 
-	private function mouseAction(e:MouseEvent):Void {
-		switch(e.type) {
-			case MouseEvent.MOUSE_DOWN:
-				mouseUp = !(mouseDown = true);
-			case MouseEvent.MOUSE_UP:
-				mouseUp = !(mouseDown = false);
-			case MouseEvent.CLICK:
-				mouseClicked = true;
-		}	
+		keys = k;
 	}
 	
+	public function isKeyDown(keyCode:Int):Bool return keys[keyCode]
+	public function isKeyUp(keyCode:Int):Bool return !keys[keyCode]
 	
-	/** Keyboard **/
-	static var keys;
-	public static function isKeyDown(keyCode:Int):Bool {
-		ready();
-		return keys[keyCode];
-	}
-	
-	static function ready() {
-		if(keys == null) {
-			Lib.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
-			Lib.current.stage.addEventListener(KeyboardEvent.KEY_UP, keyUp);
-			var k = new Array<Bool>();
-			for (i in 0...256) {
-				k.push(false);
-			}
-			keys = k;
-		}
-	}
-	
-	static private function keyUp(e:KeyboardEvent):Void {
-		ready();
-		keys[e.charCode] = false;
-	}
-	
-	static private function keyDown(e:KeyboardEvent):Void {
-		ready();
-		keys[e.charCode] = true;	
-	}
+	function enterFrame(e:Event) mouseClicked = false	
+	function mouseIsDown(e:MouseEvent) mouseUp = !(mouseDown = true)
+	function mouseIsUp(e:MouseEvent) mouseUp = !(mouseDown = false)
+	function mouseIsClicked(e:MouseEvent) mouseClicked = true	
+	function keyUp(e:KeyboardEvent) keys[e.charCode] = false	
+	function keyDown(e:KeyboardEvent) keys[e.charCode] = true
 }
