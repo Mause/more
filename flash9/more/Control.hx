@@ -23,6 +23,10 @@ import flash.events.Event;
 import flash.events.MouseEvent;
 
 class Control {
+	static var stage = Lib.current.stage;
+	public static inline var frameTimeSpan(gFrameTimeSpan, null):Float;
+	static inline function gFrameTimeSpan() return 1000 / stage.frameRate
+	
 	/** Mouse **/
 	public var mouseDown(default, null):Bool;
 	public var mouseUp(default, null):Bool;

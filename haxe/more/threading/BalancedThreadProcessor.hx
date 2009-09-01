@@ -118,7 +118,7 @@ class BalancedThreadProcessor {
 		return false;
 	}
 	
-	private function updateShares():Void {
+	function updateShares():Void {
 		if (_sentinel.next == null) return;
 		var totalShare = 0.0;
 		var current = _sentinel.next;
