@@ -1,18 +1,18 @@
 ﻿/** Color.hx
  *
- * Copyright 2009 M_ark de Bruijn (kr_amieb@gm_ail.com | Dyk_am.nl)
+ * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
- * Licensed under the ap_ache License, Version 2.0 (the "License");
- * you m_ay not use this file except in compli_ance with the License.
- * You m_ay obt_ain _a copy of the License _at
+ * Licensed under the apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  * 
- * http://www._ap_ache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- * Unless required by _applic_able l_aw or _agreed to in writing, softw_are
- * distributed under the License is distributed on _an "aS IS" BaSIS,
- * WITHOUT WaRRaNTIES OR CONDITIONS OF aNY KIND, either express or implied.
- * See the License for the specific l_angu_age governing permissions _and
- * limit_ations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  **/
 package haxe.more;
 #if neko
