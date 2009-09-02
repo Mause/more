@@ -17,7 +17,7 @@
 package haxe.more;
 import flash.filters.ColorMatrixFilter;
 
-using haxe.more.Colors;
+using haxe.more.Color;
 using Std;
 
 // Surely more have to be added.
@@ -27,9 +27,9 @@ class Colors {
 		green = new Color(0, 255, 0);
 		blue = new Color(0, 0, 255);
 		
-		yellow = red.add(green);
-		cyan = green.add(blue);
-		magenta = blue.add(red);
+		yellow = red.clone().add(green);
+		cyan = green.clone().add(blue);
+		magenta = blue.clone().add(red);
 		#if compiler fixed
 		yellow = avarage(red, green);
 		cyan = avarage(green, blue);
@@ -47,31 +47,8 @@ class Colors {
 	public static var cyan(default, null):Color;
 	public static var magenta(default, null):Color;
 	
-	/** Using methods, keeps the colors clean **/
-	public inline static function add(a:Color, b:Color):Color {
-		return new Color(min(255, a.R + b.R), min(255, a.G + b.G), min(255, a.B + b.B), Std.int((a.A + b.A) / 2));
-	}
-	public static function avarage(a:Color, b:Color, padding:Float = 0.5):Color {
-		return padding == 0.5
-			? new Color(
-					Std.int((a.R + b.R) * .5),
-					Std.int((a.G + b.G) * .5),
-					Std.int((a.B + b.B) * .5),
-					Std.int((a.A + b.A) * .5)
-				)
-			: new Color(
-					Std.int(padding * a.R + (1 - padding) * b.R),
-					Std.int(padding * a.G + (1 - padding) * b.G),
-					Std.int(padding * a.B + (1 - padding) * b.B),
-					Std.int(padding * a.A + (1 - padding) * b.A)
-				);
-	}
-	
-	static inline function max(a, b) {
-		return a > b ? a : b;
-	}
-	
-	static inline function min(a, b) {
-		return a < b ? a : b;
+	/** Creation methods **/
+	public static inline function fromRgbA(rgb:Int, a:Int = 0) {
+		return new Color(rgb >> 16, rgb >> 8, rgb, a);
 	}
 }

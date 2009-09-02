@@ -51,6 +51,6 @@ class Control {
 	function mouseIsDown(e:MouseEvent) mouseUp = !(mouseDown = true)
 	function mouseIsUp(e:MouseEvent) mouseUp = !(mouseDown = false)
 	function mouseIsClicked(e:MouseEvent) mouseClicked = true	
-	function keyUp(e:KeyboardEvent) keys[e.charCode] = false	
-	function keyDown(e:KeyboardEvent) keys[e.charCode] = true
+	function keyUp(e:KeyboardEvent) keys[e.keyCode] = false	
+	function keyDown(e:KeyboardEvent) keys[e.keyCode] = true
 }
