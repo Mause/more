@@ -18,15 +18,19 @@ package haxe.more.data.structures;
 import haxe.rtti.CType;
 
 class SingleLinkedList<T> {
-	var sentinel:{ private var next:SingleLinkedListNode<T>; };
+	var sentinel: { private var next:SingleLinkedListNode<T>; };
 	
 	public var head(gHead, null):SingleLinkedListNode<T>;
 	function gHead() return sentinel.next
+	
+	public var length(default, null):Int;
+	function sLength(value:Int) return length = value
+	
 	public var tail(default, null):SingleLinkedListNode<T>;
-	function sTail(value:SingleLinkedListNode<T>):SingleLinkedListNode<T> return tail = value
+	function sTail(value:SingleLinkedListNode<T>) return tail = value
 	
 	public function new<T>() {
-		sentinel = cast Type.createInstance(SingleLinkedListNode, [this, null]);
+		sentinel = cast create(null);
 	}
 	
 	public function push(value:T):Void {
@@ -41,8 +45,10 @@ class SingleLinkedList<T> {
 		return head.remove();
 	}
 	public function unshift(value:T):Void {
-		var first:SingleLinkedListNode<T> = cast sentinel;
-		first.append(value);
+		if (prepare(value)) {
+			var first:SingleLinkedListNode<T> = cast sentinel;
+			first.append(value);
+		}
 	}
 	
 	public function iterator():Iterator<T> {
@@ -50,13 +56,12 @@ class SingleLinkedList<T> {
 	}
 	
 	function create(value:T):SingleLinkedListNode<T> {
-		var result:SingleLinkedListNode<T> = cast Type.createInstance(SingleLinkedListNode, []);
-		result.value = value;
+		var result:SingleLinkedListNode<T> = cast Type.createInstance(SingleLinkedListNode, [this, value]);
 		return result;
 	}
 	
 	function prepare(value:T):Bool {
-		if (tail == null) return true;
+		if (tail != null) return true;
 		var result = create(value);
 		tail = sentinel.next = result;
 		return false;

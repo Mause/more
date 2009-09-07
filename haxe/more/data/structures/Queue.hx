@@ -14,9 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-package haxe.more.datastructures;
+package haxe.more.data.structures;
 import haxe.rtti.Generic;
-import haxe.more.datastructures.iterators.LinkedListIterator;
 
 class Queue<T> {
 	private var head:SingleLinkedList<T>;

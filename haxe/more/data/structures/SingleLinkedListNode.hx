@@ -29,10 +29,13 @@ class SingleLinkedListNode<T> {
 	
 	public function append(?value:T):Void {
 		var result = new SingleLinkedListNode(list, value);
+		var list: {
+			private function sTail(value:SingleLinkedListNode<T>):SingleLinkedListNode<T>;
+			private function sLength(value:Int):Int;
+		} = list;
+		list.sLength(this.list.length + 1);
+		
 		if(next == null) {
-			var list: {
-				private function sTail(value:SingleLinkedListNode<T>):SingleLinkedListNode<T>;
-			} = list;
 			list.sTail(result);
 		} else {
 			result.next = next;
@@ -47,7 +50,10 @@ class SingleLinkedListNode<T> {
 			private var sentinel: { var next:SingleLinkedListNode<T>; };
 			var tail(default, null):SingleLinkedListNode<T>;
 			private function sTail(value:SingleLinkedListNode<T>):SingleLinkedListNode<T>;
+			private function sLength(value:Int):Int;
 		} = list;
+		list.sLength(this.list.length + 1);
+		
 		// make sure the previous is in fact really the previous node
 		if (previous != null && previous.next != this) {
 			previous = cast list.sentinel;
@@ -58,26 +64,31 @@ class SingleLinkedListNode<T> {
 		result.next = this;		
 	}
 	
-	public function remove(?previous:SingleLinkedListNode < T > ):T {
-		var list: {
-			private var sentinel: { var next:SingleLinkedListNode<T>; };
-			var tail(default, null):SingleLinkedListNode<T>;
-			private function sTail(value:SingleLinkedListNode<T>):SingleLinkedListNode<T>;
-		} = list;
-		
-		// make sure the previous is in fact really the previous node
-		if (previous != null && previous.next != this) {
-			previous = cast list.sentinel;
-			while (previous != null && previous.next != this)
-				previous = previous.next;
+	public function remove(?previous:SingleLinkedListNode<T>):T {
+		if(list != null) {
+			var list: {
+				private var sentinel: { var next:SingleLinkedListNode<T>; };
+				var tail(default, null):SingleLinkedListNode<T>;
+				private function sTail(value:SingleLinkedListNode<T>):SingleLinkedListNode<T>;
+				private function sLength(value:Int):Int;
+			} = list;
+			list.sLength(this.list.length - 1);
+			
+			// make sure the previous is in fact really the previous node
+			if (previous != null && previous.next != this) {
+				previous = cast list.sentinel;
+				while (previous != null && previous.next != this)
+					previous = previous.next;
+			}
+			
+			previous.next = next;
+			var result = value;
+			value = null;
+			list = null;
+			next = null;
+			return result;
 		}
-		
-		previous.next = next;
-		var result = value;
-		value = null;
-		list = null;
-		next = null;
-		return value;
+		return null;
 	}
 	
 	public function iterator():Iterator<T> {

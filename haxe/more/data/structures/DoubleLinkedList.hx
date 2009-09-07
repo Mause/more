@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-package haxe.more.datastructures;
+package haxe.more.data.structures;
 
 class DoubleLinkedList<T> {
 	public var next(default, null):DoubleLinkedList<T>;
