@@ -26,12 +26,16 @@ class FPSCounter extends Sprite {
 	private var displayCounter:Int;
 	private static inline var interval:Int = 10;
 	private var view:TextField;
-	public function new():Void {
+	public function new(color:Int):Void {
 		super();
 		oldTime = Lib.getTimer();
 		addEventListener(Event.ENTER_FRAME, enterFrame);
 		
 		view = new TextField();
+		view.textColor = color;
+		var f = view.defaultTextFormat;
+		f.bold = true;
+		view.setTextFormat(f);
 		view.width = 190;
 		addChild(view);
 		displayCounter = 0;

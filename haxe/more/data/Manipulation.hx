@@ -24,11 +24,7 @@ using haxe.more.data.Manipulation;
  * Need restructuring.
  */
 
-class Manipulation 
-{
-	private function new() {		
-	}
-	
+class Manipulation {	
 	public static function where<T>(subject:Iterable<T>, predicate: T -> Bool):Iterable<T> {
 		return new WhereIterable(subject, predicate);
 	}
@@ -84,7 +80,7 @@ class Manipulation
 		return new ExecuteIterable(subject, action);
 	}
 	
-	public static function aggregate<T, C>(subject:Iterable<T>, ?seed:C, aggregator: T -> C -> C):C {
+	public static function fold<T, C>(subject:Iterable<T>, ?seed:C, aggregator: T -> C -> C):C {
 		for (item in subject) {
 			seed = aggregator(item, seed);
 		}

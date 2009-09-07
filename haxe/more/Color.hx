@@ -29,6 +29,10 @@ class Color {
 		this.a = a;
 	}
 	
+	public function toString():String {
+		return "rgba( " + r + ", " + g + ", " + b + ", " + a + ")";
+	}
+	
 	
 	/** Below _all the code to correctly _apply the colors **/
 	public var rgb(gRgb, sRgb):Int;
