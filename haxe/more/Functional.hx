@@ -14,98 +14,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-package haxe.linq;
+package haxe.more;
 
-class Functional
-{
-	private function new();
-	
-	/**
-	 * @param source	A function accepting a break function and returning the next value.
-	 */
-	private static function Gather<T>(source: (Void -> Void) -> T):Iterable<T> {
-		return new GatherIterable(source);
-	}
-	
-	/**
-	 * @param source	A function accepting a break function, a state value and returning the next value.
-	 */
-	public static function statefullStatefullGather<T, S>(source: (Void -> Void) -> S -> T, startupStateGenerator: Void -> S):Iterable<T> {
-		return new StatefullGatherIterable(source, startupStateGenerator);
-	}
-}
+typedef Action = Void -> Void;
+typedef Action1<A> = A -> Void;
+typedef Action2<A1, A2> = A1 -> A2 -> Void;
+typedef Action3<A1, A2, A3> = A1 -> A3 ->A2 -> Void;
+typedef Action4<A1, A2, A3, A4> = A1 -> A2 -> A3 -> A4 -> Void;
 
-class StatefullGatherIterable<T, S> {
-	var _source: (Void -> Void) -> S -> T;
-	var _startupStateGenerator: Void -> S;
-	public function new(source: (Void -> Void) -> S -> T, startupStateGenerator: Void -> S) {
-		_source = source;
-		_startupStateGenerator = startupStateGenerator;
-	}
-	
-	public function iterator():Iterator<T> {
-		return new StatefullGatherIterator(_source, _startupStateGenerator());
-	}
-}
-class StatefullGatherIterator<T, S> {
-	var _source: (Void -> Void) -> S -> T;
-	var _hasNext:Bool;
-	var _state:S;
-	public function new(source: (Void -> Void) -> S -> T, startupState:S) {
-		_source = source;
-		_hasNext = true;
-		_state = startupState;
-	}
-	
-	function stop():Void {
-		_hasNext = false;
-	}
-	
-	public function hasNext():Bool {
-		return _hasNext;
-	}
-	
-	public function next():T {
-		if(hasNext()) {
-			return _source(stop, _state);
-		}
-		return null;
-	}
-}
+typedef Func<R> = Void -> R;
+typedef Func1<A, R> = A -> R;
+typedef Func2<A1, A2, R> = A1 -> A2 -> R;
+typedef Func3<A1, A2, A3, R> = A1 -> A3 ->A2 -> R;
+typedef Func4<A1, A2, A3, A4, R> = A1 -> A2 -> A3 -> A4 -> R;
 
+typedef Recursive1<A, R> = Recursive1<A, R> -> Func1<A, R>;
+typedef Recursive2<A1, A2, R> = Recursive2<A1, A2, R> -> Func2<A1, A2, R>;
+typedef Recursive3<A1, A2, A3, R> = Recursive3<A1, A2, A3, R> -> Func3<A1, A2, A3, R>;
+typedef Recursive4<A1, A2, A3, A4, R> = Recursive4<A1, A2, A3, A4, R> -> Func4<A1, A2, A3, A4, R>;
 
+class Functional {
+	public static function y1<A, R>(f: Func1<A, R> -> Func1<A, R>):Func1<A, R> {
+		var rec:Recursive1<A, R> =function(r) return function(a) return f(r(r))(a);
+		return rec(rec);
+	}
+	
+	public static function y2<A1, A2, R>(f: Func2<A1, A2, R> -> Func2<A1, A2, R>):Func2<A1, A2, R> {
+		var rec:Recursive2<A1, A2, R> = function(r) return function(a1, a2) return f(r(r))(a1, a2);
+		return rec(rec);
+	}
+	
+	public static function y3<A1, A2, A3, R>(f: Func3<A1, A2, A3, R> -> Func3<A1, A2, A3, R>):Func3<A1, A2, A3, R> {
+		var rec:Recursive3<A1, A2, A3, R> = function(r) return function(a1, a2, a3) return f(r(r))(a1, a2, a3);
+		return rec(rec);
+	}
+	
+	public static function y4<A1, A2, A3, A4, R>(f: Func4<A1, A2, A3, A4, R> -> Func4<A1, A2, A3, A4, R>):Func4<A1, A2, A3, A4, R> {
+		var rec:Recursive4<A1, A2, A3, A4, R> = function(r) return function(a1, a2, a3, a4) return f(r(r))(a1, a2, a3, a4);
+		return rec(rec);
+	}
+	
+	public static function compose2<A, B, C>(f1:Func1<A, B>,  f2:Func1<B, C>):Func1<A, C>
+		return function(a) return f2(f1(a))
 
-class GatherIterable<T, S> {
-	var _source: (Void -> Void) -> T;
-	var _startupStateGenerator: Void -> S;
-	public function new(source: (Void -> Void) -> T) {
-		_source = source;
-	}
-	
-	public function iterator():Iterator<T> {
-		return new GatherIterator(_source);
-	}
-}
-class GatherIterator<T, S> {
-	var _source: (Void -> Void) -> T;
-	var _hasNext:Bool;
-	public function new(source: (Void -> Void) -> T) {
-		_source = source;
-		_hasNext = true;
-	}
-	
-	function stop():Void {
-		_hasNext = false;
-	}
-	
-	public function hasNext():Bool {
-		return _hasNext;
-	}
-	
-	public function next():T {
-		if(hasNext()) {
-			return _source(stop);
-		}
-		return null;
-	}
+	public static function compose3<A, B, C, D>(f1:Func1<A, B>, f2:Func1<B, C>, f3:Func1<C, D>):Func1<A, D>
+		return function(a) return f3(f2(f1(a)))
+
+	public static function compose4<A, B, C, D, E>(f1:Func1<A, B>, f2:Func1<B, C>, f3:Func1<C, D>, f4:Func1<D, E>):Func1<A, E>
+		return function(a) return f4(f3(f2(f1(a))))
 }
