@@ -21,7 +21,7 @@ using haxe.more.data.Manipulation;
 
 /**
  * If you know Microsofts Linq, this will feel familiar to you.
- * Need restructuring.
+ * Need restructuring, like sorting functions alphabetically.
  */
 
 class Manipulation {	
