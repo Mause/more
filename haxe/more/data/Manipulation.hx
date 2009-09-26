@@ -37,8 +37,8 @@ class Manipulation {
 		return new UntilIterable(subject, predicate);
 	}
 	
-	public static function select<T, V>(subject:Iterable<T>, selecter: T -> V):Iterable<V> {
-		return new SelectIterable(subject, selecter);
+	public static function select<T, V>(subject:Iterable<T>, selector: T -> V):Iterable<V> {
+		return new SelectIterable(subject, selector);
 	}
 	
 	public static function first<T>(subject:Iterable<T>, ?predicate: T -> Bool):T {
