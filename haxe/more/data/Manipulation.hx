@@ -28,6 +28,8 @@ class Manipulation {
 		var amount = 0;
 		var total = 0.0;
 		var iter = subject.iterator();
+		//Avoid Division by zero
+		if (!iter.hasNext()) return 0.0;
 		while (iter.hasNext()) {
 			total += iter.next();
 			amount++;
