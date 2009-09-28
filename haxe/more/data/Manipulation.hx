@@ -40,7 +40,7 @@ class Manipulation {
 			? new ConcatIterable([subject, postfix1])
 			: postfix3 == null
 				? new ConcatIterable([subject, postfix1, postfix2])
-				: postfix 4 == null
+				: postfix4 == null
 					? new ConcatIterable([subject, postfix1, postfix2, postfix3])
 					: new ConcatIterable([subject, postfix1, postfix2, postfix3, postfix4])
 	
@@ -105,7 +105,7 @@ class AfterIterable<T> {
 	}
 	
 	public function iterator():Iterator<T>
-		return new AfterIterator(_subject.iterator(), _predicate);
+		return new AfterIterator(_subject.iterator(), _predicate)
 }
 class AfterIterator<T> {
 	var _subject:Iterator<T>;
@@ -305,7 +305,7 @@ class SelectManyIterator<T, U, V> {
 		_second = collection.iterator();
 	}
 	
-	public function hasNext() return _subject.hasNext() || _second.hasNext();
+	public function hasNext() return _subject.hasNext() || _second.hasNext()
 	
 	public function next():V {
 		if (hasNext()) {
@@ -365,7 +365,7 @@ class WhereIterable<T> {
 	}
 	
 	public function iterator():Iterator<T>
-		return new WhereIterator(_subject.iterator(), _predicate);
+		return new WhereIterator(_subject.iterator(), _predicate)
 }
 class WhereIterator<T> {
 	var _subject:Iterator<T>;
@@ -380,7 +380,7 @@ class WhereIterator<T> {
 		skipToNext();
 	}
 	
-	public function hasNext() return _hasNext;
+	public function hasNext() return _hasNext
 	
 	public function next():T {
 		if(_hasNext) {
