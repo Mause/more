@@ -1,4 +1,4 @@
-﻿/** LinkedListTailHolder.hx
+﻿/** SingleLinkedList.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 

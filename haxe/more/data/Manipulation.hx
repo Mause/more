@@ -15,56 +15,15 @@
  * limitations under the License.
  **/
 package haxe.more.data;
-import haxe.Timer;
 
 using haxe.more.data.Manipulation;
 
 /**
  * If you know Microsofts Linq, this will feel familiar to you.
- * Need restructuring, like sorting functions alphabetically.
+ * OMG, code code!
  */
 
 class Manipulation {	
-	public static function where<T>(subject:Iterable<T>, predicate: T -> Bool):Iterable<T> {
-		return new WhereIterable(subject, predicate);
-	}
-	
-	public static function after<T>(subject:Iterable<T>, predicate: T -> Bool):Iterable<T> {
-		return new AfterIterable(subject, predicate);
-	}
-	
-	public static function until<T>(subject:Iterable<T>, predicate: T -> Bool):Iterable<T> {
-		return new UntilIterable(subject, predicate);
-	}
-	
-	public static function select<T, V>(subject:Iterable<T>, selector: T -> V):Iterable<V> {
-		return new SelectIterable(subject, selector);
-	}
-	
-	public static function first<T>(subject:Iterable<T>, ?predicate: T -> Bool):T {
-		return predicate != null ? subject.where(predicate).iterator().next() : subject.iterator().next();
-	}
-	
-	public static function toList<T>(subject:Iterable<T>):List<T> {
-		var result = new List<T>();
-		for (item in subject) {
-			result.add(item);
-		}
-		return result;
-	}
-	
-	public static function join<T>(scattered:Iterable<Iterable<T>>):Iterable<T> {
-		return new ConcatIterable(scattered);
-	}
-	
-	public static function toArray<T>(subject:Iterable<T>):Array<T> {
-		var result = new Array<T>();
-		for (item in subject) {
-			result.push(item);
-		}
-		return result;
-	}
-	
 	public static function avarage(subject:Iterable<Int>):Float {
 		var amount = 0;
 		var total = 0.0;
@@ -76,9 +35,14 @@ class Manipulation {
 		return total / amount;
 	}
 	
-	public static function execute<T>(subject:Iterable<T>, action: T -> Void):Iterable<T> {
-		return new ExecuteIterable(subject, action);
-	}
+	public static function concat<T>(subject:Iterable<T>, postfix1:Iterable<T>, ?postfix2:Iterable<T>, ?postfix3:Iterable<T>, ?postfix4:Iterable<T>):Iterable<T> // Hey, a programming style experiment!
+		return postfix2 == null
+			? new ConcatIterable([subject, postfix1])
+			: postfix3 == null
+				? new ConcatIterable([subject, postfix1, postfix2])
+				: postfix 4 == null
+					? new ConcatIterable([subject, postfix1, postfix2, postfix3])
+					: new ConcatIterable([subject, postfix1, postfix2, postfix3, postfix4])
 	
 	public static function fold<T, C>(subject:Iterable<T>, ?seed:C, aggregator: T -> C -> C):C {
 		for (item in subject) {
@@ -96,136 +60,39 @@ class Manipulation {
 			);
 	}
 	
-	public static function evaluate<T>(subject:Iterable<T>, ?timeSpan:Int, ?evaluationsPerTick:Int, ?completed:Void -> Void):Void {
-		var iter = subject.iterator();
-		if (timeSpan != null) {
-			if (evaluationsPerTick != null) {
-				var evaluations:Int;
-				var t = new Timer(timeSpan);
-				t.run = function() {
-					evaluations = evaluationsPerTick;
-					while(evaluations-- != 0) {
-						if (iter.hasNext()) {
-							iter.next();
-						} else {
-							t.stop();
-							if(completed != null) completed();
-							break;
-						}
-					}
-				};
-			} else {
-				var t = new Timer(timeSpan);
-				t.run = function() {
-					if (iter.hasNext()) {
-						iter.next();
-					} else {
-						t.stop();
-						if(completed != null) completed();
-					}
-				};
-			}
-		} else {
-			while (iter.hasNext()) iter.next();
-			if(completed != null) completed();
+	public static function toList<T>(subject:Iterable<T>):List<T> {
+		var result = new List<T>();
+		for (item in subject) {
+			result.add(item);
 		}
+		return result;
 	}
 	
-	public static function iterable<T>(subject:Iterator<T>):Iterable<T> {
-		return new IteratorIterable(subject);
-	}
-	
-	public static function concat<T>(subject:Iterable<T>, postfix1:Iterable<T>, ?postfix2:Iterable<T>, ?postfix3:Iterable<T>, ?postfix4:Iterable<T>):Iterable<T> {
-		if (postfix2 != null) {
-			if (postfix3 != null) {
-				if (postfix4 != null) {
-					return new ConcatIterable([subject, postfix1, postfix2, postfix3, postfix4]);
-				}
-				return new ConcatIterable([subject, postfix1, postfix2, postfix3]);
-			}
-			return new ConcatIterable([subject, postfix1, postfix2]);
+	public static function toArray<T>(subject:Iterable<T>):Array<T> {
+		var result = new Array<T>();
+		for (item in subject) {
+			result.push(item);
 		}
- 		return new ConcatIterable([subject, postfix1]);
-	}	
-}
-
-class ConcatIterable<T> {
-	var _subjects:Iterable<Iterable<T>>;
-	
-	public function new(subjects:Iterable<Iterable<T>>) {
-		_subjects = subjects;
+		return result;
 	}
 	
-	public function iterator():Iterator<T> {
-		return new ConcatIterator(_subjects.select(function(iter) return iter.iterator()).iterator());
-	}
-}
-class ConcatIterator<T> {
-	var _subjects:Iterator<Iterator<T>>;
-	var _hasNext:Bool;
-	var _current:Iterator<T>;
-	
-	public function new(subjects:Iterator<Iterator<T>>) {
-		_subjects = subjects;
-		_current = subjects.next();
-		_hasNext = true;
-	}
-	
-	public function hasNext():Bool {
-		return _hasNext;
-	}
-	
-	public function next():T {
-		if (_hasNext) {
-			var result = _current.next();
-			if (!_current.hasNext()) {
-				if (_subjects.hasNext()) {
-					_current = _subjects.next();
-				} else {
-					_hasNext = false;
-				}
-			}
-			return result;
-		}
-		return null;
-	}
-}
-
-
-class ExecuteIterable<T> {
-	var _subject:Iterable<T>;
-	var _action: T -> Void;
-	
-	public function new(subject:Iterable<T>, action: T -> Void) {
-		_subject = subject;
-		_action = action;
-	}
-	
-	public function iterator():Iterator<T> {
-		return new ExecuteIterator(_subject.iterator(), _action);
-	}
-}
-class ExecuteIterator<T> {
-	var _subject:Iterator<T>;
-	var _action: T -> Void;
-	
-	public function new(subject:Iterator<T>, action: T -> Void) {
-		_subject = subject;
-		_action = action;
-	}
-	
-	public function hasNext():Bool {
-		return _subject.hasNext();
-	}
-	
-	public function next():T {
-		if (hasNext()) {
-			var result = _subject.next();
-			_action(result);
-			return result;
-		}
-		return null;
-	}
+	// The non-do-ers, short and simple bodies
+	public static function where<T>(subject:Iterable<T>, predicate: T -> Bool):Iterable<T>
+		return new WhereIterable(subject, predicate)	
+	public static function after<T>(subject:Iterable<T>, predicate: T -> Bool):Iterable<T>
+		return new AfterIterable(subject, predicate)	
+	public static function until<T>(subject:Iterable<T>, predicate: T -> Bool):Iterable<T>
+		return new UntilIterable(subject, predicate)	
+	public static function select<T, V>(subject:Iterable<T>, selector: T -> V):Iterable<V>
+		return new SelectIterable(subject, selector)	
+	public static function first<T>(subject:Iterable<T>, ?predicate: T -> Bool):T
+		return predicate != null ? subject.where(predicate).iterator().next() : subject.iterator().next()
+	public static function join<T>(scattered:Iterable<Iterable<T>>):Iterable<T>
+		return new ConcatIterable(scattered)
+	public static function reverse<T>(subject:Iterable<T>):Iterable<T>
+		return new ReverseIterable(subject)
+	public static function iterable<T>(subject:Iterator<T>):Iterable<T>
+		return new IteratorIterable(subject)
 }
 
 class AfterIterable<T> {
@@ -237,9 +104,8 @@ class AfterIterable<T> {
 		_predicate = predicate;
 	}
 	
-	public function iterator():Iterator<T> {
+	public function iterator():Iterator<T>
 		return new AfterIterator(_subject.iterator(), _predicate);
-	}
 }
 class AfterIterator<T> {
 	var _subject:Iterator<T>;
@@ -279,39 +145,38 @@ class AfterIterator<T> {
 	}
 }
 
-class UntilIterable<T> {
-	var _subject:Iterable<T>;
-	var _predicate: T -> Bool;
-	
-	public function new(subject:Iterable<T>, predicate: T -> Bool) {
-		_subject = subject;
-		_predicate = predicate;
-	}
-	
-	public function iterator():Iterator<T> {
-		return new UntilIterator(_subject.iterator(), _predicate);
-	}
+/**
+ * 
+ */
+class ConcatIterable<T> {
+	var _subjects:Iterable<Iterable<T>>;	
+	public function new(subjects:Iterable<Iterable<T>>)	_subjects = subjects
+	public function iterator():Iterator<T>
+		return new ConcatIterator(_subjects.select(function(iter) return iter.iterator()).iterator())
 }
-class UntilIterator<T> {
-	var _subject:Iterator<T>;
-	var _predicate: T -> Bool;
-	var _current:T;
+class ConcatIterator<T> {
+	var _subjects:Iterator<Iterator<T>>;
 	var _hasNext:Bool;
+	var _current:Iterator<T>;
 	
-	public function new(subject:Iterator<T>, predicate: T -> Bool) {
-		_subject = subject;
-		_predicate = predicate;
+	public function new(subjects:Iterator<Iterator<T>>) {
+		_subjects = subjects;
+		_current = subjects.next();
 		_hasNext = true;
 	}
 	
-	public function hasNext():Bool {
-		return _hasNext && _subject.hasNext();
-	}
+	public function hasNext():Bool return _hasNext
 	
 	public function next():T {
-		if (hasNext()) {
-			var result = _current;
-			_hasNext = !_predicate(_current = _subject.next());
+		if (_hasNext) {
+			var result = _current.next();
+			if (!_current.hasNext()) {
+				if (_subjects.hasNext()) {
+					_current = _subjects.next();
+				} else {
+					_hasNext = false;
+				}
+			}
 			return result;
 		}
 		return null;
@@ -327,33 +192,63 @@ class IteratorIterable<T> {
 		iterated = new Array();
 	}
 	
-	public function iterator():Iterator<T> {
-		return new IteratorIterator(this);
-	}
+	public function iterator():Iterator<T>
+		return new IteratorIterator(this)
 }
 class IteratorIterator<T> {
 	var _subject:IteratorIterable<T>;
-	var _count:Int;
+	var _index:Int;
+	
 	public function new(subject:IteratorIterable<T>) {
 		_subject = subject;
-		_count = 0;
+		_index = 0;
 	}
 	
-	public function hasNext():Bool {
-		return _count < _subject.iterated.length || _subject.subject.hasNext();
-	}
+	public function hasNext():Bool
+		return _index < _subject.iterated.length || _subject.subject.hasNext()
 	
 	public function next():T {
-		if (_count < _subject.iterated.length) {
-			return _subject.iterated[_count];
-			_count++;
+		if (_index < _subject.iterated.length) {
+			return _subject.iterated[_index];
+			_index++;
 		} else if(_subject.subject.hasNext()) {
 			var result = _subject.subject.next();
-			_count++;
+			_index++;
 			_subject.iterated.push(result);
 			return result;
 		}
 		return null;
+	}
+}
+
+class ReverseIterable<T> {
+	var _subject(default, null):Iterable<T>;
+	public function new(subject:Iterable<T>) _subject = subject	
+	public function iterator():Iterator<T>
+		return new ReverseIterator(_subject.iterator())
+}
+class ReverseIterator<T> {
+	var _subject:Iterator<T>;
+	var _elements:Array<T>;
+	var _index:Int;
+	public function new(subject:Iterator<T>) {
+		_subject = subject;
+		_index = -1;
+	}
+	
+	public function hasNext():Bool
+		return _index != 0 && ((_index == -1 && _subject.hasNext()) || _index <= _elements.length)
+		
+	public function next():T {
+		if (_index == -1) {		
+			_elements = new Array();
+			while (_subject.hasNext())
+				_elements.push(_subject.next());
+			_index = _elements.length;
+		} else if (_index == 0) {
+			return null;
+		}
+		return _elements[--_index];
 	}
 }
 
@@ -366,9 +261,8 @@ class SelectIterable<T, V> {
 		_selector = selector;
 	}
 	
-	public function iterator():Iterator<V> {
-		return new SelectIterator(_subject.iterator(), _selector);
-	}
+	public function iterator():Iterator<V>
+		return new SelectIterator(_subject.iterator(), _selector)
 }
 class SelectIterator<T, V> {
 	var _subject:Iterator<T>;
@@ -379,13 +273,8 @@ class SelectIterator<T, V> {
 		_selector = selector;
 	}
 	
-	public function hasNext():Bool {
-		return _subject.hasNext();
-	}
-	
-	public function next():V {
-		return _selector(_subject.next());
-	}
+	public function hasNext():Bool return _subject.hasNext()	
+	public function next():V return _selector(_subject.next())
 }
 
 class SelectManyIterable<T, U, V> {
@@ -399,9 +288,8 @@ class SelectManyIterable<T, U, V> {
 		_selector = selector;
 	}
 	
-	public function iterator():Iterator<V> {
-		return new SelectManyIterator(_subject.iterator(), _collection, _selector);
-	}
+	public function iterator():Iterator<V>
+		return new SelectManyIterator(_subject.iterator(), _collection, _selector)
 }
 class SelectManyIterator<T, U, V> {
 	var _subject:Iterator<T>;
@@ -417,9 +305,7 @@ class SelectManyIterator<T, U, V> {
 		_second = collection.iterator();
 	}
 	
-	public function hasNext():Bool {
-		return _subject.hasNext() || _second.hasNext();
-	}
+	public function hasNext() return _subject.hasNext() || _second.hasNext();
 	
 	public function next():V {
 		if (hasNext()) {
@@ -430,8 +316,43 @@ class SelectManyIterator<T, U, V> {
 			return _selector(_first, _second.next());
 		}
 		return null;
+	}	
+}
+
+class UntilIterable<T> {
+	var _subject:Iterable<T>;
+	var _predicate: T -> Bool;
+	
+	public function new(subject:Iterable<T>, predicate: T -> Bool) {
+		_subject = subject;
+		_predicate = predicate;
 	}
 	
+	public function iterator():Iterator<T>
+		return new UntilIterator(_subject.iterator(), _predicate)
+}
+class UntilIterator<T> {
+	var _subject:Iterator<T>;
+	var _predicate: T -> Bool;
+	var _current:T;
+	var _hasNext:Bool;
+	
+	public function new(subject:Iterator<T>, predicate: T -> Bool) {
+		_subject = subject;
+		_predicate = predicate;
+		_hasNext = true;
+	}
+	
+	public function hasNext() return _hasNext && _subject.hasNext()
+	
+	public function next():T {
+		if (hasNext()) {
+			var result = _current;
+			_hasNext = !_predicate(_current = _subject.next());
+			return result;
+		}
+		return null;
+	}
 }
 
 class WhereIterable<T> {
@@ -443,9 +364,8 @@ class WhereIterable<T> {
 		_predicate = predicate;
 	}
 	
-	public function iterator():Iterator<T> {
+	public function iterator():Iterator<T>
 		return new WhereIterator(_subject.iterator(), _predicate);
-	}
 }
 class WhereIterator<T> {
 	var _subject:Iterator<T>;
@@ -460,9 +380,7 @@ class WhereIterator<T> {
 		skipToNext();
 	}
 	
-	public function hasNext():Bool {
-		return _hasNext;
-	}
+	public function hasNext() return _hasNext;
 	
 	public function next():T {
 		if(_hasNext) {

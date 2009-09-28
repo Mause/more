@@ -1,4 +1,4 @@
-﻿/** SingleLinkedList.hx
+﻿/** SingleLinkedListNode.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
