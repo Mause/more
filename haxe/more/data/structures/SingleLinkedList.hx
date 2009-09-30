@@ -64,6 +64,7 @@ class SingleLinkedList<T> {
 		if (tail != null) return true;
 		var result = create(value);
 		tail = sentinel.next = result;
+		length++;
 		return false;
 	}
 }

@@ -21,40 +21,22 @@ import flash.Error;
  * Warning, not errorless.
  */
 class Stack<T> {
-	private var head:SingleLinkedList<T>;
-	private var tail:SingleLinkedList<T>;
-	public var length(default, null):Int;
+	var list:SingleLinkedList<T>;
+	
+	public var length(gLength, null):Int;
+	function gLength() return list.length
+	
 	public function new():Void {
 		length = 0;
+		list = new SingleLinkedList();
 	}
-	public function iterator():Iterator < T > {
-		return new LinkedListIterator(head, tail);
-	}
-	public function peek():T {
-		return head == null ? null : head.value;
-	}
-	public function pop():T {
-		if (head == null) {
-			return null;
-		}
-		var result:T = head.value;
-		if(head == tail) {
-			head = tail = null;
-		} else {
-			head = head.next;
-		}
-		length--;
-		return result;
-	}
-	public function push(value:T):T {
-		if (head == null) {
-			head = tail = new SingleLinkedList<T>(value);
-		} else {
-			var newOne:SingleLinkedList<T> = new SingleLinkedList<T>(value);
-			newOne.append(head);
-			head = newOne;
-		}
-		length++;
-		return value;
+	
+	public function iterator():Iterator<T>
+		return list.iterator()
+	public function peek():T
+		return list.length != 0 ? list.head.value : null
+	public function pop():T return list.shift()
+	public function push(value:T):Void {
+		list.unshift(value);
 	}
 }
