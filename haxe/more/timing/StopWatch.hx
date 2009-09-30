@@ -1,4 +1,4 @@
-﻿/** Queue.hx
+﻿/** Stopwatch.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -14,26 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-package haxe.more.data.structures;
-import haxe.rtti.Generic;
+package haxe.more.timing;
 
-class Queue<T> {
-	var list:SingleLinkedList<T>;
+class StopWatch {
+	var _times:SingleLinkedList<Float>;
+	public var latest(default, null):Float;
 	
-	public var length(gLength, null):Int;
-	function gLength() return list.length
-	
-	public function new():Void {
-		length = 0;
-		list = new SingleLinkedList();
-	}
-	
-	public function iterator():Iterator<T>
-		return list.iterator()
-	public function peek():T
-		return list.length != 0 ? null : list.head.value	
-	public function pop():T return list.shift()
-	public function push(value:T):Void {
-		list.push(value);
-	}
+	public function new() _times = new SingleLinkedList<Float>()
+	public function time() return _times.push(latest = Helpers.microtime)	
+	public function iterator()
+		return _times.fold(
+			function(item:Float, seed: { previous:Float, array:Array<Float> }) {
+				if (seed == null) {
+					seed = { previous: item, array: new Array<Float>() };
+				} else {
+					seed.array.push(item - seed.previous);
+					seed.previous = item;
+				}
+				return seed;
+			}
+		).array.iterator()			
 }

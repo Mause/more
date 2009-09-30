@@ -37,7 +37,7 @@ class Manipulation {
 		return total / amount;
 	}
 	
-	public static function concat<T>(subject:Iterable<T>, postfix1:Iterable<T>, ?postfix2:Iterable<T>, ?postfix3:Iterable<T>, ?postfix4:Iterable<T>):Iterable<T> // Hey, a programming style experiment!
+	public static function concat<T>(subject:Iterable<T>, postfix1:Iterable<T>, ?postfix2:Iterable<T>, ?postfix3:Iterable<T>, ?postfix4:Iterable<T>):Iterable<T> // Hey, a programming style experiment! Came out a little flawed.
 		return postfix2 == null
 			? new ConcatIterable([subject, postfix1])
 			: postfix3 == null
