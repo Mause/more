@@ -57,8 +57,6 @@ class BinaryTree<T> {
 	public function preOrderIterator():Iterator<T> return node.preOrderIterator()
 	public function postOrderIterator():Iterator<T> return node.postOrderIterator()
 	public function inOrderIterator():Iterator<T>  return node.inOrderIterator()
-	public function depthFirstIterator():Iterator<T> return node.depthFirstIterator()
-	public function breathFirstIterator():Iterator<T> return node.breathFirstIterator()
 }
 // I want acces to the BinaryTreeNode's internals, but not expose this in the public BinaryTree. This internal class solves the problem nicely.
 class BinaryTreeNodeOperator<T> extends BinaryTreeNode<T> {

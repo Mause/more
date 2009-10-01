@@ -15,7 +15,6 @@
  * limitations under the License.
  **/
 package haxe.more.data.structures;
-import haxe.rtti.Generic;
 
 class Queue<T> {
 	var list:SingleLinkedList<T>;
@@ -31,9 +30,14 @@ class Queue<T> {
 	public function iterator():Iterator<T>
 		return list.iterator()
 	public function peek():T
-		return list.length != 0 ? null : list.head.value	
-	public function pop():T return list.shift()
-	public function push(value:T):Void {
+		return list.length == 0 ? null : list.tail.value	
+	public function pop():T {
+		var result = list.shift();
+		trace("Popped " + result);
+		return result;
+	}
+	public function push(value:T):Void{
 		list.push(value);
+		trace("Pushed " + value);
 	}
 }
