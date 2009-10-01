@@ -26,11 +26,11 @@ class BinaryTree<T> {
 	public var comperator(default, default):Comperator<T>;		
 	public var node(default, null):BinaryTreeNode<T>;
 	function sNode(value) node = value
-	public var operator:NodeOperator<T>;
+	public var operator:BinaryTreeNodeOperator<T>;
 	
 	public function new(comperator:Comperator<T>) {
 		this.comperator = comperator;
-		this.operator = new NodeOperator(this);
+		this.operator = new BinaryTreeNodeOperator(this);
 	}
 	
 	public function add(value:T):BinaryTree<T> {
@@ -61,7 +61,7 @@ class BinaryTree<T> {
 	public function breathFirstIterator():Iterator<T> return node.breathFirstIterator()
 }
 // I want acces to the BinaryTreeNode's internals, but not expose this in the public BinaryTree. This internal class solves the problem nicely.
-class NodeOperator<T> extends BinaryTreeNode<T> {
+class BinaryTreeNodeOperator<T> extends BinaryTreeNode<T> {
 	var _tree:BinaryTree<T>;
 	public function new(tree:BinaryTree < T > ) {
 		super(null);

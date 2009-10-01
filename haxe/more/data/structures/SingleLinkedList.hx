@@ -19,18 +19,18 @@ import haxe.rtti.CType;
 
 class SingleLinkedList<T> {
 	var sentinel: { private var next:SingleLinkedListNode<T>; };
+	var operator:SingleLinkedListNodeOperator<T>;
 	
 	public var head(gHead, null):SingleLinkedListNode<T>;
 	function gHead() return sentinel.next
 	
 	public var length(default, null):Int;
-	function sLength(value:Int) return length = value
 	
 	public var tail(default, null):SingleLinkedListNode<T>;
-	function sTail(value:SingleLinkedListNode<T>) return tail = value
 	
 	public function new<T>() {
-		sentinel = cast create(null);
+		operator = new SingleLinkedListNodeOperator(this);
+		sentinel = cast operator.create(null);
 	}
 	
 	public function push(value:T):Void {
@@ -55,23 +55,25 @@ class SingleLinkedList<T> {
 		return new SingleLinkedListIterator(head, tail);
 	}
 	
-	function create(value:T):SingleLinkedListNode<T> {
-		var result:SingleLinkedListNode<T> = cast Type.createInstance(SingleLinkedListNode, [this, value]);
-		return result;
-	}
-	
 	function prepare(value:T):Bool {
 		if (tail != null) return true;
-		var result = create(value);
+		var result = operator.create(value);
 		tail = sentinel.next = result;
 		length++;
 		return false;
 	}
 }
-/*
-{ 
-	var list(default, null):SingleLinkedList<T>;
-	var next(default, null):SingleLinkedListNode<T>;
-	public var value:T;
+
+/**
+ * Allows acces to the internals of SingleLinkedListNode. Bye nasty hacks.
+ */
+class SingleLinkedListNodeOperator<T> extends SingleLinkedListNode<T>  {
+	var _list:SingleLinkedList<T>;
+	public function new(list:SingleLinkedList<T>) {
+		super(null, null);
+		_list = list;
+	}
+	public function create(value:T):SingleLinkedListNode<T> {
+		return new SingleLinkedListNode(_list, value);
+	}
 }
-*/

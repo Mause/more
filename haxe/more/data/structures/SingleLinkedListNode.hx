@@ -22,103 +22,117 @@ class SingleLinkedListNode<T> {
 	public var next(default, null):SingleLinkedListNode<T>;
 	public var value:T;
 	
+	inline var isAlive(gIsAlive, null):Bool;
+	inline function gIsAlive() return list != null
+	
+	/**
+	 * Constructs a new node. This is a private action.
+	 * @param	list
+	 * @param	?value
+	 */
 	function new(list:SingleLinkedList<T>, ?value:T):Void {
 		this.list = list;
 		this.value = value;	
 	}
 	
+	/**
+	 * Appends a value to the current node.
+	 * @param	?value The value to append. After the operation, the next node will contain this value.
+	 */
 	public function append(?value:T):Void {
-		var result = new SingleLinkedListNode(list, value);
-		var list: {
-			private function sTail(value:SingleLinkedListNode<T>):SingleLinkedListNode<T>;
-			private function sLength(value:Int):Int;
-		} = list;
-		list.sLength(this.list.length + 1);
+		if (!isAlive) return;
 		
-		if(next == null) {
-			list.sTail(result);
-		} else {
-			result.next = next;
-		}
-		next = result;
+		var subject = new SingleLinkedListNode(list, value);
+		
+		SingleLinkedListOperator.setLength(list, list.length + 1);		
+		
+		subject.next = next;
+		next = subject;
 	}
 	
-	public function prepend(?value:T, ?previous:SingleLinkedListNode<T>):Void {		
-		var result = new SingleLinkedListNode(list, value);
-		
-		var list: {
-			private function sLength(value:Int):Int;
-		} = list;
-		list.sLength(this.list.length + 1);
+	/**
+	 * Prepends a value to the current node.
+	 * @param	?value The value to prepend. After the operation, the previous node will contain this value.
+	 * @param	?previous The node previous to this one. Supplying this can greatly speed up things.
+	 * @usage	This is a slow method when not properly used. Try to supply the previous node wherever you can.
+	 */
+	public function prepend(?value:T, ?previous:SingleLinkedListNode<T>):Void {
+		if (!isAlive) return;
 		
 		previous = getPrevious(previous);
-		previous.next = result;
-		result.next = this;		
+		
+		previous.append(value);		
 	}
 	
+	/**
+	 * Removes the current node out of the list. All references to the containing list are in this node removed.
+	 * @param	?previous The node previous to this one. Supplying this can greatly speed up things.
+	 * @return	The value this node contained.
+	 * @usage	This is a slow method when not properly used. Try to supply the previous node wherever you can.
+	 */
 	public function remove(?previous:SingleLinkedListNode<T>):T {
-		if(list != null) {		
-			previous = getPrevious(previous);			
-			return previous.removeNext();
-		}
-		return null;
+		if (!isAlive) return value;
+		
+		previous = getPrevious(previous);
+		
+		return previous.removeNext();
 	}
 	
+	/**
+	 * Removes the next node out of the list. All references to the containing list are in that node removed.
+	 * @return	The value the next node contained.
+	 */
 	public function removeNext():T {
-		if(list != null) {	
-			var list: {
-				private function sTail(value:SingleLinkedListNode<T>):SingleLinkedListNode<T>;
-				private function sLength(value:Int):Int;
-			} = list;
-			
-			var subject = next;
-			var value = subject.value;
-			next = next.next;
-			
-			if (subject.next == null) {
-				list.sTail(this);
-			}
-			
-			list.sLength(this.list.length - 1);
-			
-			subject.value = null;
-			subject.list = null;
-			subject.next = null;
-			return value;
-		}
-		return null;
+		if (!isAlive) return null;
+		
+		var subject = next;
+		var result = subject.value;
+		
+		SingleLinkedListOperator.setLength(list, list.length - 1);
+		
+		next = next.next;
+		subject.next = null;
+		subject.list = null;
+		return value;
 	}
 	
-	// Makes sure you have really the previous node.
+	/**
+	 * Makes sure the supplied node is really the previous node. If not, the real previous node is returned.
+	 * @param	previous The node maybe being the previous node.
+	 * @return	The real previous node.
+	 */
 	inline function getPrevious(previous:SingleLinkedListNode<T>):SingleLinkedListNode<T> {
-		var list: {
-				private var sentinel: { var next:SingleLinkedListNode<T>; };
-			} = list;
+		
 		// Make sure the right "previous" was given
 		if (previous != null && previous.next != this)
 			previous = null;
 		
 		// make sure the previous is in fact really the previous node
 		if (previous == null) {
-			previous = cast list.sentinel;
+			previous = cast SingleLinkedListOperator.getSentinel(list);
 			while (previous.next != this)
 				previous = previous.next;
 		}
 		return previous;
 	}
 	
+	/**
+	 * Returns an iterator to iterate this linked list from this node to the tail.
+	 * @return An iterator to iterate this linked list from this node to the tail.
+	 */
 	public function iterator():Iterator<T> {
 		return new SingleLinkedListIterator(this, list.tail);
 	}
 }
 
-/*
-{ private var sentinel: { var next:SingleLinkedListNode<T>; }; var tail(default, null):SingleLinkedListNode<T>; };
-
-var list: {
-	private var sentinel: { var next:SingleLinkedListNode<T>; };
-	var tail(default, null):SingleLinkedListNode<T>;
-	private function sTail(value:SingleLinkedListNode<T>):SingleLinkedListNode<T>;
-	private function sLength(value:Int):Int;
-} = list;
+/**
+ * Allows acces to the internals of SingleLinkedList. Bye nasty hacks.
  */
+class SingleLinkedListOperator<T> extends SingleLinkedList<T> {
+	public inline static function getSentinel<T>(list:SingleLinkedList<T>):SingleLinkedListNode<T> {
+		return cast list.sentinel;
+	}
+	public inline static function setLength<T>(list:SingleLinkedList<T>, value:Int) {
+		list.length = value;
+	}
+}
