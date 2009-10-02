@@ -103,7 +103,7 @@ class SingleLinkedListNode<T> {
 		
 		subject.next = null;
 		subject.list = null;
-		return value;
+		return result;
 	}
 	
 	/**
@@ -130,7 +130,7 @@ class SingleLinkedListNode<T> {
 	 * Returns an iterator to iterate this linked list from this node to the tail.
 	 * @return An iterator to iterate this linked list from this node to the tail.
 	 */
-	public function iterator():Iterator<T> {
+	public inline function iterator():Iterator<T> {
 		return new SingleLinkedListIterator(this, list.tail);
 	}
 }
