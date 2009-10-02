@@ -18,21 +18,31 @@ package haxe.more.data.structures;
 
 class SingleLinkedList<T> {
 	var sentinel:SingleLinkedListNode<T>;
-	var operator:SingleLinkedListNodeOperator<T>;
 	
+	/**
+	 * The first node of the list.
+	 */
 	public var head(gHead, null):SingleLinkedListNode<T>;
 	function gHead() return sentinel.next
 	
 	public var length(default, null):Int;
 	
+	/**
+	 * The last node of the list.
+	 */
 	public var tail(default, null):SingleLinkedListNode<T>;
 	
+	/**
+	 * Returns true if this list does not contain any nodes.
+	 */
 	public inline var empty(gEmpty, null):Bool;
 	inline function gEmpty():Bool return length == 0
 	
+	/**
+	 * Constructs a new list.
+	 */
 	public function new<T>() {
-		operator = new SingleLinkedListNodeOperator(this);
-		sentinel = cast operator.create(null);
+		sentinel = SingleLinkedListNodeOperator.create(this, null);
 	}
 	
 	/**
@@ -72,6 +82,10 @@ class SingleLinkedList<T> {
 		sentinel.append(value);
 	}
 	
+	/**
+	 * Returns an iterator to iterate trough this list.
+	 * @return an iterator to iterate trough this list.
+	 */
 	public function iterator():Iterator<T> {
 		return new SingleLinkedListIterator(head, tail);
 	}
@@ -81,12 +95,7 @@ class SingleLinkedList<T> {
  * Allows acces to the internals of SingleLinkedListNode. Bye nasty hacks.
  */
 class SingleLinkedListNodeOperator<T> extends SingleLinkedListNode<T>  {
-	var _list:SingleLinkedList<T>;
-	public function new(list:SingleLinkedList<T>) {
-		super(null, null);
-		_list = list;
-	}
-	public function create(value:T):SingleLinkedListNode<T> {
-		return new SingleLinkedListNode(_list, value);
+	public static function create<T>(list:SingleLinkedList<T>, value:T):SingleLinkedListNode<T> {
+		return new SingleLinkedListNode(list, value);
 	}
 }
