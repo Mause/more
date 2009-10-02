@@ -33,11 +33,9 @@ class Stack<T> {
 		return list.length == 0 ? null : list.tail.value
 	public function pop():T {
 		var result = list.shift();
-		trace("Popped " + result);
 		return result;
 	}
 	public function push(value:T):Void{
-		trace("Unshifted " + value);
 		list.unshift(value);
 	}
 }

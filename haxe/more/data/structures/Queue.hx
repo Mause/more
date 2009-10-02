@@ -17,14 +17,14 @@
 package haxe.more.data.structures;
 
 class Queue<T> {
-	var list:SingleLinkedList<T>;
+	var list:DoubleLinkedList<T>;
 	
 	public var length(gLength, null):Int;
 	function gLength() return list.length
 	
 	public function new():Void {
 		length = 0;
-		list = new SingleLinkedList();
+		list = new DoubleLinkedList();
 	}
 	
 	public function iterator():Iterator<T>
@@ -33,11 +33,9 @@ class Queue<T> {
 		return list.length == 0 ? null : list.tail.value	
 	public function pop():T {
 		var result = list.shift();
-		trace("Popped " + result);
 		return result;
 	}
 	public function push(value:T):Void{
 		list.push(value);
-		trace("Pushed " + value);
 	}
 }

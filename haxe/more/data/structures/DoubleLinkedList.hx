@@ -24,7 +24,7 @@ class DoubleLinkedList<T> {
 	 * The first node of the list.
 	 */
 	public var head(gHead, null):DoubleLinkedListNode<T>;
-	function gHead() return sentinel.next
+	function gHead() return return sentinel.next == endtinel ? null : sentinel.next
 	
 	public var length(default, null):Int;
 	
@@ -32,7 +32,7 @@ class DoubleLinkedList<T> {
 	 * The last node of the list.
 	 */
 	public var tail(gTail, null):DoubleLinkedListNode<T>;
-	function gTail() return endtinel.previous
+	function gTail() return endtinel.previous == sentinel ? null : endtinel.previous
 	
 	/**
 	 * Returns true if this list does not contain any nodes.

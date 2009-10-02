@@ -76,6 +76,8 @@ class DoubleLinkedListNode<T> {
 	public function remove():T {
 		if (!isAlive) throw "This Node is not used anymore";
 		
+		DoubleLinkedListOperator.setLength(list, list.length - 1);
+		
 		var result = value;
 		
 		previous.next = next;

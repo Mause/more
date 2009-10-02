@@ -47,6 +47,7 @@ class BinaryTreeNode<T> {
 	public function iterator():Iterator<T> 	return inOrderIterator()
 	public function preOrderIterator():Iterator<T> return new PreOrderIterator(this)
 	public function postOrderIterator():Iterator<T> return new PostOrderIterator(this)
+	public function levelOrderIterator():Iterator<T> return new LevelOrderIterator(this)
 	public function toString():String return Std.string(value)
 }
 class TreeIterator<T> {	
@@ -98,5 +99,26 @@ class PostOrderIterator<T> extends TreeIterator<T>  {
 	
 	public function next():T {
 		return null;
+	}
+}
+class LevelOrderIterator<T> {
+	var _queue:Queue<BinaryTreeNode<T>>;
+	public function new(root:BinaryTreeNode<T>) {
+		_queue = new Queue<BinaryTreeNode<T>>();
+		_queue.push(root);
+	}
+	
+	public function hasNext() return _queue.length != 0
+	
+	public function next():T {
+		if (hasNext()) {
+			var node = _queue.pop();
+			if (node.left != null)
+				_queue.push(node.left);
+			if (node.right != null)
+				_queue.push(node.right);
+			return node.value;
+		}
+		throw "End reached";
 	}
 }
