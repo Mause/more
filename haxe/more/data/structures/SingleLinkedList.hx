@@ -15,10 +15,9 @@
  * limitations under the License.
  **/
 package haxe.more.data.structures;
-import haxe.rtti.CType;
 
 class SingleLinkedList<T> {
-	var sentinel: { private var next:SingleLinkedListNode<T>; };
+	var sentinel:SingleLinkedListNode<T>;
 	var operator:SingleLinkedListNodeOperator<T>;
 	
 	public var head(gHead, null):SingleLinkedListNode<T>;
@@ -28,39 +27,53 @@ class SingleLinkedList<T> {
 	
 	public var tail(default, null):SingleLinkedListNode<T>;
 	
+	public inline var empty(gEmpty, null):Bool;
+	inline function gEmpty():Bool return length == 0
+	
 	public function new<T>() {
 		operator = new SingleLinkedListNodeOperator(this);
 		sentinel = cast operator.create(null);
 	}
 	
+	/**
+	 * Adds value to the tail of the list.
+	 * @param	value The value to add to the tail.
+	 */
 	public function push(value:T):Void {
-		if (prepare(value)) {
+		if (empty)
+			sentinel.append(value);
+		else
 			tail.append(value);
-		}
 	}
+	
+	/**
+	 * Removes the node at the tail of the list.
+	 * @return The value of the removed node.
+	 */
 	public function pop():T {
+		if (empty) throw "List is empty";	
 		return tail.remove();
 	}
+	
+	/**
+	 * Removes the node at the head of the list.
+	 * @return The value of the removed node.
+	 */
 	public function shift():T {
-		return head.remove();
+		if (empty) throw "List is empty";	
+		return sentinel.removeNext();
 	}
+	
+	/**
+	 * Adds value to the head of the list.
+	 * @param	value The value to add to the head.
+	 */
 	public function unshift(value:T):Void {
-		if (prepare(value)) {
-			var first:SingleLinkedListNode<T> = cast sentinel;
-			first.append(value);
-		}
+		sentinel.append(value);
 	}
 	
 	public function iterator():Iterator<T> {
 		return new SingleLinkedListIterator(head, tail);
-	}
-	
-	function prepare(value:T):Bool {
-		if (tail != null) return true;
-		var result = operator.create(value);
-		tail = sentinel.next = result;
-		length++;
-		return false;
 	}
 }
 

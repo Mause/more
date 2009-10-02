@@ -48,6 +48,9 @@ class SingleLinkedListNode<T> {
 		
 		subject.next = next;
 		next = subject;
+		
+		if (subject.next == null)
+			SingleLinkedListOperator.setTail(list, subject);
 	}
 	
 	/**
@@ -91,6 +94,13 @@ class SingleLinkedListNode<T> {
 		SingleLinkedListOperator.setLength(list, list.length - 1);
 		
 		next = next.next;
+		
+		if (next == null)
+			if (this == SingleLinkedListOperator.getSentinel(list))
+				SingleLinkedListOperator.setTail(list, null);
+			else
+				SingleLinkedListOperator.setTail(list, this);
+		
 		subject.next = null;
 		subject.list = null;
 		return value;
@@ -130,9 +140,12 @@ class SingleLinkedListNode<T> {
  */
 class SingleLinkedListOperator<T> extends SingleLinkedList<T> {
 	public inline static function getSentinel<T>(list:SingleLinkedList<T>):SingleLinkedListNode<T> {
-		return cast list.sentinel;
+		return list.sentinel;
 	}
 	public inline static function setLength<T>(list:SingleLinkedList<T>, value:Int) {
 		list.length = value;
+	}
+	public inline static function setTail<T>(list:SingleLinkedList<T>, node:SingleLinkedListNode<T>) {
+		list.tail = node;
 	}
 }
