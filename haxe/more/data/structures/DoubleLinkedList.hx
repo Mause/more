@@ -15,6 +15,7 @@
  * limitations under the License.
  **/
 package haxe.more.data.structures;
+import haxe.more.EmptyIterator;
 
 class DoubleLinkedList<T> {
 	var sentinel:DoubleLinkedListNode<T>;
@@ -88,7 +89,7 @@ class DoubleLinkedList<T> {
 	 * @return an iterator to iterate trough this list.
 	 */
 	public function iterator():Iterator<T> {
-		return new DoubleLinkedListIterator(head, tail);
+		return head == null ? new EmptyIterator() : head.iterator();
 	}
 	
 	/**
@@ -96,7 +97,7 @@ class DoubleLinkedList<T> {
 	 * @return an iterator to iterate trough this list from tail to head.
 	 */
 	public function reversedIterator():Iterator<T> {
-		return new DoubleLinkedListReversedIterator(tail, head);
+		return tail.reversedIterator();
 	}
 }
 

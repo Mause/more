@@ -25,6 +25,8 @@ class BalancedThreadProcessor {
 	var _sentinel:LinkedThreadListNode;
 	var _last:LinkedThreadListNode;
 	var _disposeAtExhaustion:Bool;
+	
+	public var threads(default, null):Int;
 
 	public function new(disposeAtExhaustion:Bool = false) {
 		_last = _sentinel = new LinkedThreadListNode(null);
@@ -33,6 +35,7 @@ class BalancedThreadProcessor {
 	}
 	
 	public function add(thread:ThreadRunnerDelegate, priority:Int = 128):AdjustThreadShareDelegate {
+		threads++;
 		_last = new LinkedThreadListNode(thread, _last);
 		_last.share = priority;
 		updateShares();
@@ -62,11 +65,12 @@ class BalancedThreadProcessor {
 		var previous = _sentinel;
 		while ((current = current.next) != null) {
 			if (current.thread == thread) {
+				threads--;
 				previous.next = current.next;
 				if (_sentinel.next == null) {
 					_last = _sentinel;
 				}
-			updateShares();
+				updateShares();
 				return true;
 			}
 			previous = current;

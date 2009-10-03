@@ -106,6 +106,47 @@ class DoubleLinkedListNode<T> {
 		return new DoubleLinkedListReversedIterator(this, list.head);
 	}
 }
+class DoubleLinkedListIterator<T> {
+	var current:DoubleLinkedListNode<T>;
+	var tail:DoubleLinkedListNode<T>;
+	public function new(first:DoubleLinkedListNode<T>, last:DoubleLinkedListNode<T>):Void {
+		current = first;
+		tail = last;
+	}
+	public function hasNext():Bool {
+		return tail != null && current != tail.next;
+    }
+
+    public function next():T {
+		if (current == null) {
+			return null;
+		}
+		var result:T = current.value;
+		current = current.next;
+		return result;
+    }
+}
+
+class DoubleLinkedListReversedIterator<T> {
+	var current:DoubleLinkedListNode<T>;
+	var head:DoubleLinkedListNode<T>;
+	public function new(last:DoubleLinkedListNode<T>, first:DoubleLinkedListNode<T>):Void {
+		current = last;
+		head = first;
+	}
+	public function hasNext():Bool {
+		return head != null && current != head.previous;
+    }
+
+    public function next():T {
+		if (current == null) {
+			return null;
+		}
+		var result:T = current.value;
+		current = current.previous;
+		return result;
+    }
+}
 
 /**
  * Allows acces to the internals of DoubleLinkedList. Bye nasty hacks.

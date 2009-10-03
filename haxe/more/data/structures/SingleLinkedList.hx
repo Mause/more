@@ -15,6 +15,7 @@
  * limitations under the License.
  **/
 package haxe.more.data.structures;
+import haxe.more.EmptyIterator;
 
 class SingleLinkedList<T> {
 	var sentinel:SingleLinkedListNode<T>;
@@ -87,7 +88,7 @@ class SingleLinkedList<T> {
 	 * @return an iterator to iterate trough this list.
 	 */
 	public function iterator():Iterator<T> {
-		return new SingleLinkedListIterator(head, tail);
+		return empty ? new EmptyIterator<T>() : head.iterator();
 	}
 }
 
