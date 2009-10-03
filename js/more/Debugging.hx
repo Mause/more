@@ -23,6 +23,9 @@ import js.Lib;
 class Debugging {	
 	static var traceView:HtmlDom;
 	static var traceStrings:Array<String>;
+	/**
+	 * A trace function inspired by the default haxe flash trace.
+	 */
 	public static function trace(v:Dynamic, ?infos:PosInfos):Void {
 		if(traceView == null) {
 			traceView = Lib.document.createElement("div");
