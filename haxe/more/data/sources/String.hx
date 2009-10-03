@@ -15,12 +15,15 @@
  * limitations under the License.
  **/
 package haxe.more.data.sources;
+import haxe.more.exceptions.ArgumentNullException;
 
 class String {
 	public static function iterator(string:String):Iterator<String> {
+		if (string == null) throw new ArgumentNullException("string");
 		return new StringIterator(string);
 	}
 	public static function iterable(string:String):Iterable<String> {
+		if (string == null) throw new ArgumentNullException("string");
 		return new StringIterable(string);
 	}
 }

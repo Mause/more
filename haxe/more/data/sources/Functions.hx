@@ -22,13 +22,18 @@ class Functions {
 	 * @param source	A function accepting a break function and returning the next value.
 	 */
 	private static function Gather<T>(source: (Void -> Void) -> T):Iterable<T> {
+		if (source == null) throw new ArgumentNullException("source");
 		return new GatherIterable(source);
 	}
 	
 	/**
 	 * @param source	A function accepting a break function, a state value and returning the next value.
 	 */
-	public static function statefullStatefullGather<T, S>(source: (Void -> Void) -> S -> T, startupStateGenerator: Void -> S):Iterable<T> {
+	public static function statefullStatefullGather<T, S>(
+		source: (Void -> Void) -> S -> T,
+		startupStateGenerator: Void -> S):Iterable<T> {
+		if (source == null) throw new ArgumentNullException("source");
+		if (startupStateGenerator == null) throw new ArgumentNullException("startupStateGenerator");
 		return new StatefullGatherIterable(source, startupStateGenerator);
 	}
 }

@@ -15,11 +15,20 @@
  * limitations under the License.
  **/
 package haxe.more.exceptions;
+import haxe.more.Helpers;
+import haxe.Stack;
 
 class ArgumentException extends Exception {
 	public var paramName(default, null):String;
 	public function new(?paramName:String, ?message:String, ?innerException:Exception) {
 		super(message == null ? "Value does not fall within the expected range." : message, innerException);
+		regenerateStackTrace();
 		this.paramName = paramName == null ? "" : paramName;
-	}	
+	}
+	
+	/**
+	 * Returns the string representation of the stackTrace.
+	 * @return the string representation of the stackTrace.
+	 */
+	public override function toString():String return message + Helpers.newLine + paramName + Stack.toString(rawStackTrace)
 }

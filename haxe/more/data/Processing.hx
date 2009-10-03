@@ -16,9 +16,11 @@
  **/
 package haxe.more.data;
 import haxe.Timer;
+import haxe.more.exceptions.ArgumentNullException;
 
 class Processing {	
 	public static function evaluate<T>(subject:Iterable<T>, ?timeSpan:Int, ?evaluationsPerTick:Int, ?completed:Void -> Void):Void {
+		if (subject == null) throw new ArgumentNullException("subject");
 		var iter = subject.iterator();
 		if (timeSpan != null) {
 			if (evaluationsPerTick != null) {
@@ -54,10 +56,13 @@ class Processing {
 	}
 	
 	public static function apply<T>(subject:Iterable<T>, action: T -> Void):Iterable<T> {
+		if (subject == null) throw new ArgumentNullException("subject");
+		if (action == null) throw new ArgumentNullException("action");
 		return new ApplyIterable(subject, action);
 	}
 	
 	public static function range<T>(generator: T -> T, to:T, ?seed:T):Iterable<T> {
+		if (generator == null) throw new ArgumentNullException("generator");
 		return new RangeIterable(generator, to, seed);
 	}
 }

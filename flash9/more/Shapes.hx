@@ -16,9 +16,11 @@
  **/
 package flash.more;
 import flash.display.Graphics;
+import haxe.more.exceptions.ArgumentNullException;
 
 class Shapes {
 	public static function drawArc(g:Graphics, x:Float, y:Float, radius:Float, arc:Float, angle:Float = 0):Graphics {
+		if (g == null) throw new ArgumentNullException("g");
 		// No need to draw more than needed
 		arc %= Math.PI * 4;
 		
@@ -53,6 +55,7 @@ class Shapes {
 	}
 	
 	public static function drawPie(g:Graphics, x:Float, y:Float, radius:Float, arc:Float, angle:Float = 0):Graphics {
+		if (g == null) throw new ArgumentNullException("g");
 		var segmentAngle:Float;
 		var controlAngle:Float;
 		var segments:Int;

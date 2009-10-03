@@ -15,12 +15,12 @@
  * limitations under the License.
  **/
 package haxe.more.data.structures;
+import haxe.more.exceptions.ArgumentNullException;
 
 typedef Comperator<T> = T -> T -> Int;
 typedef Finder<T, K> = K -> T -> Int;
 
-class BinaryTree<T> {
-	
+class BinaryTree<T> {	
 	public static function integerComparator(left:Int, right:Int):Int
 		return left - right
 	
@@ -30,8 +30,8 @@ class BinaryTree<T> {
 	public var operator:BinaryTreeNodeOperator<T>;
 	
 	public function new(comperator:Comperator<T>) {
-		this.comperator = comperator;
-		
+		if (comperator == null) throw new ArgumentNullException("comperator");
+		this.comperator = comperator;		
 		operator = new BinaryTreeNodeOperator(this);
 	}
 	
@@ -41,6 +41,7 @@ class BinaryTree<T> {
 	}
 	
 	public function find<K>(value:K, finder:Finder<T, K>):T {
+		if (finder == null) throw new ArgumentNullException("finder");
 		var current = node;
 		while (current != null) {
 			var contrast = finder(value, current.value);

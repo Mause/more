@@ -39,7 +39,7 @@ class SingleLinkedListNode<T> {
 	 * Appends a value to the current node.
 	 * @param	?value The value to append. After the operation, the next node will contain this value.
 	 */
-	public function append(?value:T):Void {
+	public function append(value:T):Void {
 		if (!isAlive) return;
 		
 		var subject = new SingleLinkedListNode(list, value);
@@ -59,7 +59,7 @@ class SingleLinkedListNode<T> {
 	 * @param	?previous The node previous to this one. Supplying this can greatly speed up things.
 	 * @usage	This is a slow method when not properly used. Try to supply the previous node wherever you can.
 	 */
-	public function prepend(?value:T, ?previous:SingleLinkedListNode<T>):Void {
+	public function prepend(value:T, ?previous:SingleLinkedListNode<T>):Void {
 		if (!isAlive) return;
 		
 		previous = getPrevious(previous);

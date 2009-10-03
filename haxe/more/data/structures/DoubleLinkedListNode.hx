@@ -40,7 +40,7 @@ class DoubleLinkedListNode<T> {
 	 * Appends a value to the current node.
 	 * @param	?value The value to append. After the operation, the next node will contain this value.
 	 */
-	public function append(?value:T):Void {
+	public function append(value:T):Void {
 		if (!isAlive) throw "This Node is not used anymore";
 		
 		var subject = new DoubleLinkedListNode(list, value);
@@ -62,7 +62,7 @@ class DoubleLinkedListNode<T> {
 	 * @param	?previous The node previous to this one. Supplying this can greatly speed up things.
 	 * @usage	This is a slow method when not properly used. Try to supply the previous node wherever you can.
 	 */
-	public function prepend(?value:T):Void {
+	public function prepend(value:T):Void {
 		if (!isAlive) throw "This Node is not used anymore";
 		previous.append(value);		
 	}

@@ -23,6 +23,7 @@ class Exception {
 	public var message(default, null):String;
 	public var source(default, null):String;
 	public var stackTrace(default, null):ReadOnlyArray<StackItem>;
+	var rawStackTrace:Array<StackItem>;
 	
 	/**
 	 * Constructs a new Exception. Also generates the stackTrace.
@@ -32,9 +33,17 @@ class Exception {
 	public function new(?message:String, ?innerException:Exception) {
 		this.message = message == null ? "" : message;
 		this.innerException = innerException;
-		var callStack = Stack.callStack();
-		stackTrace = new ReadOnlyArray(callStack); // To be determined, possible use of exceptionStack;
-		callStack.shift();
+		regenerateStackTrace();
+	}
+	
+	/**
+	 * Inheriting classes must call this after invoking super.
+	 */
+	function regenerateStackTrace() {
+		rawStackTrace = Stack.callStack();
+		stackTrace = new ReadOnlyArray(rawStackTrace); // To be determined, possible use of exceptionStack;
+		rawStackTrace.shift();
+		rawStackTrace.shift();
 	}
 	
 	/**
@@ -47,6 +56,12 @@ class Exception {
 			inner = inner.innerException;
 		return inner;
 	}
+	
+	/**
+	 * Returns the string representation of the stackTrace.
+	 * @return the string representation of the stackTrace.
+	 */
+	public function toString():String return message + Stack.toString(rawStackTrace)
 	
 	/**
 	 * Returns an iterator to iterate through the stackTrace.

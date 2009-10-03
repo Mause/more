@@ -15,7 +15,6 @@
  * limitations under the License.
  **/
 package haxe.more.data.structures;
-import flash.Error;
 import haxe.more.data.structures.Queue;
 import haxe.more.data.structures.Stack;
 

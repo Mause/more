@@ -15,9 +15,11 @@
  * limitations under the License.
  **/
 package haxe.more.exceptions;
+import haxe.more.Helpers;
 
 class ArgumentNullException extends ArgumentException {
 	public function new(?paramName:String, ?innerException:Exception) {
 		super(paramName, "Argument cannot be null.", innerException);
-	}	
+		regenerateStackTrace();
+	}
 }

@@ -16,6 +16,7 @@
  **/
 package haxe.more.data.sources;
 import haxe.more.Helpers;
+import haxe.more.exceptions.ArgumentNullException;
 using haxe.more.data.sources.Integer;
 using haxe.more.data.Manipulation;
 

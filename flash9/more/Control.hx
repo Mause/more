@@ -19,6 +19,7 @@ import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
+import haxe.more.exceptions.ArgumentNullException;
 
 class Control {
 	var keys:Array<Bool>;
@@ -29,6 +30,7 @@ class Control {
 	public var mouseClicked(default, null):Bool;
 	
 	public function new(object:EventDispatcher):Void {
+		if (object == null) throw new ArgumentNullException("object");
 		object.addEventListener(MouseEvent.MOUSE_DOWN, mouseIsDown);
 		object.addEventListener(MouseEvent.MOUSE_UP, mouseIsUp);
 		object.addEventListener(MouseEvent.CLICK, mouseIsClicked);

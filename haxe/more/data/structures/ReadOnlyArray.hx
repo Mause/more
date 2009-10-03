@@ -15,6 +15,7 @@
  * limitations under the License.
  **/
 package haxe.more.data.structures;
+import haxe.more.exceptions.ArgumentNullException;
 
 class ReadOnlyArray<T> {
 	var _array:Array<T>;
@@ -23,8 +24,10 @@ class ReadOnlyArray<T> {
 	 * @param	array The array to wrap.
 	 * @usage	Changes in [array] are reflected in this array.
 	 */
-	public function new(array:Array<T>)
-		_array = array
+	public function new(array:Array<T>) {
+		if (array == null) throw new ArgumentNullException("array");
+		_array = array;
+	}
 	
 	/**
 	 * The length of the Array

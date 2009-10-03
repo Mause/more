@@ -19,21 +19,21 @@ import js.Dom;
 import js.Lib;
 
 class Graphics {
-	public var base:HtmlDom;
-	public function new():Void {
-		setUp();
-	}
+	var _base:HtmlDom;
+	
+	public function new() setUp()
+	
 	private function setUp():Void {
-		base = Lib.document.createElement("div");
-		base.className = "graphicsCore";
-		base.style.position = "fixed";
-		base.style.padding = "0";
-		base.style.margin = "0";
-		base.style.left = "0";
-		base.style.top = "0";
-		base.style.width = "100%";
-		base.style.height = "100%";
-		Lib.document.body.appendChild(base);		
+		_base = Lib.document.createElement("div");
+		_base.className = "graphicsCore";
+		_base.style.position = "fixed";
+		_base.style.padding = "0";
+		_base.style.margin = "0";
+		_base.style.left = "0";
+		_base.style.top = "0";
+		_base.style.width = "100%";
+		_base.style.height = "100%";
+		Lib.document.body.appendChild(_base);		
 	}
 	public function drawRect(x:Int, y:Int, width:Int, height:Int, ?backgroundColor:String, ?borderColor:String, ?borderSize:Int):HtmlDom {
 		var block:HtmlDom = Lib.document.createElement("div");
@@ -47,7 +47,7 @@ class Graphics {
 		block.style.top = Std.string(y) + "px";
 		block.style.width = Std.string(width) + "px";
 		block.style.height = Std.string(height) + "px";
-		base.appendChild(block);
+		_base.appendChild(block);
 		return block;
 	}
 	public function drawCircle(x:Int, y:Int, radius:Int, ?color:String):HtmlDom {
@@ -63,14 +63,14 @@ class Graphics {
 		circle.style.width = Std.string(radius) + "px";
 		circle.style.height = Std.string(radius) + "px";
 		if(color != null) circle.style.color = color;
-		base.appendChild(circle);
+		_base.appendChild(circle);
 		return circle;
 	}
 	public function clear():Void {
-		Lib.document.body.removeChild(base);
+		Lib.document.body.removeChild(_base);
 		setUp();
 	}
 	public function dispose():Void {
-		Lib.document.body.removeChild(base);
+		Lib.document.body.removeChild(_base);
 	}
 }
