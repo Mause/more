@@ -1,4 +1,4 @@
-﻿/** Iterators.hx
+﻿/** String.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-package haxe.more;
+package haxe.more.data.sources;
 
-class Iterators {
+class String {
 	public static function iterator(string:String):Iterator<String> {
 		return new StringIterator(string);
 	}
