@@ -26,16 +26,6 @@ class BinaryTreeNode<T> {
 	
 	function new(value:T) this.value = value
 	
-	public function toString():String {
-		return Std.string(value);
-	}
-	
-	public function iterator():Iterator<T> 	return inOrderIterator()
-	public function preOrderIterator():Iterator<T> return new PreOrderIterator(this)
-	public function postOrderIterator():Iterator<T> return new PostOrderIterator(this)
-	public function inOrderIterator():Iterator<T> return new InOrderIterator(this)
-	public function depthFirstIterator():Iterator<T> return null	
-	public function breathFirstIterator():Iterator<T> return null
 	public var leftMost(gLeftMost, null):T;
 	function gLeftMost():T {
 		var current = this;
@@ -43,6 +33,7 @@ class BinaryTreeNode<T> {
 			current = current.left;
 		return current.value;
 	}
+	
 	public var rightMost(gRightMost, null):T;
 	function gRightMost():T {
 		var current = this;
@@ -50,81 +41,83 @@ class BinaryTreeNode<T> {
 			current = current.right;
 		return current.value;
 	}
+	
+	public function inOrderIterator():Iterator<T> return new InOrderIterator(this)
+	public function iterator():Iterator<T> 	return inOrderIterator()
+	public function preOrderIterator():Iterator<T> return new PreOrderIterator(this)
+	public function postOrderIterator():Iterator<T> return new PostOrderIterator(this)
+	public function levelOrderIterator():Iterator<T> return new LevelOrderIterator(this)
+	public function toString():String return Std.string(value)
 }
-class PreOrderIterator<T> {
+class TreeIterator<T> {	
+	var _tree:BinaryTree<T>;
+	var _current:BinaryTreeNode<T>;
+	public function new(tree:BinaryTree<T>) {
+		_tree = tree;
+	}
+	
+	public function hasNext() return _current != null
+}
+class PreOrderIterator<T> extends TreeIterator<T>  {
+	var _stack:Stack<BinaryTreeNode<T>>;
+	public function new(root:BinaryTreeNode<T>) {
+		super(root.root);
+		_stack = new Stack<BinaryTreeNode<T>>();
+		_stack.push(root);
+		_current = root;
+	}
+	
+	public override function hasNext() return super.hasNext() && _stack.length != 0
+	
+	public function next():T {
+		if (!hasNext()) return null;
+		
+		_current = _stack.pop();
+		
+		if (_current.left != null)
+			_stack.push(_current.left);
+		if (_current.right != null)
+			_stack.push(_current.right);
+		return _current.value;
+	}
+}
+class InOrderIterator<T> extends TreeIterator<T>  {
+	public function new(root:BinaryTreeNode<T>) {
+		super(root.root);
+	}
+	
+	public function next():T {
+		return null;
+	}
+}
+class PostOrderIterator<T> extends TreeIterator<T>  {
+	var _stack:Stack<BinaryTreeNode<T>>;
+	public function new(root:BinaryTreeNode<T>) {
+		super(root.root);
+	}
+	
+	public function next():T {
+		return null;
+	}
+}
+class LevelOrderIterator<T> {
 	var _queue:Queue<BinaryTreeNode<T>>;
 	public function new(root:BinaryTreeNode<T>) {
-		_queue = new Queue();
+		_queue = new Queue<BinaryTreeNode<T>>();
 		_queue.push(root);
 	}
 	
 	public function hasNext() return _queue.length != 0
 	
 	public function next():T {
-		if(hasNext()) {
-			var current = _queue.pop();
-			if (current.left != null)
-				_queue.push(current.left);
-			if (current.right != null)
-				_queue.push(current.right);
-			return current.value;
+		if (hasNext()) {
+			var node = _queue.pop();
+			if (node.left != null)
+				_queue.push(node.left);
+			if (node.right != null)
+				_queue.push(node.right);
+			return node.value;
 		}
-		return null;
-	}
-}
-class InOrderIterator<T> {
-	var _stack:Stack<BinaryTreeNode<T>>;
-	var _current:BinaryTreeNode<T>;
-	var _state:Int;
-	public function new(root:BinaryTreeNode<T>) {
-		_stack = new Stack();
-		_stack.push(root);
-		_state = 0;
-	}
-	
-	public function hasNext() return _stack.length != 0
-	
-	public function next():T {
-		while (hasNext()) {
-			switch(_state) {
-				case 0:
-				_current = _stack.peek();
-				if (_current.left != null) {
-					_stack.push(_current.left);					
-					break;
-				}
-				_state = 1;
-				return _stack.pop().value;
-				case 1:
-				if(_current.right != null) {
-					_stack.push(_current.right);
-				}
-				_state = 0;
-			}
-		}
-		return null;
-	}
-}
-class PostOrderIterator<T> {
-	var _stack:Stack<BinaryTreeNode<T>>;
-	public function new(root:BinaryTreeNode<T>) {
-		_stack = new Stack();
-		_stack.push(root);
-	}
-	
-	public function hasNext() return _stack.length != 0
-	
-	public function next():T {
-		while (hasNext()) {
-			var current = _stack.peek();
-			if (current.left != null) {
-				_stack.push(current.left);
-			} else if(current.right != null) {
-				_stack.push(current.right);
-			} else {
-				return _stack.pop().value;
-			}
-		}
-		return null;
+		throw "End reached";
 	}
 }

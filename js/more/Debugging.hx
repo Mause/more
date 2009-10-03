@@ -20,8 +20,7 @@ import haxe.PosInfos;
 import js.Dom;
 import js.Lib;
 
-class Debugging {
-	
+class Debugging {	
 	static var traceView:HtmlDom;
 	static var traceStrings:Array<String>;
 	public static function trace(v:Dynamic, ?infos:PosInfos):Void {

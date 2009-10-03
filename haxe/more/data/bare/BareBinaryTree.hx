@@ -21,5 +21,5 @@ class BareBinaryTree<T> {
 	public var right:BareBinaryTree<T>;
 	public var value:T;
 	public var root:BareBinaryTree<T>;
-	public function new(value:T) this.value = value	
+	public function new(value:T) this.value = value
 }

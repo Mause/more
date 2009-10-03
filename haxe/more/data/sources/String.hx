@@ -1,4 +1,4 @@
-﻿/** Iterators.hx
+﻿/** String.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -14,13 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-package haxe.more;
+package haxe.more.data.sources;
+import haxe.more.exceptions.ArgumentNullException;
 
-class Iterators {
+class String {
 	public static function iterator(string:String):Iterator<String> {
+		if (string == null) throw new ArgumentNullException("string");
 		return new StringIterator(string);
 	}
 	public static function iterable(string:String):Iterable<String> {
+		if (string == null) throw new ArgumentNullException("string");
 		return new StringIterable(string);
 	}
 }

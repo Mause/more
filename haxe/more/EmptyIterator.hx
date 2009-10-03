@@ -1,4 +1,4 @@
-﻿/** SingleLinkedListIterator.hx
+﻿/** EmptyIterator.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -14,25 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-package haxe.more.data.structures;
+package haxe.more;
 
-class SingleLinkedListIterator<T> {
-	var current:SingleLinkedListNode<T>;
-	var tail:SingleLinkedListNode<T>;
-	public function new(first:SingleLinkedListNode<T>, last:SingleLinkedListNode<T>):Void {
-		current = first;
-		tail = last;
-	}
-	public function hasNext():Bool {
-		return tail != null && current != tail.next;
-    }
-
-    public function next():T {
-		if (current == null) {
-			return null;
-		}
-		var result:T = current.value;
-		current = current.next;
-		return result;
-    }
+class EmptyIterator<T> {
+	public function new();
+	public function hasNext() return false
+	public function next():T return null
 }

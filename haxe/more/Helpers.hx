@@ -24,6 +24,8 @@ class Helpers {
 			maxInt = max;
 			max = (max << 1) | 1;
 		}
+		
+		newLine = "\n";
 	})();
 	
 	/**
@@ -42,4 +44,13 @@ class Helpers {
 		#end
 	}
 	public static var maxInt(default, null):Int;
+	
+	public static var newLine(default, null):String;
+	
+	public static inline function even(value:Int):Bool {
+		return value & 1 == 1;
+	}
+	public static inline function uneven(value:Int):Bool {
+		return !even(value);
+	}
 }

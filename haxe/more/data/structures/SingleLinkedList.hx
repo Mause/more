@@ -15,63 +15,88 @@
  * limitations under the License.
  **/
 package haxe.more.data.structures;
-import haxe.rtti.CType;
+import haxe.more.EmptyIterator;
 
 class SingleLinkedList<T> {
-	var sentinel: { private var next:SingleLinkedListNode<T>; };
+	var sentinel:SingleLinkedListNode<T>;
 	
+	/**
+	 * The first node of the list.
+	 */
 	public var head(gHead, null):SingleLinkedListNode<T>;
 	function gHead() return sentinel.next
 	
 	public var length(default, null):Int;
-	function sLength(value:Int) return length = value
 	
+	/**
+	 * The last node of the list.
+	 */
 	public var tail(default, null):SingleLinkedListNode<T>;
-	function sTail(value:SingleLinkedListNode<T>) return tail = value
 	
+	/**
+	 * Returns true if this list does not contain any nodes.
+	 */
+	public inline var empty(gEmpty, null):Bool;
+	inline function gEmpty():Bool return length == 0
+	
+	/**
+	 * Constructs a new list.
+	 */
 	public function new<T>() {
-		sentinel = cast create(null);
+		sentinel = SingleLinkedListNodeOperator.create(this, null);
 	}
 	
+	/**
+	 * Adds value to the tail of the list.
+	 * @param	value The value to add to the tail.
+	 */
 	public function push(value:T):Void {
-		if (prepare(value)) {
+		if (empty)
+			sentinel.append(value);
+		else
 			tail.append(value);
-		}
 	}
+	
+	/**
+	 * Removes the node at the tail of the list.
+	 * @return The value of the removed node.
+	 */
 	public function pop():T {
+		if (empty) throw "List is empty";	
 		return tail.remove();
 	}
+	
+	/**
+	 * Removes the node at the head of the list.
+	 * @return The value of the removed node.
+	 */
 	public function shift():T {
-		return head.remove();
+		if (empty) throw "List is empty";	
+		return sentinel.removeNext();
 	}
+	
+	/**
+	 * Adds value to the head of the list.
+	 * @param	value The value to add to the head.
+	 */
 	public function unshift(value:T):Void {
-		if (prepare(value)) {
-			var first:SingleLinkedListNode<T> = cast sentinel;
-			first.append(value);
-		}
+		sentinel.append(value);
 	}
 	
+	/**
+	 * Returns an iterator to iterate trough this list.
+	 * @return an iterator to iterate trough this list.
+	 */
 	public function iterator():Iterator<T> {
-		return new SingleLinkedListIterator(head, tail);
-	}
-	
-	function create(value:T):SingleLinkedListNode<T> {
-		var result:SingleLinkedListNode<T> = cast Type.createInstance(SingleLinkedListNode, [this, value]);
-		return result;
-	}
-	
-	function prepare(value:T):Bool {
-		if (tail != null) return true;
-		var result = create(value);
-		tail = sentinel.next = result;
-		length++;
-		return false;
+		return empty ? new EmptyIterator<T>() : head.iterator();
 	}
 }
-/*
-{ 
-	var list(default, null):SingleLinkedList<T>;
-	var next(default, null):SingleLinkedListNode<T>;
-	public var value:T;
+
+/**
+ * Allows acces to the internals of SingleLinkedListNode. Bye nasty hacks.
+ */
+class SingleLinkedListNodeOperator<T> extends SingleLinkedListNode<T>  {
+	public static function create<T>(list:SingleLinkedList<T>, value:T):SingleLinkedListNode<T> {
+		return new SingleLinkedListNode(list, value);
+	}
 }
-*/

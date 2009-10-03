@@ -15,7 +15,7 @@
  * limitations under the License.
  **/
 package haxe.more.data;
-
+import haxe.more.exceptions.ArgumentNullException;
 using haxe.more.data.Manipulation;
 
 /**
@@ -24,7 +24,8 @@ using haxe.more.data.Manipulation;
  */
 
 class Manipulation {	
-	public static function avarage(subject:Iterable<Int>):Float {
+	public static function avarage(subject:Iterable<Float>):Float {
+		if (subject == null) throw new ArgumentNullException("subject");
 		var amount = 0;
 		var total = 0.0;
 		var iter = subject.iterator();
@@ -37,16 +38,21 @@ class Manipulation {
 		return total / amount;
 	}
 	
-	public static function concat<T>(subject:Iterable<T>, postfix1:Iterable<T>, ?postfix2:Iterable<T>, ?postfix3:Iterable<T>, ?postfix4:Iterable<T>):Iterable<T> // Hey, a programming style experiment! Came out a little flawed.
+	public static function concat<T>(subject:Iterable<T>, postfix1:Iterable<T>, ?postfix2:Iterable<T>, ?postfix3:Iterable<T>, ?postfix4:Iterable<T>):Iterable<T> {// Hey, a programming style experiment! Came out a little flawed.
+		if (subject == null) throw new ArgumentNullException("subject");
+		if (postfix1 == null) throw new ArgumentNullException("postfix1");
 		return postfix2 == null
 			? new ConcatIterable([subject, postfix1])
 			: postfix3 == null
 				? new ConcatIterable([subject, postfix1, postfix2])
 				: postfix4 == null
 					? new ConcatIterable([subject, postfix1, postfix2, postfix3])
-					: new ConcatIterable([subject, postfix1, postfix2, postfix3, postfix4])
+					: new ConcatIterable([subject, postfix1, postfix2, postfix3, postfix4]);
+	}
 	
 	public static function fold<T, C>(subject:Iterable<T>, ?seed:C, aggregator: T -> C -> C):C {
+		if (subject == null) throw new ArgumentNullException("subject");
+		if (aggregator == null) throw new ArgumentNullException("aggregator");
 		for (item in subject) {
 			seed = aggregator(item, seed);
 		}
@@ -54,6 +60,9 @@ class Manipulation {
 	}
 	
 	public static function selectMany<T, U, V>(subject:Iterable<T>, collection:Iterable<U>, selector: T -> U -> V):Iterable<V> {
+		if (subject == null) throw new ArgumentNullException("subject");
+		if (collection == null) throw new ArgumentNullException("collection");
+		if (selector == null) throw new ArgumentNullException("selector");
 		return new ConcatIterable(
 			subject.select(function(first)
 				return collection.select(function(second)
@@ -63,6 +72,7 @@ class Manipulation {
 	}
 	
 	public static function toList<T>(subject:Iterable<T>):List<T> {
+		if (subject == null) throw new ArgumentNullException("subject");
 		var result = new List<T>();
 		for (item in subject) {
 			result.add(item);
@@ -71,6 +81,7 @@ class Manipulation {
 	}
 	
 	public static function toArray<T>(subject:Iterable<T>):Array<T> {
+		if (subject == null) throw new ArgumentNullException("subject");
 		var result = new Array<T>();
 		for (item in subject) {
 			result.push(item);
@@ -79,22 +90,42 @@ class Manipulation {
 	}
 	
 	// The non-do-ers, short and simple bodies
-	public static function where<T>(subject:Iterable<T>, predicate: T -> Bool):Iterable<T>
-		return new WhereIterable(subject, predicate)	
-	public static function after<T>(subject:Iterable<T>, predicate: T -> Bool):Iterable<T>
-		return new AfterIterable(subject, predicate)	
-	public static function until<T>(subject:Iterable<T>, predicate: T -> Bool):Iterable<T>
-		return new UntilIterable(subject, predicate)	
-	public static function select<T, V>(subject:Iterable<T>, selector: T -> V):Iterable<V>
-		return new SelectIterable(subject, selector)	
-	public static function first<T>(subject:Iterable<T>, ?predicate: T -> Bool):T
-		return predicate != null ? subject.where(predicate).iterator().next() : subject.iterator().next()
-	public static function join<T>(scattered:Iterable<Iterable<T>>):Iterable<T>
-		return new ConcatIterable(scattered)
-	public static function reverse<T>(subject:Iterable<T>):Iterable<T>
-		return new ReverseIterable(subject)
-	public static function iterable<T>(subject:Iterator<T>):Iterable<T>
-		return new IteratorIterable(subject)
+	public static function where<T>(subject:Iterable<T>, predicate: T -> Bool):Iterable<T> {
+		if (subject == null) throw new ArgumentNullException("subject");
+		if (predicate == null) throw new ArgumentNullException("predicate");
+		return new WhereIterable(subject, predicate);	
+	}
+	public static function after<T>(subject:Iterable<T>, predicate: T -> Bool):Iterable<T> {
+		if (subject == null) throw new ArgumentNullException("subject");
+		if (predicate == null) throw new ArgumentNullException("predicate");
+		return new AfterIterable(subject, predicate);
+	}
+	public static function until<T>(subject:Iterable<T>, predicate: T -> Bool):Iterable<T> {
+		if (subject == null) throw new ArgumentNullException("subject");
+		if (predicate == null) throw new ArgumentNullException("predicate");
+		return new UntilIterable(subject, predicate);
+	}
+	public static function select<T, V>(subject:Iterable<T>, selector: T -> V):Iterable<V> {
+		if (subject == null) throw new ArgumentNullException("subject");
+		if (selector == null) throw new ArgumentNullException("selector");
+		return new SelectIterable(subject, selector);
+	}
+	public static function first<T>(subject:Iterable<T>, ?predicate: T -> Bool):T {
+		if (subject == null) throw new ArgumentNullException("subject");
+		return predicate != null ? subject.where(predicate).iterator().next() : subject.iterator().next();
+	}
+	public static function join<T>(scattered:Iterable<Iterable<T>>):Iterable<T> {
+		if (scattered == null) throw new ArgumentNullException("scattered");
+		return new ConcatIterable(scattered);
+	}
+	public static function reverse<T>(subject:Iterable<T>):Iterable<T> {
+		if (subject == null) throw new ArgumentNullException("subject");
+		return new ReverseIterable(subject);
+	}
+	public static function iterable<T>(subject:Iterator<T>):Iterable<T> {
+		if (subject == null) throw new ArgumentNullException("subject");
+		return new IteratorIterable(subject);
+	}
 }
 
 class AfterIterable<T> {

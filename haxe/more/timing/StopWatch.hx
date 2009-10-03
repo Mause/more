@@ -21,7 +21,10 @@ class StopWatch {
 	public var latest(default, null):Float;
 	
 	public function new() _times = new SingleLinkedList<Float>()
-	public function time() return _times.push(latest = Helpers.microtime)	
+	public function time() return {
+		_times.push(latest = Helpers.microtime);
+		return latest;
+	}
 	public function iterator()
 		return _times.fold(
 			function(item:Float, seed: { previous:Float, array:Array<Float> }) {

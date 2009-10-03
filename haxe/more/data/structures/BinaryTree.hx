@@ -15,22 +15,24 @@
  * limitations under the License.
  **/
 package haxe.more.data.structures;
+import haxe.more.exceptions.ArgumentNullException;
 
 typedef Comperator<T> = T -> T -> Int;
 typedef Finder<T, K> = K -> T -> Int;
 
-class BinaryTree<T> {
+class BinaryTree<T> {	
 	public static function integerComparator(left:Int, right:Int):Int
 		return left - right
 	
 	public var comperator(default, default):Comperator<T>;		
 	public var node(default, null):BinaryTreeNode<T>;
 	function sNode(value) node = value
-	public var operator:NodeOperator<T>;
+	public var operator:BinaryTreeNodeOperator<T>;
 	
 	public function new(comperator:Comperator<T>) {
-		this.comperator = comperator;
-		this.operator = new NodeOperator(this);
+		if (comperator == null) throw new ArgumentNullException("comperator");
+		this.comperator = comperator;		
+		operator = new BinaryTreeNodeOperator(this);
 	}
 	
 	public function add(value:T):BinaryTree<T> {
@@ -39,6 +41,7 @@ class BinaryTree<T> {
 	}
 	
 	public function find<K>(value:K, finder:Finder<T, K>):T {
+		if (finder == null) throw new ArgumentNullException("finder");
 		var current = node;
 		while (current != null) {
 			var contrast = finder(value, current.value);
@@ -57,13 +60,12 @@ class BinaryTree<T> {
 	public function preOrderIterator():Iterator<T> return node.preOrderIterator()
 	public function postOrderIterator():Iterator<T> return node.postOrderIterator()
 	public function inOrderIterator():Iterator<T>  return node.inOrderIterator()
-	public function depthFirstIterator():Iterator<T> return node.depthFirstIterator()
-	public function breathFirstIterator():Iterator<T> return node.breathFirstIterator()
+	public function levelOrderIterator():Iterator<T> return node.levelOrderIterator()
 }
 // I want acces to the BinaryTreeNode's internals, but not expose this in the public BinaryTree. This internal class solves the problem nicely.
-class NodeOperator<T> extends BinaryTreeNode<T> {
+class BinaryTreeNodeOperator<T> extends BinaryTreeNode<T> {
 	var _tree:BinaryTree<T>;
-	public function new(tree:BinaryTree < T > ) {
+	public function new(tree:BinaryTree<T>) {
 		super(null);
 		_tree = tree;
 	}
@@ -78,7 +80,7 @@ class NodeOperator<T> extends BinaryTreeNode<T> {
 		}
 		while (true) {
 			var contrast = comperator(value, current.value);
-			if (contrast <= 0) {
+			if (contrast < 0) {
 				if (current.left == null) {
 					current.left = created;
 					return;
@@ -86,7 +88,7 @@ class NodeOperator<T> extends BinaryTreeNode<T> {
 				else {
 					current = current.left;
 				}
-			} else {
+			} else if (contrast > 0) {
 				if (current.right == null) {
 					current.right = created;
 					return;
@@ -94,7 +96,7 @@ class NodeOperator<T> extends BinaryTreeNode<T> {
 				else {
 					current = current.right;
 				}
-			}
+			} else return;
 		}
 	}
 }

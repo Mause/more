@@ -1,4 +1,4 @@
-﻿/** Stack.hx
+﻿/** ArgumentOutOfRangeException.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -14,28 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-package haxe.more.data.structures;
+package haxe.more.exceptions;
 
-class Stack<T> {
-	var list:SingleLinkedList<T>;
-	
-	public var length(gLength, null):Int;
-	function gLength() return list.length
-	
-	public function new():Void {
-		length = 0;
-		list = new SingleLinkedList();
-	}
-	
-	public function iterator():Iterator<T>
-		return list.iterator()
-	public function peek():T
-		return list.length == 0 ? null : list.tail.value
-	public function pop():T {
-		var result = list.shift();
-		return result;
-	}
-	public function push(value:T):Void{
-		list.unshift(value);
-	}
+class ArgumentOutOfRangeException extends ArgumentException {
+	public var actualValue(default, null):Dynamic;
+	public function new(?paramName:String, ?actualValue:Dynamic, ?innerException:Exception) {
+		super(paramName, "Argument is out of range.", innerException);
+		regenerateStackTrace();
+		this.actualValue = actualValue;
+	}	
 }

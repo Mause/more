@@ -17,6 +17,7 @@
 package haxe.more.threading;
 import haxe.more.Helpers;
 import haxe.more.threading.Threading;
+import haxe.more.exceptions.ArgumentNullException;
 
 class BalancedThreadProcessor {
 	// Is negative it the processor used more time than allowed in the previous run. It is an extra stabelizing mechanism.
@@ -25,6 +26,8 @@ class BalancedThreadProcessor {
 	var _sentinel:LinkedThreadListNode;
 	var _last:LinkedThreadListNode;
 	var _disposeAtExhaustion:Bool;
+	
+	public var threads(default, null):Int;
 
 	public function new(disposeAtExhaustion:Bool = false) {
 		_last = _sentinel = new LinkedThreadListNode(null);
@@ -33,6 +36,8 @@ class BalancedThreadProcessor {
 	}
 	
 	public function add(thread:ThreadRunnerDelegate, priority:Int = 128):AdjustThreadShareDelegate {
+		if (thread == null) throw new ArgumentNullException("thread");
+		threads++;
 		_last = new LinkedThreadListNode(thread, _last);
 		_last.share = priority;
 		updateShares();
@@ -41,6 +46,7 @@ class BalancedThreadProcessor {
 	}
 	
 	public function adjust(thread:ThreadRunnerDelegate, priority:Int):Bool {
+		if (thread == null) throw new ArgumentNullException("thread");
 		var current = _sentinel;
 		while ((current = current.next) != null) {
 			if (current.thread == thread) {
@@ -58,15 +64,17 @@ class BalancedThreadProcessor {
 	 * @return Returns true if the thread was found and removed.
 	 */
 	public function remove(thread:ThreadRunnerDelegate):Bool {
+		if (thread == null) throw new ArgumentNullException("thread");
 		var current = _sentinel;
 		var previous = _sentinel;
 		while ((current = current.next) != null) {
 			if (current.thread == thread) {
+				threads--;
 				previous.next = current.next;
 				if (_sentinel.next == null) {
 					_last = _sentinel;
 				}
-			updateShares();
+				updateShares();
 				return true;
 			}
 			previous = current;

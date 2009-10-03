@@ -1,4 +1,4 @@
-﻿/** QueueTools.hx
+﻿/** ArgumentNullException.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -14,18 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-package haxe.more;
-import haxe.more.datastructures.Queue;
+package haxe.more.exceptions;
+import haxe.more.Helpers;
 
-class QueueTools {
-	public static function indexOf<T>(Queue:Queue<T>, value:T):Int {
-		var index:Int = 0;
-		for (v in Queue) {
-			if (v == value) {
-				return index;
-			}
-			index++;
-		}
-		return -1;
+class ArgumentNullException extends ArgumentException {
+	public function new(?paramName:String, ?innerException:Exception) {
+		super(paramName, "Argument cannot be null.", innerException);
+		regenerateStackTrace();
 	}
 }

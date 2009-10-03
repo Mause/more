@@ -15,22 +15,108 @@
  * limitations under the License.
  **/
 package haxe.more.data.structures;
+import haxe.more.EmptyIterator;
 
 class DoubleLinkedList<T> {
-	public var next(default, null):DoubleLinkedList<T>;
-	public var previous(default, null):DoubleLinkedList<T>;
-	public var value:T;
-	private var headTail:LinkedListHeadTailHolder<T, DoubleLinkedList<T>>;
-	public function new(value:T):Void  {
-		this.value = value;
+	var sentinel:DoubleLinkedListNode<T>;
+	var endtinel:DoubleLinkedListNode<T>;
+	
+	/**
+	 * The first node of the list.
+	 */
+	public var head(gHead, null):DoubleLinkedListNode<T>;
+	function gHead() return return sentinel.next == endtinel ? null : sentinel.next
+	
+	public var length(default, null):Int;
+	
+	/**
+	 * The last node of the list.
+	 */
+	public var tail(gTail, null):DoubleLinkedListNode<T>;
+	function gTail() return endtinel.previous == sentinel ? null : endtinel.previous
+	
+	/**
+	 * Returns true if this list does not contain any nodes.
+	 */
+	public inline var isEmpty(gIsEmpty, null):Bool;
+	inline function gIsEmpty():Bool return length == 0
+	
+	/**
+	 * Constructs a new list.
+	 */
+	public function new<T>() {
+		var sendtinel = DoubleLinkedListNodeOperator.createSendtinel(this);
+		sentinel = sendtinel.sentinel;
+		endtinel = sendtinel.endtinel;
 	}
-	public function append(value:SingleLinkedList<T>):Void {
-		
+	
+	/**
+	 * Adds value to the tail of the list.
+	 * @param	value The value to add to the tail.
+	 */
+	public function push(value:T):Void {
+		endtinel.prepend(value);
 	}
-	public function iterator():Iterator<T>{
-		return headTail.iterator();
+	
+	/**
+	 * Removes the node at the tail of the list.
+	 * @return The value of the removed node.
+	 */
+	public function pop():T {
+		if (isEmpty) throw "List is empty";	
+		return tail.remove();
 	}
-	public function prepend(value:SingleLinkedList<T>):Void {
-		
+	
+	/**
+	 * Removes the node at the head of the list.
+	 * @return The value of the removed node.
+	 */
+	public function shift():T {
+		if (isEmpty) throw "List is empty";	
+		return head.remove();
+	}
+	
+	/**
+	 * Adds value to the head of the list.
+	 * @param	value The value to add to the head.
+	 */
+	public function unshift(value:T):Void {
+		sentinel.append(value);
+	}
+	
+	/**
+	 * Returns an iterator to iterate trough this list.
+	 * @return an iterator to iterate trough this list.
+	 */
+	public function iterator():Iterator<T> {
+		return isEmpty ? new EmptyIterator() : head.iterator();
+	}
+	
+	/**
+	 * Returns an iterator to iterate trough this list from tail to head.
+	 * @return an iterator to iterate trough this list from tail to head.
+	 */
+	public function reversedIterator():Iterator<T> {
+		return isEmpty ? new EmptyIterator() : tail.reversedIterator();
+	}
+}
+
+/**
+ * Allows acces to the internals of DoubleLinkedListNode. Bye nasty hacks.
+ */
+class DoubleLinkedListNodeOperator<T> extends DoubleLinkedListNode<T>  {
+	public static function create<T>(list:DoubleLinkedList<T>, value:T):DoubleLinkedListNode<T> {
+		return new DoubleLinkedListNode(list, value);
+	}
+	public static function createSendtinel<T>(list:DoubleLinkedList<T>):
+			{ sentinel:DoubleLinkedListNode<T>, endtinel:DoubleLinkedListNode<T> } {
+		var sentinel = new DoubleLinkedListNode(list, null);
+		var endtinel = new DoubleLinkedListNode(list, null);
+		sentinel.next = endtinel;
+		endtinel.previous = sentinel;
+		return {
+			sentinel: sentinel,
+			endtinel: endtinel
+		};
 	}
 }

@@ -15,25 +15,27 @@
  * limitations under the License.
  **/
 package haxe.more.data.structures;
-import haxe.rtti.Generic;
 
 class Queue<T> {
-	var list:SingleLinkedList<T>;
+	var list:DoubleLinkedList<T>;
 	
 	public var length(gLength, null):Int;
 	function gLength() return list.length
 	
 	public function new():Void {
 		length = 0;
-		list = new SingleLinkedList();
+		list = new DoubleLinkedList();
 	}
 	
 	public function iterator():Iterator<T>
 		return list.iterator()
 	public function peek():T
-		return list.length != 0 ? null : list.head.value	
-	public function pop():T return list.shift()
-	public function push(value:T):Void {
+		return list.length == 0 ? null : list.tail.value	
+	public function pop():T {
+		var result = list.shift();
+		return result;
+	}
+	public function push(value:T):Void{
 		list.push(value);
 	}
 }

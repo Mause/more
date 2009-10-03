@@ -15,6 +15,8 @@
  * limitations under the License.
  **/
 package haxe.more;
+import haxe.more.exceptions.ArgumentNullException;
+using Std;
 #if neko
 import haxe.Int32;
 using haxe.Int32;
@@ -106,30 +108,56 @@ class Color {
 	
 	/** Using methods **/
 	/**
-	 * Adds a color
-	 * @param	a The color to be modified
-	 * @param	b The source color
+	 * Modifies the color of [a] by adding [b].
+	 * @param	a The color to modify.
+	 * @param	b The modifier.
+	 * @return The modified [a].
 	 */
 	public inline static function add(a:Color, b:Color):Color {
 		a._rgb = min(255, a.r + b.r) << 16  | min(255, a.g + b.g) << 8 | min(255, a.b + b.b);
 		return a;
 	}
 	
-	public static function clone(a:Color):Color {
-		return new Color(a.r, a.g, a.b, a.a);
-	}
+	/**
+	 * Clones [a].
+	 * @param	a The color to clone.
+	 * @return A clone of [a].
+	 */
+	public static inline function clone(a:Color):Color
+		return new Color(a.r, a.g, a.b, a.a)
 	
+	/**
+	 * Modifies the color of [a] by avaraging with [b].
+	 * @param	a The color to modify.
+	 * @param	b The modifier.
+	 * @param	padding The scale to apply what.
+	 * @return The modified [a].
+	 */
 	public static function avarage(a:Color, b:Color, padding:Float = 0.5):Color {
+		if (a == null) throw new ArgumentNullException("a");
+		if (b == null) throw new ArgumentNullException("b");
+		
 		if(padding == 0.5) {
 			a._rgb = ((a._rgb & 0xFF00FF) + (b._rgb & 0xFF00FF)) >> 1 & 0xFF00FF
 				| m((m(a._rgb >> 8) + m(b._rgb >> 8)) >> 1) << 8;
 			a._a = m((a._a + b._a) >> 1);
 		} else {
-			
+			var inverse = 1 - padding;
+			a._rgb =
+				m((m(a._rgb >> 16) * inverse + m(b._rgb >> 16) * padding).int()) << 16
+				| m((m(a._rgb >> 8) * inverse + m(b._rgb >> 8) * padding).int()) << 8
+				| m((m(a._rgb) * inverse + m(b._rgb) * padding).int());
+			a._a = m((a._a + b._a) >> 1);
 		}
 		return a;
 	}
 	
+	/**
+	 * Modifies the color of [a] by subtracting [b].
+	 * @param	a The color to modify.
+	 * @param	b The modifier.
+	 * @return The modified [a].
+	 */
 	public inline static function subtract(a:Color, b:Color):Color {
 		a._rgb = max(0, a.r - b.r) << 16  | max(0, a.g - b.g) << 8 | max(0, a.b - b.b);
 		return a;
@@ -137,15 +165,7 @@ class Color {
 	
 	
 	/** Helpers **/
-	static inline function max(a, b) {
-		return a > b ? a : b;
-	}
-	
-	static inline function min(a, b) {
-		return a < b ? a : b;
-	}
-	
-	static inline function m(color) {
-		return color & 0xFF;
-	}
+	static inline function max(a, b) return a > b ? a : b	
+	static inline function min(a, b) return a < b ? a : b
+	static inline function m(color) return color & 0xFF // masks.
 }
