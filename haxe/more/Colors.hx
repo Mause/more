@@ -20,7 +20,7 @@ import flash.filters.ColorMatrixFilter;
 using haxe.more.Color;
 using Std;
 
-// Surely more have to be added.
+/** Additive colors here * http://en.wikipedia.org/wiki/Additive_color **/
 class Colors {
 	static var init = (function() {
 		red = new Color(255, 0, 0);
@@ -39,17 +39,17 @@ class Colors {
 		orange = yellow.clone().avarage(red);
 	})();
 	
-	/** Primary **/
+	/** Primary * http://en.wikipedia.org/wiki/Primary_color **/
 	public static var red(default, null):Color;
 	public static var green(default, null):Color;
 	public static var blue(default, null):Color;
 	
-	/** Secondary **/
+	/** Secondary * http://en.wikipedia.org/wiki/Secondary_color **/
 	public static var yellow(default, null):Color;
 	public static var cyan(default, null):Color;
 	public static var magenta(default, null):Color;
 	
-	/** Tertiary **/
+	/** Tertiary * http://en.wikipedia.org/wiki/Tertiary_color **/
 	public static var azure(default, null):Color;
 	public static var violet(default, null):Color;
 	public static var rose(default, null):Color;
