@@ -27,14 +27,16 @@ class Colors {
 		green = new Color(0, 255, 0);
 		blue = new Color(0, 0, 255);
 		
-		yellow = red.clone().add(green);
-		cyan = green.clone().add(blue);
 		magenta = blue.clone().add(red);
-		#if compiler fixed
-		yellow = avarage(red, green);
-		cyan = avarage(green, blue);
-		magenta = avarage(blue, red);
-		#end
+		cyan = green.clone().add(blue);
+		yellow = red.clone().add(green);
+		
+		rose = red.clone().avarage(magenta);
+		violet = magenta.clone().avarage(blue);
+		azure = blue.clone().avarage(cyan);
+		springGreen = cyan.clone().avarage(green);
+		chartreuse = green.clone().avarage(yellow);	
+		orange = yellow.clone().avarage(red);
 	})();
 	
 	/** Primary **/
@@ -46,6 +48,15 @@ class Colors {
 	public static var yellow(default, null):Color;
 	public static var cyan(default, null):Color;
 	public static var magenta(default, null):Color;
+	
+	/** Tertiary **/
+	public static var azure(default, null):Color;
+	public static var violet(default, null):Color;
+	public static var rose(default, null):Color;
+	public static var orange(default, null):Color;
+	public static var chartreuse(default, null):Color;
+	public static var springGreen(default, null):Color;
+	
 	
 	/** Creation methods **/
 	public static inline function fromRgbA(rgb:Int, a:Int = 0) {
