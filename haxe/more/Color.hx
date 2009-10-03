@@ -15,11 +15,12 @@
  * limitations under the License.
  **/
 package haxe.more;
+import haxe.more.exceptions.ArgumentNullException;
+using Std;
 #if neko
 import haxe.Int32;
 using haxe.Int32;
 #end
-using Std;
 
 class Color {		
 	var _rgb:Int; // The _rgb part, 24 bits are used
@@ -133,6 +134,9 @@ class Color {
 	 * @return The modified [a].
 	 */
 	public static function avarage(a:Color, b:Color, padding:Float = 0.5):Color {
+		if (a == null) throw new ArgumentNullException("a");
+		if (b == null) throw new ArgumentNullException("b");
+		
 		if(padding == 0.5) {
 			a._rgb = ((a._rgb & 0xFF00FF) + (b._rgb & 0xFF00FF)) >> 1 & 0xFF00FF
 				| m((m(a._rgb >> 8) + m(b._rgb >> 8)) >> 1) << 8;
