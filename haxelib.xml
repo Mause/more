@@ -1,0 +1,5 @@
+﻿<project name="more" url="hhttp://gitorious.org/more" license="Apache">
+    <user name="Dykam"/>
+    <description>The project aims at filling gaps in the haXe Std lib</description>
+    <version name="0.1">Initial release, everything is working correctly</version>
+</project>
