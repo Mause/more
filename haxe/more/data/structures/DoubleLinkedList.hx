@@ -89,7 +89,7 @@ class DoubleLinkedList<T> {
 	 * @return an iterator to iterate trough this list.
 	 */
 	public function iterator():Iterator<T> {
-		return head == null ? new EmptyIterator() : head.iterator();
+		return empty ? new EmptyIterator() : head.iterator();
 	}
 	
 	/**
@@ -97,7 +97,7 @@ class DoubleLinkedList<T> {
 	 * @return an iterator to iterate trough this list from tail to head.
 	 */
 	public function reversedIterator():Iterator<T> {
-		return tail.reversedIterator();
+		return empty ? new EmptyIterator() : tail.reversedIterator();
 	}
 }
 
