@@ -80,6 +80,6 @@ class ReadOnlyArray<T> {
 	 * @return an iterator of the Array values.
 	 */
 	public function iterator():Iterator<Null<T>>
-		return return _array.iterator()
+		return _array.iterator()
 	
 }

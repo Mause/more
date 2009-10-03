@@ -24,7 +24,7 @@ using haxe.more.data.Manipulation;
  */
 
 class Manipulation {	
-	public static function avarage(subject:Iterable<Float>):Float {
+	public static function avarage(subject:Iterable<Int>):Float {
 		if (subject == null) throw new ArgumentNullException("subject");
 		var amount = 0;
 		var total = 0.0;
