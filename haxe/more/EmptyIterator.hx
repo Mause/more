@@ -17,7 +17,26 @@
 package haxe.more;
 
 class EmptyIterator<T> {
+	/**
+	 * Creates a new nothing iterator.
+	 */
 	public function new();
-	public function hasNext() return false
+	
+	/**
+	 * Returns always false.
+	 * @return always false.
+	 */
+	public function hasNext():Bool return false
+	
+	/**
+	 * Returns always null.
+	 * @return always null.
+	 */
 	public function next():T return null
+	
+	/**
+	 * Returns the string representation of this.
+	 * @return the string representation of this.
+	 */
+	public function toString():String return "An empty iterator."
 }

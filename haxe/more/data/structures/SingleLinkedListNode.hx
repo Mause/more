@@ -49,7 +49,7 @@ class SingleLinkedListNode<T> {
 		subject.next = next;
 		next = subject;
 		
-		if (subject.next == null)
+		if (subject.next == null) {
 			SingleLinkedListOperator.setTail(list, subject);
 	}
 	
@@ -133,6 +133,9 @@ class SingleLinkedListNode<T> {
 	public inline function iterator():Iterator<T> {
 		return new SingleLinkedListIterator(this, list.tail);
 	}
+	
+	public function toString():String
+		return Std.string(value)
 }
 
 class SingleLinkedListIterator<T> {
