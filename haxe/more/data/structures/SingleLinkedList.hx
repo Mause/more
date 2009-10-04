@@ -38,7 +38,7 @@ class SingleLinkedList<T> {
 	 * Returns true if this list does not contain any nodes.
 	 */
 	public inline var isEmpty(gIsEmpty, null):Bool;
-	inline function gIsEmpty():Bool return length == 0
+	inline function gIsEmpty():Bool return (length == 0)
 	
 	/**
 	 * Constructs a new list.

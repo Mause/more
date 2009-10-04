@@ -22,8 +22,8 @@ class SingleLinkedListNode<T> {
 	public var next(default, null):SingleLinkedListNode<T>;
 	public var value:T;
 	
-	inline var isAlive(gIsAlive, null):Bool;
-	inline function gIsAlive() return list != null
+	public inline var isAlive(gIsAlive, null):Bool;
+	inline function gIsAlive() return (list != null)
 	
 	/**
 	 * Constructs a new node. This is a private action.
@@ -32,7 +32,7 @@ class SingleLinkedListNode<T> {
 	 */
 	function new(list:SingleLinkedList<T>, ?value:T):Void {
 		this.list = list;
-		this.value = value;	
+		this.value = value;
 	}
 	
 	/**
@@ -42,7 +42,6 @@ class SingleLinkedListNode<T> {
 	public function append(value:T):Void {
 		if (!isAlive) return;
 		var subject = new SingleLinkedListNode(list, value);
-		
 		SingleLinkedListOperator.setLength(list, list.length + 1);		
 		
 		subject.next = next;

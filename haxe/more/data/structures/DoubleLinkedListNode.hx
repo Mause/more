@@ -23,8 +23,8 @@ class DoubleLinkedListNode<T> {
 	public var previous(default, null):DoubleLinkedListNode<T>;
 	public var value:T;
 	
-	inline var isAlive(gIsAlive, null):Bool;
-	inline function gIsAlive() return list != null
+	public inline var isAlive(gIsAlive, null):Bool;
+	inline function gIsAlive() return (list != null)
 	
 	/**
 	 * Constructs a new node. This is a private action.
