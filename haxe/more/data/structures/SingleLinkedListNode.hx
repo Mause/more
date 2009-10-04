@@ -49,7 +49,7 @@ class SingleLinkedListNode<T> {
 		subject.next = next;
 		next = subject;
 		
-		if (subject.next == null) {
+		if (subject.next == null)
 			SingleLinkedListOperator.setTail(list, subject);
 	}
 	
