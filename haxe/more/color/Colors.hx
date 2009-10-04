@@ -15,29 +15,32 @@
  * limitations under the License.
  **/
 package haxe.more.color;
-import flash.filters.ColorMatrixFilter;
+import haxe.more.data.structures.ReadOnlyArray;
 
 using haxe.more.color.Color;
 using haxe.more.color.Colors;
+using haxe.more.data.Manipulation;
 using Std;
 
 /** Additive colors here * http://en.wikipedia.org/wiki/Additive_color **/
 class Colors {
 	static var init = (function() {
-		red = new KnownColor("red", new Color(255, 0, 0));
-		green = new KnownColor("green", new Color(0, 255, 0));
-		blue = new KnownColor("green", new Color(0, 0, 255));
+		known = new ReadOnlyArray([		
+		red = new KnownColor("red", new Color(255, 0, 0)),
+		green = new KnownColor("green", new Color(0, 255, 0)),
+		blue = new KnownColor("green", new Color(0, 0, 255)),
 		
-		magenta = blue		.named("magenta")		.add(red);
-		cyan = green		.named("cyan")			.add(blue);
-		yellow = red		.named("yellow")		.add(green);
+		magenta = blue		.named("magenta")		.add(red),
+		cyan = green		.named("cyan")			.add(blue),
+		yellow = red		.named("yellow")		.add(green),
 		
-		rose = red			.named("rose")			.avarage(magenta);
-		violet = magenta	.named("violet")		.avarage(blue);
-		azure = blue		.named("azure")			.avarage(cyan);
-		springGreen = cyan	.named("springGreen")	.avarage(green);
-		chartreuse = green	.named("chartreuse")	.avarage(yellow);	
-		orange = yellow		.named("orange")		.avarage(red);
+		rose = red			.named("rose")			.avarage(magenta),
+		violet = magenta	.named("violet")		.avarage(blue),
+		azure = blue		.named("azure")			.avarage(cyan),
+		springGreen = cyan	.named("springGreen")	.avarage(green),
+		chartreuse = green	.named("chartreuse")	.avarage(yellow),
+		orange = yellow		.named("orange")		.avarage(red)
+		]);
 	})();
 	
 	/** Primary * http://en.wikipedia.org/wiki/Primary_color **/
@@ -58,6 +61,8 @@ class Colors {
 	public static var chartreuse(default, null):FixedColor;
 	public static var springGreen(default, null):FixedColor;
 	
+	public static var known(default, null):ReadOnlyArray<FixedColor>;
+	
 	
 	/** Creation methods **/
 	/**
@@ -66,13 +71,17 @@ class Colors {
 	 * @param	a The alpha component value of for the new color.
 	 * @return a new color from the specified arguments.
 	 */
-	public static inline function fromRgbA(rgb:Int, a:Int = 0):Color {
-		return new Color(rgb >> 16, rgb >> 8, rgb, a);
+	public static function fromRgbA(rgb:Int, a:Int = 0):Color {
+		var known:KnownColor = cast known.first(function(color) return color.rgb == rgb && color.a == a);
+		return known == null ? new Color(rgb >> 16, rgb >> 8, rgb, a) : new KnownColor(known.name, known);
 	}
 }
 class KnownColor extends Color {
 	public var name:String;
-	public function new(name:String, origin:FixedColor) super(origin.r, origin.g, origin.b, origin.a)
+	public function new(name:String, origin:FixedColor) {
+		super(origin.r, origin.g, origin.b, origin.a);
+		this.name = name;
+	}
 	public override function toString() return "Color \"" + name + "\""
 	public static function named(origin:FixedColor, name:String) return new KnownColor(name, origin)
 }
