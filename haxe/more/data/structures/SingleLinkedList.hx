@@ -43,7 +43,8 @@ class SingleLinkedList<T> {
 	/**
 	 * Constructs a new list.
 	 */
-	public function new<T>() {
+	public function new() {
+		length = 0;
 		sentinel = SingleLinkedListNodeOperator.create(this, null);
 	}
 	

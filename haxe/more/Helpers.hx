@@ -16,6 +16,7 @@
  **/
 package haxe.more;
 import haxe.more.threading.ThreadShares;
+using Std;
 
 class Helpers {
 	static var init = (function() {
@@ -27,6 +28,26 @@ class Helpers {
 		
 		newLine = "\n";
 	})();
+	
+	/**
+	 * Returns the highest argument, [a] or[b].
+	 * @param	a
+	 * @param	b
+	 * @return the highest  argument, [a] or[b].
+	 */
+	public static inline function max(a:Float, b:Float):Float return a > b ? a : b	
+	
+	/**
+	 * Returns the lowest  argument, [a] or[b].
+	 * @param	a
+	 * @param	b
+	 * @return the lowest  argument, [a] or[b].
+	 */
+	public static inline function min(a:Float, b:Float):Float return a < b ? a : b
+	
+	public static inline function as<T>(subject:Dynamic, to:Class<T>):T {
+		return subject.is(to) ? subject : null;
+	}
 	
 	/**
 		Get's the current time in miliseconds.

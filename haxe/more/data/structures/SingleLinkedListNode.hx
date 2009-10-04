@@ -41,7 +41,6 @@ class SingleLinkedListNode<T> {
 	 */
 	public function append(value:T):Void {
 		if (!isAlive) return;
-		
 		var subject = new SingleLinkedListNode(list, value);
 		
 		SingleLinkedListOperator.setLength(list, list.length + 1);		

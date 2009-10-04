@@ -14,15 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-package haxe.more;
+package haxe.more.color;
 import haxe.more.exceptions.ArgumentNullException;
 using Std;
+using haxe.more.Helpers;
 #if neko
 import haxe.Int32;
 using haxe.Int32;
 #end
 
-class Color {		
+class Color implements FixedColor {		
 	var _rgb:Int; // The _rgb part, 24 bits are used
 	var _a:Int; // The alpha shade, 8 bits for him
 	
@@ -31,12 +32,14 @@ class Color {
 		this.a = a;
 	}
 	
-	public function toString():String {
-		return "rgba( " + r + ", " + g + ", " + b + ", " + a + ")";
-	}
+	public function toString():String
+		return "rgba( " + r + ", " + g + ", " + b + ", " + a + ")"
 	
 	
-	/** Below _all the code to correctly _apply the colors **/
+	/** Below all the code to correctly apply the colors **/
+	/**
+	 * The rgb value of this color.
+	 */
 	public var rgb(gRgb, sRgb):Int;
 	function gRgb():Int {
 		return _rgb;
@@ -46,15 +49,21 @@ class Color {
 		return _rgb;
 	}
 	
-	public var a(ga, sa):Int;
-	function ga():Int {
+	/**
+	 * The alpha component of this color.
+	 */
+	public var a(gA, sA):Int;
+	function gA():Int {
 		return _a;
 	}
-	function sa(value:Int):Int {
+	function sA(value:Int):Int {
 		_a = m(value);
 		return _a;
 	}
-	
+		
+	/**
+	 * The red component of this color.
+	 */
 	public var r(gR, sR):Int;
 	function gR():Int {
 		return m(rgb >> 16);
@@ -63,7 +72,10 @@ class Color {
 		rgb = rgb & 0x00FFFF | m(value) << 16;
 		return r;
 	}
-	
+		
+	/**
+	 * The green component of this color.
+	 */
 	public var g(gG, sG):Int;
 	function gG():Int {
 		return m(rgb >> 8);
@@ -72,7 +84,10 @@ class Color {
 		rgb = rgb & 0x00FFFF | m(value) << 8;
 		return g;
 	}
-	
+		
+	/**
+	 * The blue component of this color.
+	 */
 	public var b(gB, sB):Int;
 	function gB():Int {
 		return m(rgb);
@@ -82,6 +97,9 @@ class Color {
 		return b;
 	}
 	
+	/**
+	 * The rgba value of this color.
+	 */
 	#if neko
 	public var rgba(gRgba, sRgba):Int32;
 	function gRgba():Int32 {
@@ -113,7 +131,7 @@ class Color {
 	 * @param	b The modifier.
 	 * @return The modified [a].
 	 */
-	public inline static function add(a:Color, b:Color):Color {
+	public inline static function add(a:Color, b:FixedColor):Color {
 		a._rgb = min(255, a.r + b.r) << 16  | min(255, a.g + b.g) << 8 | min(255, a.b + b.b);
 		return a;
 	}
@@ -123,7 +141,7 @@ class Color {
 	 * @param	a The color to clone.
 	 * @return A clone of [a].
 	 */
-	public static inline function clone(a:Color):Color
+	public static inline function clone(a:FixedColor):Color
 		return new Color(a.r, a.g, a.b, a.a)
 	
 	/**
@@ -133,21 +151,39 @@ class Color {
 	 * @param	padding The scale to apply what.
 	 * @return The modified [a].
 	 */
-	public static function avarage(a:Color, b:Color, padding:Float = 0.5):Color {
+	public static function avarage(a:Color, b:FixedColor, padding:Float = 0.5):Color {
 		if (a == null) throw new ArgumentNullException("a");
 		if (b == null) throw new ArgumentNullException("b");
 		
-		if(padding == 0.5) {
-			a._rgb = ((a._rgb & 0xFF00FF) + (b._rgb & 0xFF00FF)) >> 1 & 0xFF00FF
-				| m((m(a._rgb >> 8) + m(b._rgb >> 8)) >> 1) << 8;
-			a._a = m((a._a + b._a) >> 1);
+		if (padding == 0.5) {
+			if (b.is(Color)) {
+				var b:Color = cast b;
+				a._rgb = ((a._rgb & 0xFF00FF) + (b._rgb & 0xFF00FF)) >> 1 & 0xFF00FF
+					| m((m(a._rgb >> 8) + m(b._rgb >> 8)) >> 1) << 8;
+				a._a = m((a._a + b._a) >> 1);
+			} else {
+				var rgb = b.rgb;
+				a._rgb = ((a._rgb & 0xFF00FF) + (rgb & 0xFF00FF)) >> 1 & 0xFF00FF
+					| m((m(a.rgb >> 8) + m(rgb >> 8)) >> 1) << 8;
+				a._a = m((a._a + b.a) >> 1);				
+			}
 		} else {
 			var inverse = 1 - padding;
-			a._rgb =
-				m((m(a._rgb >> 16) * inverse + m(b._rgb >> 16) * padding).int()) << 16
-				| m((m(a._rgb >> 8) * inverse + m(b._rgb >> 8) * padding).int()) << 8
-				| m((m(a._rgb) * inverse + m(b._rgb) * padding).int());
-			a._a = m((a._a + b._a) >> 1);
+			if (b.is(Color)) {
+				var b:Color = cast b;
+				a._rgb =
+					m((m(a._rgb >> 16) * inverse + m(b._rgb >> 16) * padding).int()) << 16
+					| m((m(a._rgb >> 8) * inverse + m(b._rgb >> 8) * padding).int()) << 8
+					| m((m(a._rgb) * inverse + m(b._rgb) * padding).int());
+				a._a = m((a._a + b._a) >> 1);
+			} else {
+				var rgb = b.rgb;
+				a._rgb =
+					m((m(a._rgb >> 16) * inverse + m(rgb >> 16) * padding).int()) << 16
+					| m((m(a._rgb >> 8) * inverse + m(rgb >> 8) * padding).int()) << 8
+					| m((m(a._rgb) * inverse + m(rgb) * padding).int());
+				a._a = m((a._a + b.a) >> 1);				
+			}
 		}
 		return a;
 	}
@@ -158,7 +194,7 @@ class Color {
 	 * @param	b The modifier.
 	 * @return The modified [a].
 	 */
-	public inline static function subtract(a:Color, b:Color):Color {
+	public inline static function subtract(a:Color, b:FixedColor):Color {
 		a._rgb = max(0, a.r - b.r) << 16  | max(0, a.g - b.g) << 8 | max(0, a.b - b.b);
 		return a;
 	}
