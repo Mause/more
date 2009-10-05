@@ -41,6 +41,8 @@ class Colors {
 		chartreuse = green	.named("chartreuse")	.avarage(yellow),
 		orange = yellow		.named("orange")		.avarage(red)
 		]);
+		
+		clear = new KnownColor("clear", new Color(255, 255, 255, 255));
 	})();
 	
 	/** Primary * http://en.wikipedia.org/wiki/Primary_color **/
@@ -60,6 +62,9 @@ class Colors {
 	public static var orange(default, null):FixedColor;
 	public static var chartreuse(default, null):FixedColor;
 	public static var springGreen(default, null):FixedColor;
+	
+	/** Obvious ones **/
+	public static var clear(default, null):FixedColor;
 	
 	public static var known(default, null):ReadOnlyArray<FixedColor>;
 	
