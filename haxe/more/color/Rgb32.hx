@@ -17,6 +17,7 @@
 package haxe.more.color;
 import haxe.more.exceptions.ArgumentNullException;
 import haxe.more.data.structures.ReadOnlyArray;
+import haxe.more.exceptions.NotImplementedException;
 using haxe.more.color.Rgb32;
 using haxe.more.data.Manipulation;
 using haxe.more.Helpers;
@@ -205,13 +206,16 @@ class Rgb32 implements IRgb32 {
 	/** Converters **/
 	/** Hsl to Rgb * http://en.wikipedia.org/wiki/HSL_and_HSV#Conversion_from_HSL_to_RGB **/
 	public static function toHsl(rgb:IFixedRgb32):Hsl {
+		throw new NotImplementedException("Rgb32.toHsl", "Methods fails for all colors except red(#FF0000), green(#00FF00) and blue(#0000FF)");
 		var r = rgb.r / 255;
 		var g = rgb.g / 255;
 		var b = rgb.b / 255;
 		var max = maxF(r, maxF(g, b));
 		var min = minF(r, minF(g, b));
 		var h = max == min ? 0 : max == r ? sMod(360, 60 * (g - b) / (max - min) * 360) : max == g ? 60 * (b - r) / (max - min) + 120 : 60 * (r - g) / (max - min) + 240;
-		return null;
+		var l = (max  + min) * .5;
+		var s = max == min ? 0 : l <= .5 ? (max - min) / (2 * l) : (max - min) / (2 - 2 * l);
+		return new Hsl(h, s, l, rgb.a);
 	}
 	
 	static inline function limit(c, q, p) return c < 1 / 6 ?  p + ((q - p) * 6 * c) : c < 1 / 2  ? q : c < 2 / 3 ? p + ((q - p) * 6 * (2 / 3 - c)) : p
