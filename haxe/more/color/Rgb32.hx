@@ -1,4 +1,4 @@
-﻿/** Color.hx
+﻿/** Rgb32.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -16,14 +16,17 @@
  **/
 package haxe.more.color;
 import haxe.more.exceptions.ArgumentNullException;
-using Std;
+import haxe.more.data.structures.ReadOnlyArray;
+using haxe.more.color.Rgb32;
+using haxe.more.data.Manipulation;
 using haxe.more.Helpers;
+using Std;
 #if neko
 import haxe.Int32;
 using haxe.Int32;
 #end
 
-class Color implements FixedColor {		
+class Rgb32 implements IRgb32 {	
 	var _rgb:Int; // The _rgb part, 24 bits are used
 	var _a:Int; // The alpha shade, 8 bits for him
 	
@@ -102,7 +105,7 @@ class Color implements FixedColor {
 	 */
 	#if neko
 	public var rgba(gRgba, sRgba):Int32;
-	function gRgba():Int32 {
+	function gRgb32a():Int32 {
 		return Int32.make(rgb >> 8 & 0xFFFF, rgb << 8 & 0xFF00 | _a);
 	}
 	function sRgba(value:Int32):Int32 {
@@ -131,7 +134,7 @@ class Color implements FixedColor {
 	 * @param	b The modifier.
 	 * @return The modified [a].
 	 */
-	public inline static function add(a:Color, b:FixedColor):Color {
+	public inline static function add(a:Rgb32, b:IFixedRgb32):Rgb32 {
 		a._rgb = min(255, a.r + b.r) << 16  | min(255, a.g + b.g) << 8 | min(255, a.b + b.b);
 		return a;
 	}
@@ -141,8 +144,8 @@ class Color implements FixedColor {
 	 * @param	a The color to clone.
 	 * @return A clone of [a].
 	 */
-	public static inline function clone(a:FixedColor):Color
-		return new Color(a.r, a.g, a.b, a.a)
+	public static inline function clone(a:IFixedRgb32):Rgb32
+		return new Rgb32(a.r, a.g, a.b, a.a)
 	
 	/**
 	 * Modifies the color of [a] by avaraging with [b].
@@ -151,13 +154,13 @@ class Color implements FixedColor {
 	 * @param	padding The scale to apply what.
 	 * @return The modified [a].
 	 */
-	public static function avarage(a:Color, b:FixedColor, padding:Float = 0.5):Color {
+	public static function avarage(a:Rgb32, b:IFixedRgb32, padding:Float = 0.5):Rgb32 {
 		if (a == null) throw new ArgumentNullException("a");
 		if (b == null) throw new ArgumentNullException("b");
 		
 		if (padding == 0.5) {
-			if (b.is(Color)) {
-				var b:Color = cast b;
+			if (b.is(Rgb32)) {
+				var b:Rgb32 = cast b;
 				a._rgb = ((a._rgb & 0xFF00FF) + (b._rgb & 0xFF00FF)) >> 1 & 0xFF00FF
 					| m((m(a._rgb >> 8) + m(b._rgb >> 8)) >> 1) << 8;
 				a._a = m((a._a + b._a) >> 1);
@@ -169,8 +172,8 @@ class Color implements FixedColor {
 			}
 		} else {
 			var inverse = 1 - padding;
-			if (b.is(Color)) {
-				var b:Color = cast b;
+			if (b.is(Rgb32)) {
+				var b:Rgb32 = cast b;
 				a._rgb =
 					m((m(a._rgb >> 16) * inverse + m(b._rgb >> 16) * padding).int()) << 16
 					| m((m(a._rgb >> 8) * inverse + m(b._rgb >> 8) * padding).int()) << 8
@@ -194,14 +197,88 @@ class Color implements FixedColor {
 	 * @param	b The modifier.
 	 * @return The modified [a].
 	 */
-	public inline static function subtract(a:Color, b:FixedColor):Color {
+	public inline static function subtract(a:Rgb32, b:IFixedRgb32):Rgb32 {
 		a._rgb = max(0, a.r - b.r) << 16  | max(0, a.g - b.g) << 8 | max(0, a.b - b.b);
 		return a;
 	}
+	
+	/** Converters **/
+	/** Hsl to Rgb * http://en.wikipedia.org/wiki/HSL_and_HSV#Conversion_from_HSL_to_RGB **/
+	public static function toHsl(rgb:IFixedRgb32):Hsl {
+		var r = rgb.r / 255;
+		var g = rgb.g / 255;
+		var b = rgb.b / 255;
+		var max = maxF(r, maxF(g, b));
+		var min = minF(r, minF(g, b));
+		var h = max == min ? 0 : max == r ? sMod(360, 60 * (g - b) / (max - min) * 360) : max == g ? 60 * (b - r) / (max - min) + 120 : 60 * (r - g) / (max - min) + 240;
+		return null;
+	}
+	
+	static inline function limit(c, q, p) return c < 1 / 6 ?  p + ((q - p) * 6 * c) : c < 1 / 2  ? q : c < 2 / 3 ? p + ((q - p) * 6 * (2 / 3 - c)) : p
 	
 	
 	/** Helpers **/
 	static inline function max(a, b) return a > b ? a : b	
 	static inline function min(a, b) return a < b ? a : b
 	static inline function m(color) return color & 0xFF // masks.
+	static inline function maxF(a:Float, b):Float return a > b ? a : b	
+	static inline function minF(a:Float, b) return a < b ? a : b
+	static inline function sMod(c, value:Float) return value < 0 ? value + c : value > c ? value - c : value
+	
+	/** Presets **/
+	
+	static var init = (function() {
+		known = new ReadOnlyArray([		
+		red = new Rgb32(255, 0, 0),
+		green = new Rgb32(0, 255, 0),
+		blue = new Rgb32(0, 0, 255),
+		
+		magenta = blue.clone().add(red),
+		cyan = green.clone().add(blue),
+		yellow = red.clone().add(green),
+		
+		rose = red.clone().avarage(magenta),
+		violet = magenta.clone().avarage(blue),
+		azure = blue.clone().avarage(cyan),
+		springGreen = cyan.clone().avarage(green),
+		chartreuse = green.clone().avarage(yellow),
+		orange = yellow	.clone().avarage(red)
+		]);
+		
+		clear = new Rgb32(255, 255, 255, 255);
+	})();
+	
+	/** Primary * http://en.wikipedia.org/wiki/Primary_color **/
+	public static var red(default, null):IFixedRgb32;
+	public static var green(default, null):IFixedRgb32;
+	public static var blue(default, null):IFixedRgb32;
+	
+	/** Secondary * http://en.wikipedia.org/wiki/Secondary_color **/
+	public static var yellow(default, null):IFixedRgb32;
+	public static var cyan(default, null):IFixedRgb32;
+	public static var magenta(default, null):IFixedRgb32;
+	
+	/** Tertiary * http://en.wikipedia.org/wiki/Tertiary_color **/
+	public static var azure(default, null):IFixedRgb32;
+	public static var violet(default, null):IFixedRgb32;
+	public static var rose(default, null):IFixedRgb32;
+	public static var orange(default, null):IFixedRgb32;
+	public static var chartreuse(default, null):IFixedRgb32;
+	public static var springGreen(default, null):IFixedRgb32;
+	
+	/** Obvious ones **/
+	public static var clear(default, null):IFixedRgb32;
+	
+	public static var known(default, null):ReadOnlyArray<IFixedRgb32>;	
+	
+	/** Creation methods **/
+	/**
+	 * Creates a new color from the specified arguments.
+	 * @param	rgb The rgb value of for the new color.
+	 * @param	a The alpha component value of for the new color.
+	 * @return a new color from the specified arguments.
+	 */
+	public static function fromInt(rgb:Int, a:Int = 0):Rgb32 {
+		return new Rgb32(rgb >> 16, rgb >> 8, rgb, a);
+	}
 }

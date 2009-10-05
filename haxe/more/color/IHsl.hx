@@ -1,4 +1,4 @@
-﻿/** Gradient.hx
+﻿/** IHsl.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -15,15 +15,25 @@
  * limitations under the License.
  **/
 package haxe.more.color;
-import haxe.more.data.sources.Transition;
-using haxe.more.color.Color;
 
-class Gradient<A:FixedColor, B:FixedColor> extends Transition<A, B, FixedColor> {
-	public function new(a:A, b:B) {
-		super(a, b, _blender);
-	}
+interface IHsl implements IFixedHsl {
+	/**
+	 * The alpha component of this color.
+	 */
+	public var a(gA, sA):Float;
 	
-	function _blender(a:A, b:B, padding:Float):Color {
-		return a.clone().avarage(b, padding);
-	}
+	/**
+	 * The hue component of this color.
+	 */
+	public var h(gH, sH):Float;
+	
+	/**
+	 * The saturation component of this color.
+	 */
+	public var s(gS, sS):Float;
+	
+	/**
+	 * The lightness component of this color.
+	 */
+	public var l(gL, sL):Float;	
 }

@@ -1,4 +1,4 @@
-﻿/** FixedColor.hx
+﻿/** IFixedRgb32.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -16,7 +16,7 @@
  **/
 package haxe.more.color;
 
-interface FixedColor {
+interface IFixedRgb32 {
 	/**
 	 * The rgb value of this color.
 	 */
