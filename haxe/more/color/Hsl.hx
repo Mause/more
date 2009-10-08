@@ -121,7 +121,7 @@ class Hsl implements IHsl {
 		else if (tr > 1) tr -= 1;
 		if (tg < 0) tg  += 1;
 		else if (tg  > 1) tg  -= 1;
-		if (tb < 0) tr += 1;
+		if (tb < 0) tb += 1;
 		else if (tb > 1) tb -= 1;
 		
 		tr = if (tr < 1 / 6)
