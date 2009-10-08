@@ -206,15 +206,26 @@ class Rgb32 implements IRgb32 {
 	/** Converters **/
 	/** Hsl to Rgb * http://en.wikipedia.org/wiki/HSL_and_HSV#Conversion_from_HSL_to_RGB **/
 	public static function toHsl(rgb:IFixedRgb32):Hsl {
-		throw new NotImplementedException("Rgb32.toHsl", "Methods fails for all colors except red(#FF0000), green(#00FF00) and blue(#0000FF)");
 		var r = rgb.r / 255;
 		var g = rgb.g / 255;
 		var b = rgb.b / 255;
-		var max = maxF(r, maxF(g, b));
+		var max = maxF(r, maxF(b, g));
 		var min = minF(r, minF(g, b));
-		var h = max == min ? 0 : max == r ? sMod(360, 60 * (g - b) / (max - min) * 360) : max == g ? 60 * (b - r) / (max - min) + 120 : 60 * (r - g) / (max - min) + 240;
-		var l = (max  + min) * .5;
-		var s = max == min ? 0 : l <= .5 ? (max - min) / (2 * l) : (max - min) / (2 - 2 * l);
+		var h = if (max == min)
+				0;
+			else if (max == r)
+				(60 * (g - b) / (max - min) + 360) % 360;
+			else if (max == g)
+				60 * (b - r) / (max - min) + 120;
+			else//if(max == b)
+				60 * (r - g) / (max - min) + 240;
+		var l = 1 / 2 * (max - min);
+		var s = if (max == min)
+				0;
+			else if (l <= 1 / 2)
+				(max - min) / (2 * l);
+			else
+				(max - min) / (2 - 2 * l);
 		return new Hsl(h, s, l, rgb.a);
 	}
 	

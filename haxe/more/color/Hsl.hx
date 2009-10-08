@@ -99,7 +99,6 @@ class Hsl implements IHsl {
 	/** Converters **/
 	/** Hsl to Rgb * http://en.wikipedia.org/wiki/HSL_and_HSV#Conversion_from_HSL_to_RGB **/
 	public static function toRgb32(hsl:IFixedHsl):Rgb32 {
-		//throw new NotImplementedException("Hsl.toRgb32");
 		var s = hsl.s;
 		var l = hsl.l;
 		if (s == 0) {
