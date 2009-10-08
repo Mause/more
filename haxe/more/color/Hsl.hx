@@ -99,34 +99,61 @@ class Hsl implements IHsl {
 	/** Converters **/
 	/** Hsl to Rgb * http://en.wikipedia.org/wiki/HSL_and_HSV#Conversion_from_HSL_to_RGB **/
 	public static function toRgb32(hsl:IFixedHsl):Rgb32 {
-		throw new NotImplementedException("Hsl.toRgb32");
+		//throw new NotImplementedException("Hsl.toRgb32");
 		var s = hsl.s;
 		var l = hsl.l;
 		if (s == 0) {
 			var value = (l * 255).int();
 			return new Rgb32(value.int(), value.int(), value.int(), (hsl.a * 255).int());
 		}
+		
 		var h = hsl.h / 360;
-		var q = l < .5 ? l * (1 + s) : l + s - (l * s);
+		var q = if (l < 1 / 2)
+				l * (1 + s)
+			else
+				l + s - (l * s);
 		var p = 2 * l - q;
-		var tr = sMod(h + 1 / 3, 1);
-		var tg = sMod(h, 1);
-		var tb = sMod(h - 1 / 3, 1);
-		var r = (limit(tr, q, p) * 255).int();
-		var g = (limit(tg, q, p) * 255).int();
-		var b = (limit(tb, q, p) * 255).int();
+		var tr = h + 1 / 3;
+		var tg = h;
+		var tb = h - 1 / 3;
+		
+		if (tr < 0) tr += 1;
+		else if (tr > 1) tr -= 1;
+		if (tg < 0) tg  += 1;
+		else if (tg  > 1) tg  -= 1;
+		if (tb < 0) tr += 1;
+		else if (tb > 1) tb -= 1;
+		
+		tr = if (tr < 1 / 6)
+				p + ((q - p) * 6 * tr)
+			else if (tr < 1 / 2)
+				q
+			else if (tr < 2 / 3)
+				p + ((q - p) * 6 * (2 / 3 - tr))
+			else
+				p;		
+		tg = if (tg < 1 / 6)
+				p + ((q - p) * 6 * tg)
+			else if (tg < 1 / 2)
+				q
+			else if (tg < 2 / 3)
+				p + ((q - p) * 6 * (2 / 3 - tg))
+			else
+				p;		
+		tb = if (tb < 1 / 6)
+				p + ((q - p) * 6 * tb)
+			else if (tb < 1 / 2)
+				q
+			else if (tb < 2 / 3)
+				p + ((q - p) * 6 * (2 / 3 - tb))
+			else
+				p;
+		
+		var r = (tr * 255).int();
+		var g = (tg * 255).int();
+		var b = (tb * 255).int();
+		
 		return new Rgb32(r, g, b, (hsl.a * 255).int());
-	}
-	
-	static inline function limit(c:Float, q:Float, p:Float) { return
-		if (c < 1 / 6)
-			p + ((q - p) * 6 * c);
-		else if (c < 1 / 2)
-			 q;
-		else if (c < 2 / 3)
-			p + ((q - p) * 6 * (2 / 3 - c));
-		else
-			p;
 	}
 	
 		/** Helpers **/
