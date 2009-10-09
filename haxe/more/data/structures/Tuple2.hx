@@ -1,4 +1,4 @@
-﻿/** GradientHsl.hx
+﻿/** Tuple2.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -14,18 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-package haxe.more.color;
-import haxe.more.data.sources.Transition;
-using haxe.more.color.Hsl;
+package haxe.more.data.structures;
 
-class GradientHsl<A:IFixedHsl, B:IFixedHsl> extends Transition<A, B, IFixedHsl> {
-	public function new(a:A, b:B) {
-		super(a, b, null);
-	}
+/**
+ * An tuple providing five data slots.
+ * Used for anonymous data containers with anonymous data slots.
+ */
+class Tuple2<T1, T2> {
+	public var value1(default, null):T1;
+	public var value2(default, null):T2;
 	
-	public override function at(padding:Float):IFixedHsl {
-		var inverse = 1 - padding;
-		return a.clone().avarageRight(b);
-		return new Hsl(a.h * inverse + b.h * padding, a.s * inverse + b.s * padding, a.l * inverse + b.l * padding, a.a * inverse + b.a * padding);
-	}
+	/**
+	 * Creates a new tuple.
+	 * @param	value1 The first value.
+	 * @param	value2 The second value.
+	 */
+	public function new(value1:T1, value2:T2) {
+		this.value1 = value1;
+		this.value2 = value2;
+	}	
 }

@@ -1,4 +1,4 @@
-﻿/** GradientHsl.hx
+﻿/** IRgb.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -15,17 +15,25 @@
  * limitations under the License.
  **/
 package haxe.more.color;
-import haxe.more.data.sources.Transition;
-using haxe.more.color.Hsl;
 
-class GradientHsl<A:IFixedHsl, B:IFixedHsl> extends Transition<A, B, IFixedHsl> {
-	public function new(a:A, b:B) {
-		super(a, b, null);
-	}
+interface IRgb implements IFixedRgb {	
+	/**
+	 * The alpha component of this color.
+	 */
+	public var a(gA, sA):Float;
 	
-	public override function at(padding:Float):IFixedHsl {
-		var inverse = 1 - padding;
-		return a.clone().avarageRight(b);
-		return new Hsl(a.h * inverse + b.h * padding, a.s * inverse + b.s * padding, a.l * inverse + b.l * padding, a.a * inverse + b.a * padding);
-	}
+	/**
+	 * The red component of this color.
+	 */
+	public var r(gR, sR):Float;
+	
+	/**
+	 * The green component of this color.
+	 */
+	public var g(gG, sG):Float;
+	
+	/**
+	 * The blue component of this color.
+	 */
+	public var b(gB, sB):Float;
 }

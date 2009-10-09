@@ -18,6 +18,7 @@ package haxe.more.color;
 import haxe.more.exceptions.ArgumentNullException;
 import haxe.more.data.structures.ReadOnlyArray;
 import haxe.more.exceptions.NotImplementedException;
+import haxe.Stack;
 using haxe.more.color.Hsl;
 using haxe.more.data.Manipulation;
 using haxe.more.Helpers;
@@ -28,10 +29,10 @@ using haxe.Int32;
 #end
 
 class Hsl implements IHsl {	
-	var _h:Float; // The alpha shade, 8 bits for him
-	var _s:Float; // The alpha shade, 8 bits for him
-	var _l:Float; // The alpha shade, 8 bits for him
-	var _a:Float; // The alpha shade, 8 bits for him
+	var _h:Float;
+	var _s:Float;
+	var _l:Float;
+	var _a:Float;
 	
 	public function new(h:Float, s:Float, l :Float, a:Float = 0) {
 		this.h = h;
@@ -58,10 +59,10 @@ class Hsl implements IHsl {
 	 * The hue component of this color.
 	 */
 	public var h(gH,sH):Float;
-	function gH():Float {
+	function gH():Float { trace(_h); trace(Stack.callStack().join("\n"));
 		return _h;
 	}
-	function sH(value:Float):Float {
+	function sH(value:Float):Float { trace([_h, value, value % 360, mod(360, value)]); trace(Stack.callStack().join("\n"));
 		return _h = mod(360, value);
 	}
 	
@@ -96,8 +97,32 @@ class Hsl implements IHsl {
 	public static inline function clone(a:IFixedHsl):Hsl
 		return new Hsl(a.h, a.s, a.l, a.a)
 	
+	/**
+	 * Modifies the color of [a] by avaraging with [b].
+	 * @param	a The color to modify.
+	 * @param	b The modifier.
+	 * @param	padding The scale to apply what.
+	 * @return The modified [a].
+	 */
+	public static function avarageRight(a:Hsl, b:IFixedHsl, padding:Float = 0.5):Hsl {
+		if (a == null) throw new ArgumentNullException("a");
+		if (b == null) throw new ArgumentNullException("b");
+		var inverse = 1 - padding;
+		//var bh = b.h < a.h ? b.h + 360 : b.h;
+		a.h = a.h * inverse + b.h * padding;
+		a.s = a.s * inverse + b.s * padding;
+		a.l = a.l * inverse + b.l * padding;
+		a.a = a.a * inverse + b.a * padding;
+		return a;
+	}
+	
 	/** Converters **/
 	/** Hsl to Rgb * http://en.wikipedia.org/wiki/HSL_and_HSV#Conversion_from_HSL_to_RGB **/
+	/**
+	 * Convert a hsl color to the rgb32 color space.
+	 * @param	rgb The color to convert.
+	 * @return the converted color.
+	 */
 	public static function toRgb32(hsl:IFixedHsl):Rgb32 {
 		var s = hsl.s;
 		var l = hsl.l;
@@ -153,6 +178,63 @@ class Hsl implements IHsl {
 		var b = (tb * 255).int();
 		
 		return new Rgb32(r, g, b, (hsl.a * 255).int());
+	}
+	
+	/**
+	 * Convert a hsl color to the rgb color space.
+	 * @param	rgb The color to convert.
+	 * @return the converted color.
+	 */
+	public static function toRgb(hsl:IFixedHsl):Rgb {
+		var s = hsl.s;
+		var l = hsl.l;
+		if (s == 0) {
+			return new Rgb(l, l, l, hsl.a);
+		}
+		
+		var h = hsl.h / 360;
+		var q = if (l < 1 / 2)
+				l * (1 + s)
+			else
+				l + s - (l * s);
+		var p = 2 * l - q;
+		var tr = h + 1 / 3;
+		var tg = h;
+		var tb = h - 1 / 3;
+		
+		if (tr < 0) tr += 1;
+		else if (tr > 1) tr -= 1;
+		if (tg < 0) tg  += 1;
+		else if (tg  > 1) tg  -= 1;
+		if (tb < 0) tb += 1;
+		else if (tb > 1) tb -= 1;
+		
+		tr = if (tr < 1 / 6)
+				p + ((q - p) * 6 * tr)
+			else if (tr < 1 / 2)
+				q
+			else if (tr < 2 / 3)
+				p + ((q - p) * 6 * (2 / 3 - tr))
+			else
+				p;		
+		tg = if (tg < 1 / 6)
+				p + ((q - p) * 6 * tg)
+			else if (tg < 1 / 2)
+				q
+			else if (tg < 2 / 3)
+				p + ((q - p) * 6 * (2 / 3 - tg))
+			else
+				p;		
+		tb = if (tb < 1 / 6)
+				p + ((q - p) * 6 * tb)
+			else if (tb < 1 / 2)
+				q
+			else if (tb < 2 / 3)
+				p + ((q - p) * 6 * (2 / 3 - tb))
+			else
+				p;
+		
+		return new Rgb(tr, tg, tb, hsl.a);
 	}
 	
 		/** Helpers **/

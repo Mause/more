@@ -1,4 +1,4 @@
-﻿/** GradientHsl.hx
+﻿/** GradientRgb.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -16,16 +16,14 @@
  **/
 package haxe.more.color;
 import haxe.more.data.sources.Transition;
-using haxe.more.color.Hsl;
+using haxe.more.color.Rgb;
 
-class GradientHsl<A:IFixedHsl, B:IFixedHsl> extends Transition<A, B, IFixedHsl> {
+class GradientRgb<A:IFixedRgb, B:IFixedRgb> extends Transition<A, B, IFixedRgb> {
 	public function new(a:A, b:B) {
 		super(a, b, null);
 	}
 	
-	public override function at(padding:Float):IFixedHsl {
-		var inverse = 1 - padding;
-		return a.clone().avarageRight(b);
-		return new Hsl(a.h * inverse + b.h * padding, a.s * inverse + b.s * padding, a.l * inverse + b.l * padding, a.a * inverse + b.a * padding);
+	public override function at(padding:Float):IFixedRgb {
+		return a.clone().avarage(b, padding);
 	}
 }

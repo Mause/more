@@ -37,7 +37,7 @@ class Rgb32 implements IRgb32 {
 	}
 	
 	public function toString():String
-		return "rgba( " + r + ", " + g + ", " + b + ", " + a + ")"
+		return "rgba32( " + r + ", " + g + ", " + b + ", " + a + ")"
 	
 	
 	/** Below all the code to correctly apply the colors **/
@@ -205,10 +205,16 @@ class Rgb32 implements IRgb32 {
 	
 	/** Converters **/
 	/** Hsl to Rgb * http://en.wikipedia.org/wiki/HSL_and_HSV#Conversion_from_HSL_to_RGB **/
+	/**
+	 * Convert a rgb32 color to the hsl color space.
+	 * @param	rgb The color to convert.
+	 * @return the converted color.
+	 */
 	public static function toHsl(rgb:IFixedRgb32):Hsl {
 		var r = rgb.r / 255;
 		var g = rgb.g / 255;
 		var b = rgb.b / 255;
+		var a = rgb.a / 255;
 		var max = maxF(r, maxF(b, g));
 		var min = minF(r, minF(g, b));
 		var h = if (max == min)
@@ -226,10 +232,22 @@ class Rgb32 implements IRgb32 {
 				(max - min) / (2 * l);
 			else
 				(max - min) / (2 - 2 * l);
-		return new Hsl(h, s, l, rgb.a);
+		return new Hsl(h, s, l, a);
 	}
 	
-	static inline function limit(c, q, p) return c < 1 / 6 ?  p + ((q - p) * 6 * c) : c < 1 / 2  ? q : c < 2 / 3 ? p + ((q - p) * 6 * (2 / 3 - c)) : p
+	/**
+	 * Convert a rgb32 color to the rgb color space.
+	 * @param	rgb The color to convert.
+	 * @return the converted color.
+	 */
+	public static function toRgb(rgb:IFixedRgb32):Rgb {
+		return new Rgb(
+			rgb.r / 255,
+			rgb.g / 255,
+			rgb.b / 255,
+			rgb.a / 255
+		);
+	}
 	
 	
 	/** Helpers **/
@@ -238,7 +256,6 @@ class Rgb32 implements IRgb32 {
 	static inline function m(color) return color & 0xFF // masks.
 	static inline function maxF(a:Float, b):Float return a > b ? a : b	
 	static inline function minF(a:Float, b) return a < b ? a : b
-	static inline function sMod(c, value:Float) return value < 0 ? value + c : value > c ? value - c : value
 	
 	/** Presets **/
 	
