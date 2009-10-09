@@ -64,7 +64,7 @@ class SingleLinkedList<T> {
 	 * @return The value of the removed node.
 	 */
 	public function pop():T {
-		if (isEmpty) throw new Exception("List is empty");
+		if (isEmpty) throw new EmptyStructureException();
 		return tail.remove();
 	}
 	
@@ -73,7 +73,7 @@ class SingleLinkedList<T> {
 	 * @return The value of the removed node.
 	 */
 	public function shift():T {
-		if (isEmpty) throw new Exception("List is empty");	
+		if (isEmpty) throw new EmptyStructureException();	
 		return sentinel.removeNext();
 	}
 	

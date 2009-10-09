@@ -126,6 +126,31 @@ class Rgb32 implements IRgb32 {
 	}
 	#end
 	
+	/**
+	 * The argb value of this color.
+	 */
+	#if neko
+	public var argb(gArgb, sArgb):Int32;
+	function gArgb():Int32 {
+		return Int32.make(_a << 8 | (_rgb >> 16 & 0xFF) | _rgb & 0xFFFF);
+	}
+	function sRgba(value:Int32):Int32 {
+		rgb = value.toInt();
+		_a = m(value.shr(24).toInt());
+		return rgba;
+	}
+	#else
+	public var argb(gArgb, sArgb):Int;
+	function gArgb():Int {
+		return (_a << 24) | _rgb;
+	}
+	function sArgb(value:Int):Int {
+		rgb = value;
+		_a = m(value >> 24);
+		return rgba;
+	}
+	#end
+	
 	
 	
 	/** Using methods **/

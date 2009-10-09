@@ -63,7 +63,7 @@ class DoubleLinkedList<T> {
 	 * @return The value of the removed node.
 	 */
 	public function pop():T {
-		if (isEmpty) throw "List is empty";	
+		if (isEmpty) throw new EmptyStructureException();
 		return tail.remove();
 	}
 	
@@ -72,7 +72,7 @@ class DoubleLinkedList<T> {
 	 * @return The value of the removed node.
 	 */
 	public function shift():T {
-		if (isEmpty) throw "List is empty";	
+		if (isEmpty) throw new EmptyStructureException();
 		return head.remove();
 	}
 	
@@ -89,7 +89,7 @@ class DoubleLinkedList<T> {
 	 * @return an iterator to iterate trough this list.
 	 */
 	public function iterator():Iterator<T> {
-		return isEmpty ? new EmptyIterator() : head.iterator();
+		if (isEmpty) return new EmptyIterator<T>(); else return head.iterator();
 	}
 	
 	/**
@@ -97,7 +97,7 @@ class DoubleLinkedList<T> {
 	 * @return an iterator to iterate trough this list from tail to head.
 	 */
 	public function reversedIterator():Iterator<T> {
-		return isEmpty ? new EmptyIterator() : tail.reversedIterator();
+		if (isEmpty) return new EmptyIterator<T>(); else return tail.reversedIterator();
 	}
 }
 

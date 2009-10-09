@@ -39,10 +39,12 @@ class Helpers {
 	
 	/**
 	 * Tests for a float to be NaN/null.
-	 * @param	a?
-	 * @return
+	 * @param	a? The float to test for NaN.
+	 * @return True if [a] equals NaN.
 	 */
 	public static inline function isNaN(?a:Float) return a == null || a.string() == "NaN"
+	
+	public static inline function sign(a:Float) return a < 0 ? -1 : 1
 	
 	public static inline function equals(a:Float, b:Float, margin:Float) return abs(a - b) < margin
 

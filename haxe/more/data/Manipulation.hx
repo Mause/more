@@ -18,6 +18,7 @@ package haxe.more.data;
 import haxe.more.exceptions.ArgumentNullException;
 import haxe.more.data.structures.SingleLinkedList;
 import haxe.more.data.structures.DoubleLinkedList;
+import haxe.more.exceptions.Exception;
 using haxe.more.data.Manipulation;
 
 /**
@@ -105,6 +106,17 @@ class Manipulation {
 		if (predicate == null) throw new ArgumentNullException("predicate");
 		return new WhereIterable(subject, predicate);	
 	}
+	public static function at<T>(subject:Iterable<T>, index:Int):T {
+		if (subject == null) throw new ArgumentNullException("subject");
+		var iter = subject.iterator();
+		while (iter.hasNext()) {
+			if (index-- < 0) {
+				return iter.next();
+			}
+			iter.next();
+		}
+		return null;
+	}
 	public static function after<T>(subject:Iterable<T>, predicate: T -> Bool):Iterable<T> {
 		if (subject == null) throw new ArgumentNullException("subject");
 		if (predicate == null) throw new ArgumentNullException("predicate");
@@ -122,7 +134,15 @@ class Manipulation {
 	}
 	public static function first<T>(subject:Iterable<T>, ?predicate: T -> Bool):T {
 		if (subject == null) throw new ArgumentNullException("subject");
-		return predicate != null ? subject.where(predicate).iterator().next() : subject.iterator().next();
+		var iter = predicate != null ? subject.where(predicate).iterator() : subject.iterator();
+		if (!iter.hasNext()) throw new Exception("Element not found");
+		return iter.next();
+	}
+	public static function firstOrNull<T>(subject:Iterable<T>, ?predicate: T -> Bool):T {
+		if (subject == null) throw new ArgumentNullException("subject");
+		var iter = predicate != null ? subject.where(predicate).iterator() : subject.iterator();
+		if (!iter.hasNext()) return null;
+		return iter.next();
 	}
 	public static function join<T>(scattered:Iterable<Iterable<T>>):Iterable<T> {
 		if (scattered == null) throw new ArgumentNullException("scattered");
