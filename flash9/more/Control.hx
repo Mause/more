@@ -19,6 +19,7 @@ import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
+import flash.ui.Keyboard;
 import haxe.more.exceptions.ArgumentNullException;
 
 class Control {
@@ -49,10 +50,19 @@ class Control {
 	public function isKeyDown(keyCode:Int):Bool return keys[keyCode]
 	public function isKeyUp(keyCode:Int):Bool return !keys[keyCode]
 	
-	function enterFrame(e:Event) mouseClicked = false	
+	public inline var isCtrlDown(gIsCtrlDown, null):Bool;
+	inline function gIsCtrlDown() return keys[Keyboard.CONTROL]
+	public inline var isEnterDown(gIsEnterDown, null):Bool;
+	inline function gIsEnterDown() return keys[Keyboard.ENTER]
+	public inline var isShiftDown(gIsShiftDown, null):Bool;
+	inline function gIsShiftDown() return keys[Keyboard.SHIFT]
+	public inline var isSpaceDown(gIsSpaceDown, null):Bool;
+	inline function gIsSpaceDown() return keys[Keyboard.SPACE]
+	
+	function enterFrame(e:Event) mouseClicked = false
 	function mouseIsDown(e:MouseEvent) mouseUp = !(mouseDown = true)
 	function mouseIsUp(e:MouseEvent) mouseUp = !(mouseDown = false)
-	function mouseIsClicked(e:MouseEvent) mouseClicked = true	
+	function mouseIsClicked(e:MouseEvent) mouseClicked = true
 	function keyUp(e:KeyboardEvent) keys[e.keyCode] = false	
 	function keyDown(e:KeyboardEvent) keys[e.keyCode] = true
 }

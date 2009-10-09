@@ -18,6 +18,7 @@ package haxe.more.color;
 import haxe.more.exceptions.ArgumentNullException;
 import haxe.more.data.structures.ReadOnlyArray;
 import haxe.more.exceptions.NotImplementedException;
+import haxe.more.Helpers;
 import haxe.Stack;
 using haxe.more.color.Hsl;
 using haxe.more.data.Manipulation;
@@ -34,7 +35,7 @@ class Hsl implements IHsl {
 	var _l:Float;
 	var _a:Float;
 	
-	public function new(h:Float, s:Float, l :Float, a:Float = 0) {
+	public function new(h:Float, s:Float, l:Float, a:Float = 0) {
 		this.h = h;
 		this.s = s;
 		this.l = l;
@@ -42,7 +43,7 @@ class Hsl implements IHsl {
 	}
 	
 	public function toString():String
-		return "hsla( " + h + ", " + s + ", " + l + ", " + a + ")"
+		return "hsla(" + h + ", " + s + ", " + l + ", " + a + ")"
 	
 	/**
 	 * The alpha component of this color.
@@ -59,10 +60,10 @@ class Hsl implements IHsl {
 	 * The hue component of this color.
 	 */
 	public var h(gH,sH):Float;
-	function gH():Float { trace(_h); trace(Stack.callStack().join("\n"));
+	function gH():Float {
 		return _h;
 	}
-	function sH(value:Float):Float { trace([_h, value, value % 360, mod(360, value)]); trace(Stack.callStack().join("\n"));
+	function sH(value:Float):Float {
 		return _h = mod(360, value);
 	}
 	
@@ -108,11 +109,22 @@ class Hsl implements IHsl {
 		if (a == null) throw new ArgumentNullException("a");
 		if (b == null) throw new ArgumentNullException("b");
 		var inverse = 1 - padding;
-		//var bh = b.h < a.h ? b.h + 360 : b.h;
-		a.h = a.h * inverse + b.h * padding;
+		var correctedH = b.h < a.h ? b.h + 360 : b.h;
+		a.h = a.h * inverse + correctedH * padding;
 		a.s = a.s * inverse + b.s * padding;
 		a.l = a.l * inverse + b.l * padding;
 		a.a = a.a * inverse + b.a * padding;
+		return a;
+	}
+	public static function avarageLeft(a:Hsl, b:IFixedHsl, padding:Float = 0.5):Hsl {
+		if (a == null) throw new ArgumentNullException("a");
+		if (b == null) throw new ArgumentNullException("b");
+		var inverse = 1 - padding;
+		var correctedH = b.h < a.h ? a.h - 360 : a.h;
+		a.h = correctedH * padding + b.h * inverse;
+		a.s = a.s * padding + b.s * inverse;
+		a.l = a.l * padding + b.l * inverse;
+		a.a = a.a * padding + b.a * inverse;
 		return a;
 	}
 	
@@ -233,7 +245,6 @@ class Hsl implements IHsl {
 				p + ((q - p) * 6 * (2 / 3 - tb))
 			else
 				p;
-		
 		return new Rgb(tr, tg, tb, hsl.a);
 	}
 	

@@ -35,7 +35,19 @@ class Helpers {
 	 * @param	b
 	 * @return the highest  argument, [a] or[b].
 	 */
-	public static inline function max(a:Float, b:Float):Float return a > b ? a : b	
+	public static inline function max(a:Float, b:Float):Float return a > b ? a : b
+	
+	/**
+	 * Tests for a float to be NaN/null.
+	 * @param	a?
+	 * @return
+	 */
+	public static inline function isNaN(?a:Float) return a == null || a.string() == "NaN"
+	
+	public static inline function equals(a:Float, b:Float, margin:Float) return abs(a - b) < margin
+
+	
+	public static inline function abs(a:Float) return a < 0 ? -a : a
 	
 	/**
 	 * Returns the lowest  argument, [a] or[b].

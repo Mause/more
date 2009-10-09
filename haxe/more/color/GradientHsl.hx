@@ -24,8 +24,6 @@ class GradientHsl<A:IFixedHsl, B:IFixedHsl> extends Transition<A, B, IFixedHsl> 
 	}
 	
 	public override function at(padding:Float):IFixedHsl {
-		var inverse = 1 - padding;
-		return a.clone().avarageRight(b);
-		return new Hsl(a.h * inverse + b.h * padding, a.s * inverse + b.s * padding, a.l * inverse + b.l * padding, a.a * inverse + b.a * padding);
+		return a.clone().avarageRight(b, padding);
 	}
 }
