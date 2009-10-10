@@ -21,25 +21,25 @@ package haxe.more.data.structures;
  * Used for anonymous data containers with anonymous data slots.
  */
 class Tuple5<T1, T2, T3, T4, T5> {
-	public var value1(default, null):T1;
-	public var value2(default, null):T2;
-	public var value3(default, null):T3;
-	public var value4(default, null):T4;
-	public var value5(default, null):T5;
+	public var first(default, null):T1;
+	public var second(default, null):T2;
+	public var third(default, null):T3;
+	public var fourth(default, null):T4;
+	public var fifth(default, null):T5;
 	
 	/**
 	 * Creates a new tuple.
-	 * @param	value1 The first value.
-	 * @param	value2 The second value.
-	 * @param	value3 The third value.
-	 * @param	value4 The fourth value.
-	 * @param	value5 The fifth value.
+	 * @param	first The first value.
+	 * @param	second The second value.
+	 * @param	third The third value.
+	 * @param	fourth The fourth value.
+	 * @param	fifth The fifth value.
 	 */
-	public function new(value1:T1, value2:T2, value3:T3, value4:T4, value5:T5) {
-		this.value1 = value1;
-		this.value2 = value2;
-		this.value3 = value3;
-		this.value4 = value4;
-		this.value5 = value5;
+	public function new(first:T1, second:T2, third:T3, fourth:T4, fifth:T5) {
+		this.first = first;
+		this.second = second;
+		this.third = third;
+		this.fourth = fourth;
+		this.fifth = fifth;
 	}	
 }
