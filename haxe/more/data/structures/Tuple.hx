@@ -31,6 +31,13 @@ class Tuple {
 	public static function two<T1, T2>(first:T1, second:T2):Tuple2<T1, T2> {
 		return new InternalTuple2(first, second);
 	}
+	
+	public static inline function asTuple2<T1, T2, T3>(tuple:Tuple3<T1, T2, T3>):Tuple2<T1, T2>
+		return tuple
+	public static inline function asTuple3<T1, T2, T3, T4>(tuple:Tuple4<T1, T2, T3, T4>):Tuple3<T1, T2, T3>
+		return tuple
+	public static inline function asTuple4<T1, T2, T3, T4, T5>(tuple:Tuple5<T1, T2, T3, T4, T5>):Tuple4<T1, T2, T3, T4>
+		return tuple
 }
 class InternalTuple2<T1, T2> {
 	public var first(default, null):T1;
@@ -89,5 +96,14 @@ class InternalTuple5<T1, T2, T3, T4, T5> extends InternalTuple4<T1, T2, T3, T4> 
 	public function new(first:T1, second:T2, third:T3, fourth:T4, fifth:T5) {
 		super(first, second, third, fourth);
 		this.fifth = fifth;
+	}
+	
+	public function toString():String {
+		return "Tuple("
+			+ first + ", "
+			+ second + ", "
+			+ third + ", "
+			+ fourth + ", "
+			+ fifth + ")";
 	}
 }
