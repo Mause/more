@@ -24,7 +24,7 @@ using haxe.more.data.Manipulation;
  */
 
 class Manipulation {	
-	public static function avarage(subject:Iterable<Int>):Float {
+	public static function average(subject:Iterable<Float>):Float {
 		if (subject == null) throw new ArgumentNullException("subject");
 		var amount = 0;
 		var total = 0.0;
@@ -37,6 +37,12 @@ class Manipulation {
 		}
 		return total / amount;
 	}
+	
+	public inline static function averageGeneric < T > (subject:Iterable < T > , converter:T->Float):Float
+		return subject.select(converter).average()
+	
+	public static function averageInt(subject:Iterable<Int>):Float
+		return averageGeneric(subject, function(x)  return x )
 	
 	public static function concat<T>(subject:Iterable<T>, postfix1:Iterable<T>, ?postfix2:Iterable<T>, ?postfix3:Iterable<T>, ?postfix4:Iterable<T>):Iterable<T> {// Hey, a programming style experiment! Came out a little flawed.
 		if (subject == null) throw new ArgumentNullException("subject");
