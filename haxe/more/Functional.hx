@@ -17,17 +17,17 @@
 package haxe.more;
 import haxe.more.exceptions.ArgumentNullException;
 
-typedef Action = Void -> Void;
-typedef Action1<A> = A -> Void;
-typedef Action2<A1, A2> = A1 -> A2 -> Void;
-typedef Action3<A1, A2, A3> = A1 -> A3 ->A2 -> Void;
-typedef Action4<A1, A2, A3, A4> = A1 -> A2 -> A3 -> A4 -> Void;
-
 typedef Func<R> = Void -> R;
 typedef Func1<A, R> = A -> R;
 typedef Func2<A1, A2, R> = A1 -> A2 -> R;
-typedef Func3<A1, A2, A3, R> = A1 -> A3 ->A2 -> R;
+typedef Func3<A1, A2, A3, R> = A1 -> A2 -> A3 -> R;
 typedef Func4<A1, A2, A3, A4, R> = A1 -> A2 -> A3 -> A4 -> R;
+
+typedef Action = Func<Void>;
+typedef Action1<A> = Func1<A, Void>;
+typedef Action2<A1, A2> = Func2<A1, A2, Void>;
+typedef Action3<A1, A2, A3> = Func3<A1, A2, A3, Void>;
+typedef Action4<A1, A2, A3, A4> = Func4<A1, A2, A3, A4, Void>;
 
 typedef Recursive1<A, R> = Recursive1<A, R> -> Func1<A, R>;
 typedef Recursive2<A1, A2, R> = Recursive2<A1, A2, R> -> Func2<A1, A2, R>;

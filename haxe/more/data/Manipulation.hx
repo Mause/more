@@ -16,6 +16,9 @@
  **/
 package haxe.more.data;
 import haxe.more.exceptions.ArgumentNullException;
+import haxe.more.data.structures.SingleLinkedList;
+import haxe.more.data.structures.DoubleLinkedList;
+import haxe.more.exceptions.Exception;
 using haxe.more.data.Manipulation;
 
 /**
@@ -77,29 +80,50 @@ class Manipulation {
 			);
 	}
 	
-	public static function toList<T>(subject:Iterable<T>):List<T> {
-		if (subject == null) throw new ArgumentNullException("subject");
-		var result = new List<T>();
-		for (item in subject) {
-			result.add(item);
-		}
-		return result;
-	}
-	
 	public static function toArray<T>(subject:Iterable<T>):Array<T> {
 		if (subject == null) throw new ArgumentNullException("subject");
 		var result = new Array<T>();
-		for (item in subject) {
-			result.push(item);
-		}
+		for (item in subject) result.push(item);
 		return result;
 	}
+	
+	public static function toDoubleLinkedList<T>(subject:Iterable<T>):DoubleLinkedList<T> {
+		if (subject == null) throw new ArgumentNullException("subject");
+		var result = new DoubleLinkedList<T>();
+		for (item in subject) result.push(item);
+		return result;
+	}
+	
+	public static function toList<T>(subject:Iterable<T>):List<T> {
+		if (subject == null) throw new ArgumentNullException("subject");
+		var result = new List<T>();
+		for (item in subject) result.add(item);
+		return result;
+	}
+	
+	public static function toSingleLinkedList<T>(subject:Iterable<T>):SingleLinkedList<T> {
+		if (subject == null) throw new ArgumentNullException("subject");
+		var result = new SingleLinkedList<T>();
+		for (item in subject) result.push(item);
+		return result;
+	}	
 	
 	// The non-do-ers, short and simple bodies
 	public static function where<T>(subject:Iterable<T>, predicate: T -> Bool):Iterable<T> {
 		if (subject == null) throw new ArgumentNullException("subject");
 		if (predicate == null) throw new ArgumentNullException("predicate");
 		return new WhereIterable(subject, predicate);	
+	}
+	public static function at<T>(subject:Iterable<T>, index:Int):T {
+		if (subject == null) throw new ArgumentNullException("subject");
+		var iter = subject.iterator();
+		while (iter.hasNext()) {
+			if (index-- < 0) {
+				return iter.next();
+			}
+			iter.next();
+		}
+		return null;
 	}
 	public static function after<T>(subject:Iterable<T>, predicate: T -> Bool):Iterable<T> {
 		if (subject == null) throw new ArgumentNullException("subject");
@@ -118,7 +142,15 @@ class Manipulation {
 	}
 	public static function first<T>(subject:Iterable<T>, ?predicate: T -> Bool):T {
 		if (subject == null) throw new ArgumentNullException("subject");
-		return predicate != null ? subject.where(predicate).iterator().next() : subject.iterator().next();
+		var iter = predicate != null ? subject.where(predicate).iterator() : subject.iterator();
+		if (!iter.hasNext()) throw new Exception("Element not found");
+		return iter.next();
+	}
+	public static function firstOrNull<T>(subject:Iterable<T>, ?predicate: T -> Bool):T {
+		if (subject == null) throw new ArgumentNullException("subject");
+		var iter = predicate != null ? subject.where(predicate).iterator() : subject.iterator();
+		if (!iter.hasNext()) return null;
+		return iter.next();
 	}
 	public static function join<T>(scattered:Iterable<Iterable<T>>):Iterable<T> {
 		if (scattered == null) throw new ArgumentNullException("scattered");
@@ -224,11 +256,12 @@ class ConcatIterator<T> {
 
 class IteratorIterable<T> {
 	public var subject(default, null):Iterator<T>;
-	public var iterated(default, null):Array<T>;
+	public var iterated(default, null):List<T>;
 	
 	public function new(subject:Iterator<T>) {
 		this.subject = subject;
-		iterated = new Array();
+		iterated = new List();
+		var list = new List<T>();
 	}
 	
 	public function iterator():Iterator<T>
@@ -237,22 +270,22 @@ class IteratorIterable<T> {
 class IteratorIterator<T> {
 	var _subject:IteratorIterable<T>;
 	var _index:Int;
+	var _iter:Iterator<T>;
 	
 	public function new(subject:IteratorIterable<T>) {
 		_subject = subject;
 		_index = 0;
+		_iter = subject.iterated.iterator();
 	}
 	
 	public function hasNext():Bool
-		return _index < _subject.iterated.length || _subject.subject.hasNext()
+		return _iter.hasNext() || _subject.subject.hasNext()
 	
 	public function next():T {
-		if (_index < _subject.iterated.length) {
-			return _subject.iterated[_index];
-			_index++;
+		if (_iter.hasNext()) {
+			return _iter.next();
 		} else if(_subject.subject.hasNext()) {
 			var result = _subject.subject.next();
-			_index++;
 			_subject.iterated.push(result);
 			return result;
 		}

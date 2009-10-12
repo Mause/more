@@ -1,4 +1,4 @@
-﻿/** EmptyIterator.hx
+﻿/** KeyEventArgs.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -14,29 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-package haxe.more;
+package flash.more;
+import haxe.more.interaction.EventArgs;
 
-class EmptyIterator<T> {
-	/**
-	 * Creates a new nothing iterator.
-	 */
-	public function new();
-	
-	/**
-	 * Returns always false.
-	 * @return always false.
-	 */
-	public function hasNext():Bool return false
-	
-	/**
-	 * Returns always null.
-	 * @return always null.
-	 */
-	public function next():T return null
-	
-	/**
-	 * Returns the string representation of this.
-	 * @return the string representation of this.
-	 */
-	public function toString():String return "An empty iterator."
+class KeyEventArgs extends EventArgs {
+	public var key(default, null):Int;
+	public function new(key:Int) {
+		super();
+		this.key = key;
+	}
 }

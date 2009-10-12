@@ -1,8 +1,8 @@
-﻿/** EmptyIterator.hx
+﻿/** IFixedRgb32.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
@@ -14,29 +14,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-package haxe.more;
+package haxe.more.color;
 
-class EmptyIterator<T> {
+interface IFixedRgb32 {
 	/**
-	 * Creates a new nothing iterator.
+	 * The rgb value of this color.
 	 */
-	public function new();
+	public var rgb(gRgb, null):Int;
 	
 	/**
-	 * Returns always false.
-	 * @return always false.
+	 * The alpha component of this color.
 	 */
-	public function hasNext():Bool return false
+	public var a(gA, null):Int;
 	
 	/**
-	 * Returns always null.
-	 * @return always null.
+	 * The red component of this color.
 	 */
-	public function next():T return null
+	public var r(gR, null):Int;
 	
 	/**
-	 * Returns the string representation of this.
-	 * @return the string representation of this.
+	 * The green component of this color.
 	 */
-	public function toString():String return "An empty iterator."
+	public var g(gG, null):Int;
+	
+	/**
+	 * The blue component of this color.
+	 */
+	public var b(gB, null):Int;
+	
+	/**
+	 * The rgba value of this color.
+	 */
+	public var rgba(gRgba, null):#if neko Int32 #else Int #end;
 }

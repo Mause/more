@@ -17,7 +17,7 @@
 package haxe.more.data.sources;
 import haxe.more.exceptions.ArgumentNullException;
 
-class String {
+class StringSource {
 	public static function iterator(string:String):Iterator<String> {
 		if (string == null) throw new ArgumentNullException("string");
 		return new StringIterator(string);

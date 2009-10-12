@@ -16,6 +16,7 @@
  **/
 package haxe.more.data.structures;
 import haxe.more.EmptyIterator;
+import haxe.more.exceptions.Exception;
 
 class SingleLinkedList<T> {
 	var sentinel:SingleLinkedListNode<T>;
@@ -36,13 +37,14 @@ class SingleLinkedList<T> {
 	/**
 	 * Returns true if this list does not contain any nodes.
 	 */
-	public inline var empty(gEmpty, null):Bool;
-	inline function gEmpty():Bool return length == 0
+	public inline var isEmpty(gIsEmpty, null):Bool;
+	inline function gIsEmpty():Bool return (length == 0)
 	
 	/**
 	 * Constructs a new list.
 	 */
-	public function new<T>() {
+	public function new() {
+		length = 0;
 		sentinel = SingleLinkedListNodeOperator.create(this, null);
 	}
 	
@@ -51,7 +53,7 @@ class SingleLinkedList<T> {
 	 * @param	value The value to add to the tail.
 	 */
 	public function push(value:T):Void {
-		if (empty)
+		if (isEmpty)
 			sentinel.append(value);
 		else
 			tail.append(value);
@@ -62,7 +64,7 @@ class SingleLinkedList<T> {
 	 * @return The value of the removed node.
 	 */
 	public function pop():T {
-		if (empty) throw "List is empty";	
+		if (isEmpty) throw new EmptyStructureException();
 		return tail.remove();
 	}
 	
@@ -71,7 +73,7 @@ class SingleLinkedList<T> {
 	 * @return The value of the removed node.
 	 */
 	public function shift():T {
-		if (empty) throw "List is empty";	
+		if (isEmpty) throw new EmptyStructureException();	
 		return sentinel.removeNext();
 	}
 	
@@ -88,7 +90,8 @@ class SingleLinkedList<T> {
 	 * @return an iterator to iterate trough this list.
 	 */
 	public function iterator():Iterator<T> {
-		return empty ? new EmptyIterator<T>() : head.iterator();
+		// Type inference went mad at runtime with flash when using short-if ?:, so oneline-if is used.
+		if (isEmpty) return new EmptyIterator<T>(); else return head.iterator();
 	}
 }
 
