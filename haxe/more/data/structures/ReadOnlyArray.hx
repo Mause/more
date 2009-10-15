@@ -26,7 +26,7 @@ class ReadOnlyArray<T> {
 	 */
 	public function new(array:Array<T>) {
 		if (array == null) throw new ArgumentNullException("array");
-		_array = array;
+		_array = array.copy();
 	}
 	
 	/**
@@ -35,6 +35,14 @@ class ReadOnlyArray<T> {
 	public var length(gLength, null):Int;
 	function gLength() return _array.length
 
+	/**
+	 * Retrieves that item at the given index
+	 * 
+	 * @param	index	the index of the element to retrieve.
+	 * @return	The element
+	 */
+	public function getAt(index:Int):T return _array[index]
+	
 	/**
 	 * Returns a new Array by appending [a] to [this].
 	 * @param	a The array to append to [this].
@@ -80,6 +88,5 @@ class ReadOnlyArray<T> {
 	 * @return an iterator of the Array values.
 	 */
 	public function iterator():Iterator<Null<T>>
-		return _array.iterator()
-	
+		return _array.iterator()	
 }
