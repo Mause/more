@@ -36,6 +36,14 @@ class ReadOnlyArray<T> {
 	function gLength() return _array.length
 
 	/**
+	 * Retrieves that item at the given index
+	 * 
+	 * @param	index	the index of the element to retrieve.
+	 * @return	The element
+	 */
+	public function getAt(index:Int):T return _array[index]
+	
+	/**
 	 * Returns a new Array by appending [a] to [this].
 	 * @param	a The array to append to [this].
 	 * @return a new Array by appending [a] to [this].
@@ -80,6 +88,5 @@ class ReadOnlyArray<T> {
 	 * @return an iterator of the Array values.
 	 */
 	public function iterator():Iterator<Null<T>>
-		return _array.iterator()
-	
+		return _array.iterator()	
 }
