@@ -26,7 +26,7 @@ class ReadOnlyArray<T> {
 	 */
 	public function new(array:Array<T>) {
 		if (array == null) throw new ArgumentNullException("array");
-		_array = array.copy();
+		_array = array;
 	}
 	
 	/**
