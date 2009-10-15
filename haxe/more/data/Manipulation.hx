@@ -26,7 +26,13 @@ using haxe.more.data.Manipulation;
  * OMG, code code!
  */
 
-class Manipulation {	
+class Manipulation {
+	public static function after<T>(subject:Iterable<T>, predicate: T -> Bool):Iterable<T> {
+		if (subject == null) throw new ArgumentNullException("subject");
+		if (predicate == null) throw new ArgumentNullException("predicate");
+		return new AfterIterable(subject, predicate);
+	}
+	
 	public static function average(subject:Iterable<Float>):Float {
 		if (subject == null) throw new ArgumentNullException("subject");
 		var amount = 0;
@@ -41,11 +47,29 @@ class Manipulation {
 		return total / amount;
 	}
 	
-	public inline static function averageGeneric < T > (subject:Iterable < T > , converter:T->Float):Float
-		return subject.select(converter).average()
+	public static function averageGeneric<T> (subject:Iterable<T> , converter:T->Float):Float {
+		if (subject == null) throw new ArgumentNullException("subject");
+		if (converter == null) throw new ArgumentNullException("converter");
+		return subject.select(converter).average();
+	}
 	
-	public static function averageInt(subject:Iterable<Int>):Float
-		return averageGeneric(subject, function(x)  return x )
+	public static function averageInt(subject:Iterable<Int>):Float {
+		if (subject == null) throw new ArgumentNullException("subject");		
+		return averageGeneric(subject, function(x) return x);
+	}
+	
+
+	public static function at<T>(subject:Iterable<T>, index:Int):T {
+		if (subject == null) throw new ArgumentNullException("subject");
+		var iter = subject.iterator();
+		while (iter.hasNext()) {
+			if (index-- < 0) {
+				return iter.next();
+			}
+			iter.next();
+		}
+		return null;
+	}
 	
 	public static function concat<T>(subject:Iterable<T>, postfix1:Iterable<T>, ?postfix2:Iterable<T>, ?postfix3:Iterable<T>, ?postfix4:Iterable<T>):Iterable<T> {// Hey, a programming style experiment! Came out a little flawed.
 		if (subject == null) throw new ArgumentNullException("subject");
@@ -58,6 +82,20 @@ class Manipulation {
 					? new ConcatIterable([subject, postfix1, postfix2, postfix3])
 					: new ConcatIterable([subject, postfix1, postfix2, postfix3, postfix4]);
 	}
+
+	public static function first<T>(subject:Iterable<T>, ?predicate: T -> Bool):T {
+		if (subject == null) throw new ArgumentNullException("subject");
+		var iter = predicate != null ? subject.where(predicate).iterator() : subject.iterator();
+		if (!iter.hasNext()) throw new Exception("Element not found");
+		return iter.next();
+	}
+
+	public static function firstOrNull<T>(subject:Iterable<T>, ?predicate: T -> Bool):T {
+		if (subject == null) throw new ArgumentNullException("subject");
+		var iter = predicate != null ? subject.where(predicate).iterator() : subject.iterator();
+		if (!iter.hasNext()) return null;
+		return iter.next();
+	}
 	
 	public static function fold<T, C>(subject:Iterable<T>, ?seed:C, aggregator: T -> C -> C):C {
 		if (subject == null) throw new ArgumentNullException("subject");
@@ -67,17 +105,26 @@ class Manipulation {
 		}
 		return seed;
 	}
-	
-	public static function selectMany<T, U, V>(subject:Iterable<T>, collection:Iterable<U>, selector: T -> U -> V):Iterable<V> {
+
+	public static function iterable<T>(subject:Iterator<T>):Iterable<T> {
 		if (subject == null) throw new ArgumentNullException("subject");
-		if (collection == null) throw new ArgumentNullException("collection");
+		return new IteratorIterable(subject);
+	}
+
+	public static function join<T>(scattered:Iterable<Iterable<T>>):Iterable<T> {
+		if (scattered == null) throw new ArgumentNullException("scattered");
+		return new ConcatIterable(scattered);
+	}
+
+	public static function select<T, V>(subject:Iterable<T>, selector: T -> V):Iterable<V> {
+		if (subject == null) throw new ArgumentNullException("subject");
 		if (selector == null) throw new ArgumentNullException("selector");
-		return new ConcatIterable(
-			subject.select(function(first)
-				return collection.select(function(second)
-					return selector(first, second)
-				))
-			);
+		return new SelectIterable(subject, selector);
+	}
+
+	public static function reverse<T>(subject:Iterable<T>):Iterable<T> {
+		if (subject == null) throw new ArgumentNullException("subject");
+		return new ReverseIterable(subject);
 	}
 	
 	public static function toArray<T>(subject:Iterable<T>):Array<T> {
@@ -106,63 +153,18 @@ class Manipulation {
 		var result = new SingleLinkedList<T>();
 		for (item in subject) result.push(item);
 		return result;
-	}	
-	
-	// The non-do-ers, short and simple bodies
-	public static function where<T>(subject:Iterable<T>, predicate: T -> Bool):Iterable<T> {
-		if (subject == null) throw new ArgumentNullException("subject");
-		if (predicate == null) throw new ArgumentNullException("predicate");
-		return new WhereIterable(subject, predicate);	
 	}
-	public static function at<T>(subject:Iterable<T>, index:Int):T {
-		if (subject == null) throw new ArgumentNullException("subject");
-		var iter = subject.iterator();
-		while (iter.hasNext()) {
-			if (index-- < 0) {
-				return iter.next();
-			}
-			iter.next();
-		}
-		return null;
-	}
-	public static function after<T>(subject:Iterable<T>, predicate: T -> Bool):Iterable<T> {
-		if (subject == null) throw new ArgumentNullException("subject");
-		if (predicate == null) throw new ArgumentNullException("predicate");
-		return new AfterIterable(subject, predicate);
-	}
+
 	public static function until<T>(subject:Iterable<T>, predicate: T -> Bool):Iterable<T> {
 		if (subject == null) throw new ArgumentNullException("subject");
 		if (predicate == null) throw new ArgumentNullException("predicate");
 		return new UntilIterable(subject, predicate);
 	}
-	public static function select<T, V>(subject:Iterable<T>, selector: T -> V):Iterable<V> {
+	
+	public static function where<T>(subject:Iterable<T>, predicate: T -> Bool):Iterable<T> {
 		if (subject == null) throw new ArgumentNullException("subject");
-		if (selector == null) throw new ArgumentNullException("selector");
-		return new SelectIterable(subject, selector);
-	}
-	public static function first<T>(subject:Iterable<T>, ?predicate: T -> Bool):T {
-		if (subject == null) throw new ArgumentNullException("subject");
-		var iter = predicate != null ? subject.where(predicate).iterator() : subject.iterator();
-		if (!iter.hasNext()) throw new Exception("Element not found");
-		return iter.next();
-	}
-	public static function firstOrNull<T>(subject:Iterable<T>, ?predicate: T -> Bool):T {
-		if (subject == null) throw new ArgumentNullException("subject");
-		var iter = predicate != null ? subject.where(predicate).iterator() : subject.iterator();
-		if (!iter.hasNext()) return null;
-		return iter.next();
-	}
-	public static function join<T>(scattered:Iterable<Iterable<T>>):Iterable<T> {
-		if (scattered == null) throw new ArgumentNullException("scattered");
-		return new ConcatIterable(scattered);
-	}
-	public static function reverse<T>(subject:Iterable<T>):Iterable<T> {
-		if (subject == null) throw new ArgumentNullException("subject");
-		return new ReverseIterable(subject);
-	}
-	public static function iterable<T>(subject:Iterator<T>):Iterable<T> {
-		if (subject == null) throw new ArgumentNullException("subject");
-		return new IteratorIterable(subject);
+		if (predicate == null) throw new ArgumentNullException("predicate");
+		return new WhereIterable(subject, predicate);	
 	}
 }
 
