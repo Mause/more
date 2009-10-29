@@ -17,6 +17,7 @@
 package flash.more;
 import flash.display.Graphics;
 import haxe.more.exceptions.ArgumentNullException;
+import haxe.more.exceptions.Exception;
 
 using flash.more.Shapes;
 
@@ -107,12 +108,13 @@ class Shapes {
 	
 	public static function drawOpenPie(g:Graphics, x:Float, y:Float, innerRadius:Float, radius:Float, arc:Float, angle:Float = 0):Graphics {
 		if (g == null) throw new ArgumentNullException("g");
-		g.moveTo(x  + Math.cos(angle) * radius, y + Math.sin(angle) * radius);
-		g.lineTo(x  + Math.cos(angle) * radius, y + Math.sin(angle) * radius);
+		var trace = function(args:Dynamic) throw new Exception(args.toString());
+		g.moveTo(x + Math.cos(angle) * radius, y + Math.sin(angle) * radius);
+		g.lineTo(x + Math.cos(angle) * radius, y + Math.sin(angle) * radius);
 		g.drawArc(x, y, radius, arc, angle);
 		
 		angle += arc;
-		arc *= -1;		
+		arc *= -1;
 		
 		g.lineTo(x  + Math.cos(angle) * radius, y + Math.sin(angle) * radius);
 		g.drawArc(x, y, innerRadius, arc, angle);
