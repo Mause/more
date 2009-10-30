@@ -44,7 +44,7 @@ class Shapes {
 		var outerY = y + Math.sin(angle) * radius;
 		// Move the pen
 		g.moveTo(outerX, outerY);
-		for (i in 0...segments) {
+		for (i in 0...segments) { 
 			angle += segmentAngle;
 			var controlAngle = angle - (segmentAngle / 2);
 			outerX = x + Math.cos(angle) * radius;

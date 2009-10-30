@@ -22,7 +22,7 @@ class StopWatch {
 	
 	public function new() _times = new SingleLinkedList<Float>()
 	public function time() return {
-		_times.push(latest = Helpers.microtime);
+		_times.push(latest = Default.microtime);
 		return latest;
 	}
 	public function iterator()

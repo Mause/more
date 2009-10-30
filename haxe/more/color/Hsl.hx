@@ -18,11 +18,11 @@ package haxe.more.color;
 import haxe.more.exceptions.ArgumentNullException;
 import haxe.more.data.structures.ReadOnlyArray;
 import haxe.more.exceptions.NotImplementedException;
-import haxe.more.Helpers;
+import haxe.more.Default;
 import haxe.Stack;
 using haxe.more.color.Hsl;
 using haxe.more.data.Manipulation;
-using haxe.more.Helpers;
+using haxe.more.Default;
 using Std;
 #if neko
 import haxe.Int32;
@@ -248,7 +248,7 @@ class Hsl implements IHsl {
 		return new Rgb(tr, tg, tb, hsl.a);
 	}
 	
-		/** Helpers **/
+		/** Default **/
 	static inline function max(a:Float, b) return a > b ? a : b	
 	static inline function min(a:Float, b) return a < b ? a : b
 	static inline function cap(minimum:Float, maximum, value) return min(maximum, max(minimum, value))

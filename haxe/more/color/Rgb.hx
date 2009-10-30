@@ -20,7 +20,7 @@ import haxe.more.data.structures.ReadOnlyArray;
 import haxe.more.exceptions.NotImplementedException;
 using haxe.more.color.Rgb;
 using haxe.more.data.Manipulation;
-using haxe.more.Helpers;
+using haxe.more.Default;
 using Std;
 #if neko
 import haxe.Float32;
@@ -197,7 +197,7 @@ class Rgb implements IRgb {
 	}
 	
 	
-	/** Helpers **/
+	/** Default **/
 	static inline function max(a:Float, b) return a > b ? a : b	
 	static inline function min(a:Float, b) return a < b ? a : b
 	static inline function m(color) return color & 0xFF // masks.

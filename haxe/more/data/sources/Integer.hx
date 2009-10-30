@@ -15,7 +15,7 @@
  * limitations under the License.
  **/
 package haxe.more.data.sources;
-import haxe.more.Helpers;
+import haxe.more.Default;
 import haxe.more.exceptions.ArgumentNullException;
 using haxe.more.data.sources.Integer;
 using haxe.more.data.Manipulation;
@@ -25,13 +25,13 @@ class Integer {
 		return new IntRangeIterable(from, to, step)
 	
 	public inline static var naturals(gNaturals, null):Iterable<Int>;
-	inline static function gNaturals() return 0.to(Helpers.maxInt)
+	inline static function gNaturals() return 0.to(Default.maxInt)
 	
 	public inline static var evenNaturals(gEvenNaturals, null):Iterable<Int>;
-	inline static function gEvenNaturals() return 0.to(Helpers.maxInt, 2)
+	inline static function gEvenNaturals() return 0.to(Default.maxInt, 2)
 	
 	public inline static var unevenNaturals(gUnevenNaturals, null):Iterable<Int>;
-	inline static function gUnevenNaturals() return 1.to(Helpers.maxInt, 2)
+	inline static function gUnevenNaturals() return 1.to(Default.maxInt, 2)
 }
 class IntRangeIterable {
 	var _from:Int;

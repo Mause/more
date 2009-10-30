@@ -15,7 +15,7 @@
  * limitations under the License.
  **/
 package haxe.more.threading;
-import haxe.more.Helpers;
+import haxe.more.Default;
 import haxe.more.threading.Threading;
 import haxe.more.exceptions.ArgumentNullException;
 
@@ -93,7 +93,7 @@ class BalancedThreadProcessor {
 		if (_karma <= 0) return false;
 		
 		// Start the payment of time here, saving the starting time in endTime.
-		var endTime = Helpers.microtime + _karma;
+		var endTime = Default.microtime + _karma;
 
 		// Prepare the threads
 		var current = _sentinel.next;
@@ -110,17 +110,17 @@ class BalancedThreadProcessor {
 			//Ok, this is where the real hard job is done
 			do {
 				if(current.timeLeft > 0) {
-					var startTime = Helpers.microtime;
+					var startTime = Default.microtime;
 					if (current.thread(Std.int(current.timeLeft))) {
 						remove(current.thread);
 					} else {
-						current.timeLeft -= Helpers.microtime - startTime;
+						current.timeLeft -= Default.microtime - startTime;
 					}
 				}
 			} while ((current = current.next) != null);
-		} while (endTime > Helpers.microtime);
+		} while (endTime > Default.microtime);
 		
-		_karma = endTime - Helpers.microtime;
+		_karma = endTime - Default.microtime;
 		if (_karma > 0) _karma = 0;
 		
 		return false;

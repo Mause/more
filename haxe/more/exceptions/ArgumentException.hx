@@ -15,7 +15,7 @@
  * limitations under the License.
  **/
 package haxe.more.exceptions;
-import haxe.more.Helpers;
+import haxe.more.Default;
 import haxe.Stack;
 
 class ArgumentException extends Exception {
@@ -30,5 +30,5 @@ class ArgumentException extends Exception {
 	 * Returns the string representation of the stackTrace.
 	 * @return the string representation of the stackTrace.
 	 */
-	public override function toString():String return message + Helpers.newLine + paramName + Stack.toString(rawStackTrace)
+	public override function toString():String return message + Default.newLine + paramName + Stack.toString(rawStackTrace)
 }

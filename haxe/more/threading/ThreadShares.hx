@@ -15,7 +15,7 @@
  * limitations under the License.
  **/
 package haxe.more.threading;
-import haxe.more.Helpers;
+import haxe.more.Default;
 
 class ThreadShares {
 	static var init = (function() {
@@ -23,7 +23,7 @@ class ThreadShares {
 		Important = 256;
 		Low = 64;
 		Medium = 128;
-		RealTime = Helpers.maxInt;		
+		RealTime = Default.maxInt;		
 	}());
 	
 	/**

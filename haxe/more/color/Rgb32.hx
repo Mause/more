@@ -20,7 +20,7 @@ import haxe.more.data.structures.ReadOnlyArray;
 import haxe.more.exceptions.NotImplementedException;
 using haxe.more.color.Rgb32;
 using haxe.more.data.Manipulation;
-using haxe.more.Helpers;
+using haxe.more.Default;
 using Std;
 #if neko
 import haxe.Int32;
@@ -275,7 +275,7 @@ class Rgb32 implements IRgb32 {
 	}
 	
 	
-	/** Helpers **/
+	/** Default **/
 	static inline function max(a, b) return a > b ? a : b	
 	static inline function min(a, b) return a < b ? a : b
 	static inline function m(color) return color & 0xFF // masks.
