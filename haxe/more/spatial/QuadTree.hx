@@ -120,11 +120,7 @@ class QuadTree<T:IVector> {
 		var bottomLeftList = new SingleLinkedList<T>();
 		var bottomRightList = new SingleLinkedList<T>();
 		
-		var iter = _points.iterator();
-		if (!iter.hasNext()) {
-			_preInitDepth = 0;
-		}
-		for (item in iter) {
+		for (item in _points) {
 			if (item.y <= dividerY) {
 				if (item.x <= dividerX) {
 					topLeftList.push(item);
