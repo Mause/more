@@ -6,6 +6,7 @@
 package haxe.more.spatial;
 import haxe.more.spatial.flat.IVector;
 import haxe.more.data.structures.SingleLinkedList;
+import haxe.more.data.sources.EmptyIterable;
 import haxe.more.spatial.flat.Vector;
 
 enum Quad {
@@ -114,32 +115,46 @@ class QuadTree<T:IVector> {
 	
 	function initializeQuads() {
 		_initialized = true;
-		
-		var topLeftList = new SingleLinkedList<T>();
-		var topRightList = new SingleLinkedList<T>();
-		var bottomLeftList = new SingleLinkedList<T>();
-		var bottomRightList = new SingleLinkedList<T>();
-		
-		for (item in _points) {
-			if (item.y <= dividerY) {
-				if (item.x <= dividerX) {
-					topLeftList.push(item);
-				} else {
-					topRightList.push(item);
-				}
-			} else {
-				if (item.x <= dividerX) {
-					bottomLeftList.push(item);
-				} else {
-					bottomRightList.push(item);
-				}
-			}
-		}
 		var halfWidth = width / 2;
 		var halfHeight = height / 2;
-		_topLeft = new QuadTree<T>(topLeftList, x, halfWidth, y, halfHeight, _preInitDepth);
-		_topRight = new QuadTree<T>(topRightList, dividerX, halfWidth, y, halfHeight, _preInitDepth);
-		_bottomLeft = new QuadTree<T>(bottomLeftList, x, halfWidth, dividerY, halfHeight, _preInitDepth);
-		_bottomRight = new QuadTree<T>(bottomRightList, dividerX, halfWidth, dividerY, halfHeight, _preInitDepth);
+		var topLeftIterable:Iterable<T>;
+		var topRightIterable:Iterable<T>;
+		var bottomLeftIterable:Iterable<T>;
+		var bottomRightIterable:Iterable<T>;
+		
+		var iter = _points.iterator();
+		if(iter.hasNext()) {
+			var topLeftList = new SingleLinkedList<T>();
+			var topRightList = new SingleLinkedList<T>();
+			var bottomLeftList = new SingleLinkedList<T>();
+			var bottomRightList = new SingleLinkedList<T>();
+			
+			for (item in _points) {
+				if (item.y <= dividerY) {
+					if (item.x <= dividerX) {
+						topLeftList.push(item);
+					} else {
+						topRightList.push(item);
+					}
+				} else {
+					if (item.x <= dividerX) {
+						bottomLeftList.push(item);
+					} else {
+						bottomRightList.push(item);
+					}
+				}
+			}
+			topLeftIterable = topLeftList;
+			topRightIterable = topRightList;
+			bottomLeftIterable = bottomLeftList;
+			bottomRightIterable = bottomRightList;
+		} else {
+			topLeftIterable = topRightIterable = bottomLeftIterable = bottomRightIterable = new EmptyIterable();
+		}
+		
+		_topLeft = new QuadTree<T>(topLeftIterable, x, halfWidth, y, halfHeight, _preInitDepth);
+		_topRight = new QuadTree<T>(topRightIterable, dividerX, halfWidth, y, halfHeight, _preInitDepth);
+		_bottomLeft = new QuadTree<T>(bottomLeftIterable, x, halfWidth, dividerY, halfHeight, _preInitDepth);
+		_bottomRight = new QuadTree<T>(bottomRightIterable, dividerX, halfWidth, dividerY, halfHeight, _preInitDepth);
 	}
 }
