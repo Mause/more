@@ -115,43 +115,57 @@ class QuadTree<T:IVector> {
 	
 	function initializeQuads() {
 		_initialized = true;
-		var halfWidth = width / 2;
-		var halfHeight = height / 2;
 		var topLeftIterable:Iterable<T>;
 		var topRightIterable:Iterable<T>;
 		var bottomLeftIterable:Iterable<T>;
 		var bottomRightIterable:Iterable<T>;
 		
 		var iter = _points.iterator();
-		if(iter.hasNext()) {
-			var topLeftList = new SingleLinkedList<T>();
-			var topRightList = new SingleLinkedList<T>();
-			var bottomLeftList = new SingleLinkedList<T>();
-			var bottomRightList = new SingleLinkedList<T>();
-			
-			for (item in iter) {
-				if (item.y <= dividerY) {
-					if (item.x <= dividerX) {
-						topLeftList.push(item);
-					} else {
-						topRightList.push(item);
-					}
+		if (iter.hasNext()) {
+			createFilledSources(iter);
+		} else {
+			createEmptySources();
+		}
+	}
+	
+	function createFilledSources(points:Iterator<T>) {		
+		var topLeftList = new SingleLinkedList<T>();
+		var topRightList = new SingleLinkedList<T>();
+		var bottomLeftList = new SingleLinkedList<T>();
+		var bottomRightList = new SingleLinkedList<T>();
+		
+		pushItems(points, topLeftList, topRightList, bottomLeftList, bottomRightList);
+		
+		createAndAssignQuadTrees(topLeftList, topRightList, bottomLeftList, bottomRightList);
+	}
+	
+	function pushItems(points:Iterator<T>, topLeft:SingleLinkedList<T>, topRight:SingleLinkedList<T>, bottomLeft:SingleLinkedList<T>, bottomRight:SingleLinkedList<T>)
+	{
+		for (item in points) {
+			if (item.y <= dividerY) {
+				if (item.x <= dividerX) {
+					topLeft.push(item);
 				} else {
-					if (item.x <= dividerX) {
-						bottomLeftList.push(item);
-					} else {
-						bottomRightList.push(item);
-					}
+					topRight.push(item);
+				}
+			} else {
+				if (item.x <= dividerX) {
+					bottomLeft.push(item);
+				} else {
+					bottomRight.push(item);
 				}
 			}
-			topLeftIterable = topLeftList;
-			topRightIterable = topRightList;
-			bottomLeftIterable = bottomLeftList;
-			bottomRightIterable = bottomRightList;
-		} else {
-			topLeftIterable = topRightIterable = bottomLeftIterable = bottomRightIterable = new EmptyIterable();
 		}
-		
+	}
+	
+	inline function createEmptySources() {
+		var iterable = new EmptyIterable();
+		createAndAssignQuadTrees(iterable, iterable, iterable, iterable);
+	}
+	
+	function createAndAssignQuadTrees(topLeftIterable:Iterable<T>, topRightIterable:Iterable<T>, bottomLeftIterable:Iterable<T>, bottomRightIterable:Iterable<T>) {
+		var halfWidth = width / 2;
+		var halfHeight = height / 2;
 		_topLeft = new QuadTree<T>(topLeftIterable, x, halfWidth, y, halfHeight, _preInitDepth);
 		_topRight = new QuadTree<T>(topRightIterable, dividerX, halfWidth, y, halfHeight, _preInitDepth);
 		_bottomLeft = new QuadTree<T>(bottomLeftIterable, x, halfWidth, dividerY, halfHeight, _preInitDepth);
