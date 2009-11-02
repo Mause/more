@@ -15,7 +15,7 @@
  * limitations under the License.
  **/
 package haxe.more.data.structures;
-import haxe.more.EmptyIterator;
+import haxe.more.data.sources.EmptyIterator;
 
 class DoubleLinkedList<T> {
 	var sentinel:DoubleLinkedListNode<T>;

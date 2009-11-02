@@ -14,8 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-package haxe.more.data.structures;
-import haxe.more.EmptyIterator;
+package haxe.more.data.structures;import haxe.more.data.sources.EmptyIterator;
 import haxe.more.exceptions.Exception;
 
 class SingleLinkedList<T> {
