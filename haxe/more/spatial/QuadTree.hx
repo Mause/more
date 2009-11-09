@@ -4,6 +4,7 @@
  */
 
 package haxe.more.spatial;
+import haxe.more.exceptions.Exception;
 import haxe.more.spatial.flat.IVector;
 import haxe.more.data.structures.SingleLinkedList;
 import haxe.more.data.sources.EmptyIterable;
@@ -111,23 +112,38 @@ class QuadTree<T:IVector> {
 
 	}
 	
-	public function calculate(depth:Int = 0):ThreadRunnerDelegate {
+	public function calculate(depth:Int = 0):ThreadRunnerDelegate { // The awesome state machine
 		var state = 0;
+		var self = this;
+		var topLeft:ThreadRunnerDelegate = null;
+		var topRight:ThreadRunnerDelegate = null;
+		var bottomLeft:ThreadRunnerDelegate = null;
+		var bottomRight:ThreadRunnerDelegate = null;
+		
+		depth--;
+		
 		return function(time) {
-			if (depth-- < 0) return true;
+			if (depth < 1) return true;
 			
 			switch(state) {
+			case 0:
+				self.initialize();
+				topLeft = self._topLeft.calculate(depth);
+				topRight = self._topRight.calculate(depth);
+				bottomLeft = self._bottomLeft.calculate(depth);
+				bottomRight = self._bottomRight.calculate(depth);
+				state++;
 			case 1:
-				if (topLeft.calculate(depth))
+				if (topLeft(time))
 					state++;
 			case 2:
-				if (topRight.calculate(depth))
+				if (topRight(time))
 					state++;
 			case 3:
-				if (bottomLeft.calculate(depth))
+				if (bottomLeft(time))
 					state++;
 			case 4:
-				if (bottomRight.calculate(depth))
+				if (bottomRight(time))
 					return true;
 			}
 			return false; // Hey, I am not done yet
@@ -135,7 +151,7 @@ class QuadTree<T:IVector> {
 	}
 	
 	inline function initialize()
-		if (!_initialized)initializeQuads()
+		if (!_initialized) initializeQuads()
 	
 	function initializeQuads() {
 		_initialized = true;
