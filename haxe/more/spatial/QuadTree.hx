@@ -8,6 +8,7 @@ import haxe.more.spatial.flat.IVector;
 import haxe.more.data.structures.SingleLinkedList;
 import haxe.more.data.sources.EmptyIterable;
 import haxe.more.spatial.flat.Vector;
+import haxe.more.threading.Threading;
 
 enum Quad {
 	topLeft;
@@ -108,6 +109,29 @@ class QuadTree<T:IVector> {
 					Quad.bottomRight;
 			}
 
+	}
+	
+	public function calculate(depth:Int = 0):ThreadRunnerDelegate {
+		var state = 0;
+		return function(time) {
+			if (depth-- < 0) return true;
+			
+			switch(state) {
+			case 1:
+				if (topLeft.calculate(depth))
+					state++;
+			case 2:
+				if (topRight.calculate(depth))
+					state++;
+			case 3:
+				if (bottomLeft.calculate(depth))
+					state++;
+			case 4:
+				if (bottomRight.calculate(depth))
+					return true;
+			}
+			return false; // Hey, I am not done yet
+		};
 	}
 	
 	inline function initialize()
