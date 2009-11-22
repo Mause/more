@@ -10,6 +10,7 @@ import haxe.more.data.structures.SingleLinkedList;
 import haxe.more.data.sources.EmptyIterable;
 import haxe.more.spatial.flat.Vector;
 import haxe.more.threading.Threading;
+import haxe.more.threading.Task;
 
 enum Quad {
 	topLeft;
@@ -112,42 +113,41 @@ class QuadTree<T:IVector> {
 
 	}
 	
-	public function calculate(depth:Int = 0):ThreadRunnerDelegate { // The awesome state machine
+	public function calculate(depth:Int = 0):Task { // The broken state machine, only init's himself.
 		var state = 0;
 		var self = this;
-		var topLeft:ThreadRunnerDelegate = null;
-		var topRight:ThreadRunnerDelegate = null;
-		var bottomLeft:ThreadRunnerDelegate = null;
-		var bottomRight:ThreadRunnerDelegate = null;
+		var currentTask:Task = null;
 		
 		depth--;
 		
-		return function(time) {
+		return new Task(function(time) {
 			if (depth < 1) return true;
 			
-			switch(state) {
-			case 0:
-				self.initialize();
-				topLeft = self._topLeft.calculate(depth);
-				topRight = self._topRight.calculate(depth);
-				bottomLeft = self._bottomLeft.calculate(depth);
-				bottomRight = self._bottomRight.calculate(depth);
-				state++;
-			case 1:
-				if (topLeft(time))
+			if(currentTask == null || currentTask.process(time)) { // if there isn't a current task, or the current task is done, change the current task
+				switch(state) {
+				case 0:
+					self.initialize();
+					currentTask = self._topLeft.calculate();
 					state++;
-			case 2:
-				if (topRight(time))
+				case 1:
+					currentTask = self._topRight.calculate();
 					state++;
-			case 3:
-				if (bottomLeft(time))
+				case 2:
+					currentTask = self._bottomLeft.calculate();
 					state++;
-			case 4:
-				if (bottomRight(time))
+				case 3:
+					currentTask = self._bottomRight.calculate();
+					state++;
+				case 4:
+					currentTask = null;
+					state++;
 					return true;
+				default:
+					return true;
+				}
 			}
 			return false; // Hey, I am not done yet
-		};
+		});
 	}
 	
 	inline function initialize()

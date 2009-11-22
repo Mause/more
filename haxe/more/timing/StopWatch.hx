@@ -16,15 +16,29 @@
  **/
 package haxe.more.timing;
 
+/**
+ * A lightweight and fast class to do profiling.
+ */
 class StopWatch {
 	var _times:SingleLinkedList<Float>;
 	public var latest(default, null):Float;
 	
+	/**
+	 * Creates a new stopwatch.
+	 */
 	public function new() _times = new SingleLinkedList<Float>()
-	public function time() return {
+	/**
+	 * Saves a timestamp, so you can iterate through it later on.
+	 * @return the current time.
+	 */
+	public function time():Float return {
 		_times.push(latest = Default.microtime);
 		return latest;
 	}
+	/**
+	 * Returns an iterator to iterate trough the timings.
+	 * @return an iterator to iterate trough the timings.
+	 */
 	public function iterator()
 		return _times.fold(
 			function(item:Float, seed: { previous:Float, array:Array<Float> }) {

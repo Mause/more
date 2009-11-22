@@ -19,7 +19,7 @@ import haxe.more.Default;
 import haxe.more.threading.Threading;
 import haxe.more.exceptions.ArgumentNullException;
 
-class BalancedThreadProcessor {
+class BalancedThreadProcessor implements IThread {
 	// Is negative it the processor used more time than allowed in the previous run. It is an extra stabelizing mechanism.
 	var _karma:Float;
 	// The base node, simplifying modifications on the list.
@@ -27,7 +27,7 @@ class BalancedThreadProcessor {
 	var _last:LinkedThreadListNode;
 	var _disposeAtExhaustion:Bool;
 	
-	public var threads(default, null):Int;
+	public var count(default, null):Int;
 
 	public function new(disposeAtExhaustion:Bool = false) {
 		_last = _sentinel = new LinkedThreadListNode(null);
@@ -35,14 +35,13 @@ class BalancedThreadProcessor {
 		_karma = 0;
 	}
 	
-	public function add(thread:ThreadRunnerDelegate, priority:Int = 128):AdjustThreadShareDelegate {
+	public function add(thread:ThreadRunnerDelegate, priority:Int = 128):IThread {
 		if (thread == null) throw new ArgumentNullException("thread");
-		threads++;
+		count++;
 		_last = new LinkedThreadListNode(thread, _last);
 		_last.share = priority;
 		updateShares();
-		var f:AddThreadDelegate = add;
-		return adjust;
+		return this;
 	}
 	
 	public function adjust(thread:ThreadRunnerDelegate, priority:Int):Bool {
@@ -69,7 +68,7 @@ class BalancedThreadProcessor {
 		var previous = _sentinel;
 		while ((current = current.next) != null) {
 			if (current.thread == thread) {
-				threads--;
+				count--;
 				previous.next = current.next;
 				if (_sentinel.next == null) {
 					_last = _sentinel;
@@ -80,6 +79,18 @@ class BalancedThreadProcessor {
 			previous = current;
 		}
 		return false;
+	}
+	
+	public function contains(thread:ThreadRunnerDelegate):Int {
+		if (thread == null) throw new ArgumentNullException("thread");
+		var count = 0;
+		var current = _sentinel;
+		while ((current = current.next) != null) {
+			if (current.thread == thread) {
+				count++;
+			}
+		}
+		return count;
 	}
 	
 	public function process(time:Int):Bool {
