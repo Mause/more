@@ -21,8 +21,7 @@ import haxe.Stack;
 class ArgumentException extends Exception {
 	public var paramName(default, null):String;
 	public function new(?paramName:String, ?message:String, ?innerException:Exception) {
-		super(message == null ? "Value does not fall within the expected range." : message, innerException);
-		regenerateStackTrace();
+		super(message == null ? "Value  of " + paramName + " does not fall within the expected range." : message, innerException);
 		this.paramName = paramName == null ? "" : paramName;
 	}
 	

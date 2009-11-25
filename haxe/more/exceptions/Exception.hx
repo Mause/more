@@ -33,17 +33,23 @@ class Exception {
 	public function new(?message:String, ?innerException:Exception) {
 		this.message = message == null ? "" : message;
 		this.innerException = innerException;
-		regenerateStackTrace();
+		generateStackTrace();
 	}
 	
 	/**
 	 * Inheriting classes must call this after invoking super.
 	 */
-	function regenerateStackTrace() {
+	function generateStackTrace() {
 		rawStackTrace = Stack.callStack();
 		stackTrace = new ReadOnlyArray(rawStackTrace); // To be determined, possible use of exceptionStack;
-		rawStackTrace.shift();
-		rawStackTrace.shift();
+		rawStackTrace.shift(); // Shift off this function
+		rawStackTrace.shift(); // And Exceptions constructor
+		
+		var c:Class<Dynamic> = Type.getClass(this);
+		while (c != Exception) { // Shift off any Exception construction traces
+			rawStackTrace.shift();
+			c = Type.getSuperClass(c);
+		}
 	}
 	
 	/**

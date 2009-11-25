@@ -20,7 +20,7 @@ class ArgumentOutOfRangeException extends ArgumentException {
 	public var actualValue(default, null):Dynamic;
 	public function new(?paramName:String, ?actualValue:Dynamic, ?innerException:Exception) {
 		super(paramName, "Argument is out of range.", innerException);
-		regenerateStackTrace();
+		//regenerateStackTrace();
 		this.actualValue = actualValue;
 	}	
 }

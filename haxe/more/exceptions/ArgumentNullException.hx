@@ -19,7 +19,6 @@ import haxe.more.Default;
 
 class ArgumentNullException extends ArgumentException {
 	public function new(?paramName:String, ?innerException:Exception) {
-		super(paramName, "Argument cannot be null.", innerException);
-		regenerateStackTrace();
+		super(paramName, "Argument  " + paramName + " cannot be null.", innerException);
 	}
 }

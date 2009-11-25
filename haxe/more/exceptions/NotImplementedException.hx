@@ -22,7 +22,6 @@ class NotImplementedException extends Exception {
 	public var methodName(default, null):String;
 	public function new(?methodName:String, ?message:String, ?innerException:Exception) {
 		super(message == null ? "Method is not implemented." : message, innerException);
-		regenerateStackTrace();
 		this.methodName = methodName == null ? "" : methodName;
 	}
 	
