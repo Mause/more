@@ -17,9 +17,24 @@
 package haxe.more.exceptions;
 
 class ArgumentOutOfRangeException extends ArgumentException {
+	/**
+	 * The value being out of range.
+	 */
 	public var actualValue(default, null):Dynamic;
-	public function new(?paramName:String, ?actualValue:Dynamic, ?innerException:Exception) {
-		super(paramName, "Argument is out of range.", innerException);
+	
+	/**
+	 * The expected range.
+	 */
+	public var expectedRange(default, null):String;
+	
+	/**
+	 * Constructs a new ArgumentException.
+	 * @param	?paramName The name of the parameter having an incorrect value.
+	 * @param	?message The message associated with and describing this exception.
+	 * @param	?innerException The exception causing this exception.
+	 */
+	public function new(?paramName:String, ?actualValue:Dynamic, ?expectedRange:String , ?innerException:Exception) {
+		super(paramName, "Value  of " + paramName + " does not fall within " + (expectedRange == null ? "the expected range" : expectedRange) + ".", innerException);
 		//regenerateStackTrace();
 		this.actualValue = actualValue;
 	}	

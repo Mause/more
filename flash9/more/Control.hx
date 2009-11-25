@@ -53,20 +53,10 @@ class Control {
 		_keys = new Array<Bool>();
 		for (i in 0...256)
 			_keys.push(false);
-		
-		keyDown = new haxe.more.interaction.Event<KeyEventArgs>();
-		keyUp = new haxe.more.interaction.Event<KeyEventArgs>();
 	}
 	
-	function onKeyDown(key:Int)
-		if (!keyDown.isEmpty)
-			keyDown.invoke(this, new KeyEventArgs(key))
-	function onKeyUp(key:Int)
-		if (!keyUp.isEmpty)
-			keyUp.invoke(this, new KeyEventArgs(key))
-	
-	public var keyDown(default, null):haxe.more.interaction.Event<KeyEventArgs>;
-	public var keyUp(default, null):haxe.more.interaction.Event<KeyEventArgs>;
+	//public var keyDown(default, null):haxe.more.interaction.Event<KeyEventArgs>;
+	//public var keyUp(default, null):haxe.more.interaction.Event<KeyEventArgs>;
 	
 	public function isKeyDown(keyCode:Int):Bool return _keys[keyCode]
 	public function isKeyUp(keyCode:Int):Bool return !_keys[keyCode]
@@ -86,11 +76,11 @@ class Control {
 	function _mouseClicked(e:MouseEvent) mouseClicked = true
 	function _keyUp(e:KeyboardEvent) {
 		_keys[e.keyCode] = false;
-		onKeyUp(e.keyCode);
+		//onKeyUp(e.keyCode);
 	}
 	function _keyDown(e:KeyboardEvent) {
 		_keys[e.keyCode] = true;
-		onKeyDown(e.keyCode);
+		//onKeyDown(e.keyCode);
 	}
 	
 	function _mouseMove(e:MouseEvent) {

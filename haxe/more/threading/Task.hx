@@ -4,22 +4,19 @@
  */
 
 package haxe.more.threading;
-import haxe.more.interaction.Event;
-import haxe.more.interaction.EventArgs;
+import haxe.more.exceptions.NotImplementedException;
 import haxe.more.threading.Threading;
 
 class Task {
 	public var task(default, null):ThreadRunnerDelegate;
-	public var done(default, null):Event<EventArgs>;
 	public var isDone(default, null):Bool;
 	public function new(task:ThreadRunnerDelegate) {
-		done = new Event<EventArgs>();
 		this.task = task;
 		isDone = false;
 	}
 	
 	function onDone() {
-		done.invoke(this, EventArgs.empty);
+		throw new NotImplementedException("onDone");
 	}
 	
 	public function process(time:Int):Bool {

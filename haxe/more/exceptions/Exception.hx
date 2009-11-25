@@ -18,16 +18,27 @@ package haxe.more.exceptions;
 import haxe.Stack;
 import haxe.more.data.structures.ReadOnlyArray;
 
+/**
+ * General base class for Exceptions. Automatically generates stackTraces.
+ */
 class Exception {
+	/**
+	 * The exception causing this exception.
+	 */
 	public var innerException(default, null):Exception;
+	/**
+	 * The message associated with and describing this exception.
+	 */
 	public var message(default, null):String;
-	public var source(default, null):String;
+	/**
+	 * The trace to the place where this exception was generated and thrown.
+	 */
 	public var stackTrace(default, null):ReadOnlyArray<StackItem>;
 	var rawStackTrace:Array<StackItem>;
 	
 	/**
-	 * Constructs a new Exception. Also generates the stackTrace.
-	 * @param	?message The message containing info about the exception.
+	 * Constructs a new Exception and the corresponding stacktrace.
+	 * @param	?message The message associated with and describing this exception.
 	 * @param	?innerException The exception causing this exception.
 	 */
 	public function new(?message:String, ?innerException:Exception) {
@@ -37,11 +48,12 @@ class Exception {
 	}
 	
 	/**
-	 * Inheriting classes must call this after invoking super.
+	 * Generates the stacktrace. Is called in the constructor of Exception.
+	 * Calling this from somewhere else will result in a corrupted stacktrace.
 	 */
 	function generateStackTrace() {
 		rawStackTrace = Stack.callStack();
-		stackTrace = new ReadOnlyArray(rawStackTrace); // To be determined, possible use of exceptionStack;
+		stackTrace = new ReadOnlyArray(rawStackTrace);
 		rawStackTrace.shift(); // Shift off this function
 		rawStackTrace.shift(); // And Exceptions constructor
 		

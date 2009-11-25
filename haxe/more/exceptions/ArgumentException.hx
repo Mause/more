@@ -19,9 +19,18 @@ import haxe.more.Default;
 import haxe.Stack;
 
 class ArgumentException extends Exception {
+	/**
+	 * The name of the parameter which threw the exception.
+	 */
 	public var paramName(default, null):String;
+	/**
+	 * Constructs a new ArgumentException.
+	 * @param	?paramName The name of the parameter having an incorrect value.
+	 * @param	?message The message associated with and describing this exception.
+	 * @param	?innerException The exception causing this exception.
+	 */
 	public function new(?paramName:String, ?message:String, ?innerException:Exception) {
-		super(message == null ? "Value  of " + paramName + " does not fall within the expected range." : message, innerException);
+		super(message == null ? "Value  of " + paramName + " is not valid." : message, innerException);
 		this.paramName = paramName == null ? "" : paramName;
 	}
 	
