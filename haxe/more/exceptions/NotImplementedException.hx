@@ -28,7 +28,7 @@ class NotImplementedException extends Exception {
 	 * @param	?posInfos The info about the place this exception is thrown.
 	 */
 	public function new(?methodName:String, ?message:String, ?innerException:Exception, ?posInfos:PosInfos) {
-		super(message == null ? methodName == null ? "Method is not implemented." : "Method \"" + methodName + "\" is not implemented" : message, innerException, posInfos);
-		this.methodName = methodName == null ? "" : methodName;
+		super(message == null ? "Method \"" + (methodName == null ? posInfos.methodName : methodName) + "\" is not implemented" : message, innerException, posInfos);
+		this.methodName = methodName == null ? posInfos.methodName : methodName;
 	}
 }
