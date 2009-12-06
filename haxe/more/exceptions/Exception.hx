@@ -17,7 +17,6 @@
 package haxe.more.exceptions;
 import haxe.PosInfos;
 import haxe.Stack;
-import haxe.more.data.structures.ReadOnlyArray;
 
 /**
  * General base class for Exceptions. Automatically generates stackTraces.
@@ -38,7 +37,7 @@ class Exception {
 	/**
 	 * The trace to the place where this exception was generated and thrown.
 	 */
-	public var stackTrace(default, null):ReadOnlyArray<StackItem>;
+	public var stackTrace(default, null):Iterable<StackItem>;
 	var rawStackTrace:Array<StackItem>;
 	
 	/**
@@ -51,6 +50,7 @@ class Exception {
 		this.message = message == null ? "" : message;
 		this.innerException = innerException;
 		this.posInfos = posInfos;
+		this.stackTrace = this; // A stackTrace member is more clear then iterating this for getting the stackTrace
 		generateStackTrace();
 	}
 	
@@ -60,7 +60,6 @@ class Exception {
 	 */
 	function generateStackTrace() {
 		rawStackTrace = Stack.callStack();
-		stackTrace = new ReadOnlyArray(rawStackTrace);
 		rawStackTrace.shift(); // Shift off this function
 		rawStackTrace.shift(); // And Exceptions constructor
 		
