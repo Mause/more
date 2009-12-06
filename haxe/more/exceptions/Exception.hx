@@ -15,6 +15,7 @@
  * limitations under the License.
  **/
 package haxe.more.exceptions;
+import haxe.PosInfos;
 import haxe.Stack;
 import haxe.more.data.structures.ReadOnlyArray;
 
@@ -26,6 +27,10 @@ class Exception {
 	 * The exception causing this exception.
 	 */
 	public var innerException(default, null):Exception;
+	/**
+	 * The info about the place this exception is thrown.
+	 */
+	public var posInfos(default, null):PosInfos;
 	/**
 	 * The message associated with and describing this exception.
 	 */
@@ -40,10 +45,12 @@ class Exception {
 	 * Constructs a new Exception and the corresponding stacktrace.
 	 * @param	?message The message associated with and describing this exception.
 	 * @param	?innerException The exception causing this exception.
+	 * @param	?posInfos The info about the place this exception is thrown.
 	 */
-	public function new(?message:String, ?innerException:Exception) {
+	public function new(?message:String, ?innerException:Exception, ?posInfos:PosInfos) {
 		this.message = message == null ? "" : message;
 		this.innerException = innerException;
+		this.posInfos = posInfos;
 		generateStackTrace();
 	}
 	

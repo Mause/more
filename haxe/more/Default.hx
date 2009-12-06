@@ -15,8 +15,9 @@
  * limitations under the License.
  **/
 package haxe.more;
-import haxe.more.threading.ThreadShares;
 using Std;
+using haxe.more.data.sources.StringSource;
+using haxe.more.data.Manipulation;
 
 typedef IDisposable = {
 	function dispose():Void;
@@ -30,7 +31,7 @@ class Default {
 			max = (max << 1) | 1;
 		}
 		
-		newLine = "\n";
+		newLine = "\n"; // Needs to be replaced with, depending on the platform, OS checks.
 	})();
 	
 	/**
@@ -46,7 +47,7 @@ class Default {
 	 * @param	a? The float to test for NaN.
 	 * @return True if [a] equals NaN.
 	 */
-	public static inline function isNaN(?a:Float):Bool return (a == null || a.string() == "NaN")
+	public static inline function isNaN(?a:Float):Bool return (a == null || Math.isNaN(a) || a.string() == "NaN")
 	
 	public static inline function sign(a:Float):Float return (a < 0 ? -1 : 1)
 	
@@ -58,16 +59,21 @@ class Default {
 	public static inline function random(max:Float, min:Float = 0) return (Math.random() * (max - min) + min)
 	
 	/**
-	 * Returns the lowest  argument, [a] or[b].
+	 * Returns the lowest  argument, [a] or [b].
 	 * @param	a
 	 * @param	b
-	 * @return the lowest  argument, [a] or[b].
+	 * @return the lowest  argument, [a] or [b].
 	 */
 	public static inline function min(a:Float, b:Float):Float return a < b ? a : b
 	
-	public static inline function as<T>(subject:Dynamic, to:Class<T>):T {
-		return subject.is(to) ? subject : null;
-	}
+	public static inline function as<T>(subject:Dynamic, to:Class<T>):T
+		return subject.is(to) ? subject : null
+	
+	public static inline function isNullOrEmpty(string:String):Bool
+		return string == null || string == ""
+		
+	public static function isNullOrWhiteSpace(string:String):Bool
+		return string == null || string.iterable().all(function(char) return " \t\r\n".indexOf(char) != -1)
 	
 	/**
 		Get's the current time in miliseconds.
@@ -84,6 +90,7 @@ class Default {
 		return Date.now().getTime();
 		#end
 	}
+	
 	public static var maxInt(default, null):Int;
 	
 	public static var newLine(default, null):String;

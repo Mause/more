@@ -18,7 +18,10 @@ package haxe.more.data;
 import haxe.more.exceptions.ArgumentNullException;
 import haxe.more.data.structures.SingleLinkedList;
 import haxe.more.data.structures.DoubleLinkedList;
+import haxe.more.data.structures.Tuple;
 import haxe.more.exceptions.Exception;
+import haxe.more.exceptions.NotImplementedException;
+using haxe.more.Default;
 using haxe.more.data.Manipulation;
 
 /**
@@ -33,6 +36,20 @@ class Manipulation {
 		return new AfterIterable(subject, predicate);
 	}
 	
+	public static function all<T>(subject:Iterable<T>, predicate: T -> Bool):Bool {
+		for (item in subject)
+			if (!predicate(item))
+				return false;
+		return true;
+	}
+	
+	public static function any<T>(subject:Iterable<T>, predicate: T -> Bool):Bool {
+		for (item in subject)
+			if (predicate(item))
+				return true;
+		return false;
+	}
+	
 	public static function average(subject:Iterable<Float>):Float {
 		if (subject == null) throw new ArgumentNullException("subject");
 		var amount = 0;
@@ -40,14 +57,14 @@ class Manipulation {
 		var iter = subject.iterator();
 		//Avoid Division by zero
 		if (!iter.hasNext()) return 0.0;
-		while (iter.hasNext()) {
+		do {
 			total += iter.next();
 			amount++;
-		}
+		} while (iter.hasNext());
 		return total / amount;
 	}
 	
-	public static function averageGeneric<T> (subject:Iterable<T> , converter:T->Float):Float {
+	public static function averageGeneric<T>(subject:Iterable<T> , converter:T->Float):Float {
 		if (subject == null) throw new ArgumentNullException("subject");
 		if (converter == null) throw new ArgumentNullException("converter");
 		return subject.select(converter).average();
@@ -56,6 +73,11 @@ class Manipulation {
 	public static function averageInt(subject:Iterable<Int>):Float {
 		if (subject == null) throw new ArgumentNullException("subject");		
 		return averageGeneric(subject, function(x) return x);
+	}
+	
+	public static function as<T, V>(subject:Iterable<T>, type:Class<V>):Iterable<V> {
+		if (subject == null) throw new ArgumentNullException("subject");	
+		return subject.select(function(item) return item.as(type));
 	}
 	
 
@@ -71,6 +93,11 @@ class Manipulation {
 		return null;
 	}
 	
+	public static function castTo<T, V>(subject:Iterable<T>, type:Class<V>):Iterable<V> {
+		if (subject == null) throw new ArgumentNullException("subject");	
+		return subject.select(function(item) return cast item);
+	}
+	
 	public static function concat<T>(subject:Iterable<T>, postfix1:Iterable<T>, ?postfix2:Iterable<T>, ?postfix3:Iterable<T>, ?postfix4:Iterable<T>):Iterable<T> {// Hey, a programming style experiment! Came out a little flawed.
 		if (subject == null) throw new ArgumentNullException("subject");
 		if (postfix1 == null) throw new ArgumentNullException("postfix1");
@@ -82,6 +109,17 @@ class Manipulation {
 					? new ConcatIterable([subject, postfix1, postfix2, postfix3])
 					: new ConcatIterable([subject, postfix1, postfix2, postfix3, postfix4]);
 	}
+	
+	public static function delta(subject:Iterable<Float>):Iterable<Float> {
+		if (subject == null) throw new ArgumentNullException("subject");
+		return subject.historyDuo(function(first, second) return second - first);
+	}
+	
+	public static function deltaGeneric<T>(subject:Iterable<T> , converter:T->Float):Iterable<Float> {
+		if (subject == null) throw new ArgumentNullException("subject");
+		if (converter == null) throw new ArgumentNullException("converter");
+		return subject.select(converter).delta();
+	}
 
 	public static function first<T>(subject:Iterable<T>, ?predicate: T -> Bool):T {
 		if (subject == null) throw new ArgumentNullException("subject");
@@ -91,19 +129,34 @@ class Manipulation {
 	}
 
 	public static function firstOrNull<T>(subject:Iterable<T>, ?predicate: T -> Bool):T {
-		if (subject == null) throw new ArgumentNullException("subject");
-		var iter = predicate != null ? subject.where(predicate).iterator() : subject.iterator();
-		if (!iter.hasNext()) return null;
-		return iter.next();
+		return subject.firstOrDefault(null, predicate);
 	}
 	
-	public static function fold<T, C>(subject:Iterable<T>, ?seed:C, aggregator: T -> C -> C):C {
+	public static function firstOrDefault<T>(subject:Iterable<T>, defaultValue:T, ?predicate: T -> Bool):T {
+		if (subject == null) throw new ArgumentNullException("subject");
+		var iter = predicate != null ? subject.where(predicate).iterator() : subject.iterator();
+		return iter.hasNext() ? iter.next() : defaultValue;
+	}
+	
+	public static function fold<T, C>(subject:Iterable<T>, aggregator: T -> C -> C, ?seed:C):C {
 		if (subject == null) throw new ArgumentNullException("subject");
 		if (aggregator == null) throw new ArgumentNullException("aggregator");
 		for (item in subject) {
 			seed = aggregator(item, seed);
 		}
 		return seed;
+	}
+	
+	public static function historyDuo<T, V>(subject:Iterable<T>, selector: T -> T -> V):Iterable<V> {
+		return new HistoryDuoIterable(subject, selector);
+	}
+	
+	public static function historyTrio<T, V>(subject:Iterable<T>, selector: T -> T -> T -> V):Iterable<V> {
+		return new HistoryTrioIterable(subject, selector);		
+	}
+	
+	public static function historyQuattro<T, V>(subject:Iterable<T>, selector: T -> T -> T -> T -> V):Iterable<V> {
+		return new HistoryQuattroIterable(subject, selector);	
 	}
 
 	public static function iterable<T>(subject:Iterator<T>):Iterable<T> {
@@ -120,6 +173,20 @@ class Manipulation {
 		if (subject == null) throw new ArgumentNullException("subject");
 		if (selector == null) throw new ArgumentNullException("selector");
 		return new SelectIterable(subject, selector);
+	}
+	
+	public static function sum(subject:Iterable<Float>):Float {
+		if (subject == null) throw new ArgumentNullException("subject");
+		var total = 0.0;
+		for (number in subject)
+			total += number;
+		return total;
+	}
+	
+	public static function sumGeneric<T>(subject:Iterable<T> , converter:T->Float):Float {
+		if (subject == null) throw new ArgumentNullException("subject");
+		if (converter == null) throw new ArgumentNullException("converter");
+		return subject.select(converter).sum();
 	}
 
 	public static function reverse<T>(subject:Iterable<T>):Iterable<T> {
@@ -149,10 +216,7 @@ class Manipulation {
 	}
 	
 	public static function toSingleLinkedList<T>(subject:Iterable<T>):SingleLinkedList<T> {
-		if (subject == null) throw new ArgumentNullException("subject");
-		var result = new SingleLinkedList<T>();
-		for (item in subject) result.push(item);
-		return result;
+		return new SingleLinkedList(subject);
 	}
 
 	public static function until<T>(subject:Iterable<T>, predicate: T -> Bool):Iterable<T> {
@@ -165,6 +229,12 @@ class Manipulation {
 		if (subject == null) throw new ArgumentNullException("subject");
 		if (predicate == null) throw new ArgumentNullException("predicate");
 		return new WhereIterable(subject, predicate);	
+	}
+	
+	public static function zip2<T1, T2>(subject1:Iterable<T1>, subject2:Iterable<T2>):Iterable<Tuple2<T1, T2>> {
+		if (subject1 == null) throw new ArgumentNullException("subject1");
+		if (subject2 == null) throw new ArgumentNullException("subject2");
+		return new ZipSelect2Iterable(subject1, subject2, function(item1, item2) return Tuple.two(item1, item2));
 	}
 }
 
@@ -253,6 +323,125 @@ class ConcatIterator<T> {
 			return result;
 		}
 		return null;
+	}
+}
+
+class HistoryDuoIterable<T, V> {
+	var _subject:Iterable<T>;
+	var _selector: T -> T -> V;
+	
+	public function new(subject:Iterable<T>, selector: T -> T -> V) {
+		_subject = subject;
+		_selector = selector;
+	}
+	
+	public function iterator():Iterator<V>
+		return new HistoryDuoIterator(_subject.iterator(), _selector)
+}
+class HistoryDuoIterator<T, V> {
+	var _subject:Iterator<T>;
+	var _selector: T -> T -> V;
+	var _first:T;
+	
+	public function new(subject:Iterator<T>, selector: T -> T -> V) {
+		_subject = subject;
+		_selector = selector;
+		if (subject.hasNext())
+			_first = subject.next();
+	}
+	
+	public function hasNext():Bool return _subject.hasNext()
+	
+	public function next():V {
+		var second = _subject.next();
+		var result = _selector(_first, second);
+		_first = second;
+		return result;
+	}
+}
+
+class HistoryTrioIterable<T, V> {
+	var _subject:Iterable<T>;
+	var _selector: T -> T -> T -> V;
+	
+	public function new(subject:Iterable<T>, selector: T -> T -> T -> V) {
+		_subject = subject;
+		_selector = selector;
+	}
+	
+	public function iterator():Iterator<V>
+		return new HistoryTrioIterator(_subject.iterator(), _selector)
+}
+class HistoryTrioIterator<T, V> {
+	var _subject:Iterator<T>;
+	var _selector: T -> T -> T -> V;
+	var _first:T;
+	var _second:T;
+	
+	public function new(subject:Iterator<T>, selector: T -> T -> T -> V) {
+		_subject = subject;
+		_selector = selector;
+		if (subject.hasNext()) {
+			_first = subject.next();			
+			if (subject.hasNext()) {
+				_second = subject.next();
+			}
+		}
+	}
+	
+	public function hasNext():Bool return _subject.hasNext()
+	
+	public function next():V {
+		var third = _subject.next();
+		var result = _selector(_first, _second, third);
+		_first = _second;
+		_second = third;
+		return result;
+	}
+}
+
+class HistoryQuattroIterable<T, V> {
+	var _subject:Iterable<T>;
+	var _selector: T -> T -> T -> T -> V;
+	
+	public function new(subject:Iterable<T>, selector: T -> T -> T -> T -> V) {
+		_subject = subject;
+		_selector = selector;
+	}
+	
+	public function iterator():Iterator<V>
+		return new HistoryQuattroIterator(_subject.iterator(), _selector)
+}
+class HistoryQuattroIterator<T, V> {
+	var _subject:Iterator<T>;
+	var _selector: T -> T -> T -> T -> V;
+	var _first:T;
+	var _second:T;
+	var _third:T;
+	
+	public function new(subject:Iterator<T>, selector: T -> T -> T -> T -> V) {
+		_subject = subject;
+		_selector = selector;
+		if (subject.hasNext()) {
+			_first = subject.next();			
+			if (subject.hasNext()) {
+				_second = subject.next();		
+				if (subject.hasNext()) {
+					_third = subject.next();
+				}
+			}
+		}
+	}
+	
+	public function hasNext():Bool return _subject.hasNext()
+	
+	public function next():V {
+		var fourth = _subject.next();
+		var result = _selector(_first, _second, _third, fourth);
+		_first = _second;
+		_second = _third;
+		_third = fourth;
+		return result;
 	}
 }
 
@@ -408,6 +597,7 @@ class UntilIterable<T> {
 class UntilIterator<T> {
 	var _subject:Iterator<T>;
 	var _predicate: T -> Bool;
+	var _validated:Bool;
 	var _current:T;
 	var _hasNext:Bool;
 	
@@ -415,17 +605,27 @@ class UntilIterator<T> {
 		_subject = subject;
 		_predicate = predicate;
 		_hasNext = true;
+		_validated = false;
 	}
 	
-	public function hasNext() return _hasNext && _subject.hasNext()
+	public function hasNext() return _hasNext && valid() && _subject.hasNext()
 	
 	public function next():T {
 		if (hasNext()) {
-			var result = _current;
-			_hasNext = !_predicate(_current = _subject.next());
-			return result;
+			_validated = false;
+			return _current;
 		}
 		return null;
+	}
+	
+	function valid() {
+		if (!_validated) {
+			_current = _subject.next();
+			_hasNext = !_predicate(_current);
+			_validated = true;
+			return _hasNext;
+		}
+		return true;
 	}
 }
 
@@ -477,4 +677,33 @@ class WhereIterator<T> {
 			_current = null;
 		}
 	}
+}
+
+class ZipSelect2Iterable<T1, T2, V> {
+	var _subject1:Iterable<T1>;
+	var _subject2:Iterable<T2>;
+	var _selector: T1 -> T2 -> V;
+	
+	public function new(subject1:Iterable<T1>, subject2:Iterable<T2>, selector: T1 -> T2 -> V) {
+		_subject1 = subject1;
+		_subject2 = subject2;
+		_selector = selector;
+	}
+	
+	public function iterator():Iterator<V>
+		return new ZipSelect2Iterator(_subject1.iterator(), _subject2.iterator(), _selector)
+}
+class ZipSelect2Iterator<T1, T2, V> {
+	var _subject1:Iterator<T1>;
+	var _subject2:Iterator<T2>;
+	var _selector: T1 -> T2 -> V;
+	
+	public function new(subject1:Iterator<T1>, subject2:Iterator<T2>, selector: T1 -> T2 -> V) {
+		_subject1 = subject1;
+		_subject2 = subject2;
+		_selector = selector;
+	}
+	
+	public function hasNext():Bool return _subject1.hasNext() || _subject2.hasNext()
+	public function next():V return _selector(_subject1.next(), _subject2.next())
 }

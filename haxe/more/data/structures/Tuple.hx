@@ -52,6 +52,10 @@ class InternalTuple2<T1, T2> {
 		this.first = first;
 		this.second = second;
 	}
+	
+	public function toString():String {
+		return "(" + first + ", " + second + ")";
+	}
 }
 class InternalTuple3<T1, T2, T3> extends InternalTuple2<T1, T2> {
 	public var third(default, null):T3;
@@ -65,6 +69,13 @@ class InternalTuple3<T1, T2, T3> extends InternalTuple2<T1, T2> {
 	public function new(first:T1, second:T2, third:T3) {
 		super(first, second);
 		this.third = third;
+	}
+	
+	public override function toString():String {
+		return "("
+			+ first + ", "
+			+ second + ", "
+			+ third + ")";
 	}
 }
 class InternalTuple4<T1, T2, T3, T4> extends InternalTuple3<T1, T2, T3> {
@@ -80,6 +91,14 @@ class InternalTuple4<T1, T2, T3, T4> extends InternalTuple3<T1, T2, T3> {
 	public function new(first:T1, second:T2, third:T3, fourth:T4) {
 		super(first, second, third);
 		this.fourth = fourth;
+	}
+	
+	public override function toString():String {
+		return "("
+			+ first + ", "
+			+ second + ", "
+			+ third + ", "
+			+ fourth + ")";
 	}
 }
 class InternalTuple5<T1, T2, T3, T4, T5> extends InternalTuple4<T1, T2, T3, T4> {
@@ -98,8 +117,8 @@ class InternalTuple5<T1, T2, T3, T4, T5> extends InternalTuple4<T1, T2, T3, T4> 
 		this.fifth = fifth;
 	}
 	
-	public function toString():String {
-		return "Tuple("
+	public override function toString():String {
+		return "("
 			+ first + ", "
 			+ second + ", "
 			+ third + ", "

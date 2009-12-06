@@ -15,13 +15,14 @@
  * limitations under the License.
  **/
 package haxe.more.data.sources;
+import haxe.more.exceptions.ArgumentNullException;
 
 class Functions {
 	
 	/**
 	 * @param source	A function accepting a break function and returning the next value.
 	 */
-	private static function Gather<T>(source: (Void -> Void) -> T):Iterable<T> {
+	public static function gather<T>(source: (Void -> Void) -> T):Iterable<T> {
 		if (source == null) throw new ArgumentNullException("source");
 		return new GatherIterable(source);
 	}

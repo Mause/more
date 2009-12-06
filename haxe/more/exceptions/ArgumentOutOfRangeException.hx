@@ -15,6 +15,7 @@
  * limitations under the License.
  **/
 package haxe.more.exceptions;
+import haxe.PosInfos;
 
 class ArgumentOutOfRangeException extends ArgumentException {
 	/**
@@ -32,10 +33,10 @@ class ArgumentOutOfRangeException extends ArgumentException {
 	 * @param	?paramName The name of the parameter having an incorrect value.
 	 * @param	?message The message associated with and describing this exception.
 	 * @param	?innerException The exception causing this exception.
+	 * @param	?posInfos The info about the place this exception is thrown.
 	 */
-	public function new(?paramName:String, ?actualValue:Dynamic, ?expectedRange:String , ?innerException:Exception) {
-		super(paramName, "Value  of " + paramName + " does not fall within " + (expectedRange == null ? "the expected range" : expectedRange) + ".", innerException);
-		//regenerateStackTrace();
+	public function new(?paramName:String, ?actualValue:Dynamic, ?expectedRange:String , ?innerException:Exception, ?posInfos:PosInfos) {
+		super(paramName, "Value" + (paramName == null ? "" : " of " + paramName) + " does not fall within " + (expectedRange == null ? "the expected range" : expectedRange) + ".", innerException, posInfos);
 		this.actualValue = actualValue;
 	}	
 }

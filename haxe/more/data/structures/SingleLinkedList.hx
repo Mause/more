@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-package haxe.more.data.structures;import haxe.more.data.sources.EmptyIterator;
-import haxe.more.exceptions.Exception;
+package haxe.more.data.structures;
+import haxe.more.data.sources.EmptyIterator;
 
 class SingleLinkedList<T> {
 	var sentinel:SingleLinkedListNode<T>;
@@ -42,9 +42,12 @@ class SingleLinkedList<T> {
 	/**
 	 * Constructs a new list.
 	 */
-	public function new() {
+	public function new(?initial:Iterable<T>) {
 		length = 0;
 		sentinel = SingleLinkedListNodeOperator.create(this, null);
+		if(initial != null)
+			for (item in initial)
+				push(item);
 	}
 	
 	/**

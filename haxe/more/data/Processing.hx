@@ -17,13 +17,14 @@
 package haxe.more.data;
 import haxe.Timer;
 import haxe.more.exceptions.ArgumentNullException;
+using haxe.more.data.Processing;
 
 class Processing {	
-	public static function evaluate<T>(subject:Iterable<T>, ?timeSpan:Int, ?evaluationsPerTick:Int, ?completed:Void -> Void):Void {
+	public static function evaluate<T>(subject:Iterable<T>, timeSpan:Int = 0, evaluationsPerTick:Int = 1, ?completed:Void -> Void):Void {
 		if (subject == null) throw new ArgumentNullException("subject");
 		var iter = subject.iterator();
-		if (timeSpan != null) {
-			if (evaluationsPerTick != null) {
+		if (timeSpan != 0) {
+			if (evaluationsPerTick != 1) {
 				var evaluations:Int;
 				var t = new Timer(timeSpan);
 				t.run = function() {
@@ -53,6 +54,10 @@ class Processing {
 			while (iter.hasNext()) iter.next();
 			if(completed != null) completed();
 		}
+	}
+	
+	public static function trace<T>(subject:Iterable<T>):Iterable<T> {
+		return subject.apply(function(item) trace(item));
 	}
 	
 	public static function apply<T>(subject:Iterable<T>, action: T -> Void):Iterable<T> {

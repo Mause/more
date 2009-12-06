@@ -15,6 +15,11 @@
  * limitations under the License.
  **/
 package haxe.more.timing;
+import haxe.more.data.structures.SingleLinkedList;
+import haxe.more.Default;
+import haxe.PosInfos;
+using haxe.more.data.Manipulation;
+using Std;
 
 /**
  * A lightweight and fast class to do profiling.
@@ -31,7 +36,7 @@ class StopWatch {
 	 * Saves a timestamp, so you can iterate through it later on.
 	 * @return the current time.
 	 */
-	public function time():Float return {
+	public function time():Float {
 		_times.push(latest = Default.microtime);
 		return latest;
 	}
@@ -39,16 +44,14 @@ class StopWatch {
 	 * Returns an iterator to iterate trough the timings.
 	 * @return an iterator to iterate trough the timings.
 	 */
-	public function iterator()
-		return _times.fold(
-			function(item:Float, seed: { previous:Float, array:Array<Float> }) {
-				if (seed == null) {
-					seed = { previous: item, array: new Array<Float>() };
-				} else {
-					seed.array.push(item - seed.previous);
-					seed.previous = item;
-				}
-				return seed;
-			}
-		).array.iterator()			
+	public function iterator():Iterator<Float>
+		return _times.iterator()
+		
+	public function toString():String {
+		return
+			this
+			.delta()
+			.select(function(timing) return timing.string() + " ms" + Default.newLine)
+			.fold(function(string, folded) return folded + string, "");
+	}
 }

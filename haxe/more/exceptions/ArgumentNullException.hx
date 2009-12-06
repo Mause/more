@@ -16,14 +16,16 @@
  **/
 package haxe.more.exceptions;
 import haxe.more.Default;
+import haxe.PosInfos;
 
 class ArgumentNullException extends ArgumentException {
 	/**
 	 * Constructs a new ArgumentNullException.
 	 * @param	?paramName The name of the parameter being null.
 	 * @param	?innerException The exception causing this exception.
+	 * @param	?posInfos The info about the place this exception is thrown.
 	 */
-	public function new(?paramName:String, ?innerException:Exception) {
-		super(paramName, "Argument  " + paramName + " cannot be null.", innerException);
+	public function new(?paramName:String, ?innerException:Exception, ?posInfos:PosInfos) {
+		super(paramName, paramName == null ? "Argument cannot be null." : "Argument \"" + paramName + "\" cannot be null.", innerException, posInfos);
 	}
 }

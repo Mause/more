@@ -15,19 +15,20 @@
  * limitations under the License.
  **/
 package haxe.more.exceptions;
-import haxe.more.Default;
+import haxe.PosInfos;
 import haxe.Stack;
 
 class NotImplementedException extends Exception {
 	public var methodName(default, null):String;
-	public function new(?methodName:String, ?message:String, ?innerException:Exception) {
-		super(message == null ? "Method is not implemented." : message, innerException);
+	/**
+	 * Constructs a new NotImplementedException.
+	 * @param	?methodName The name of the method not being fully implemented.
+	 * @param	?message The message associated with and describing this exception.
+	 * @param	?innerException The exception causing this exception.
+	 * @param	?posInfos The info about the place this exception is thrown.
+	 */
+	public function new(?methodName:String, ?message:String, ?innerException:Exception, ?posInfos:PosInfos) {
+		super(message == null ? methodName == null ? "Method is not implemented." : "Method \"" + methodName + "\" is not implemented" : message, innerException, posInfos);
 		this.methodName = methodName == null ? "" : methodName;
 	}
-	
-	/**
-	 * Returns the string representation of the stackTrace.
-	 * @return the string representation of the stackTrace.
-	 */
-	public override function toString():String return message + Default.newLine + methodName + Stack.toString(rawStackTrace)
 }

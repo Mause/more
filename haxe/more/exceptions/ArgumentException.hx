@@ -16,6 +16,7 @@
  **/
 package haxe.more.exceptions;
 import haxe.more.Default;
+import haxe.PosInfos;
 import haxe.Stack;
 
 class ArgumentException extends Exception {
@@ -28,15 +29,10 @@ class ArgumentException extends Exception {
 	 * @param	?paramName The name of the parameter having an incorrect value.
 	 * @param	?message The message associated with and describing this exception.
 	 * @param	?innerException The exception causing this exception.
+	 * @param	?posInfos The info about the place this exception is thrown.
 	 */
-	public function new(?paramName:String, ?message:String, ?innerException:Exception) {
-		super(message == null ? "Value  of " + paramName + " is not valid." : message, innerException);
+	public function new(?paramName:String, ?message:String, ?innerException:Exception, ?posInfos:PosInfos) {
+		super(message == null ? paramName == null ? "Value is not valid." : "Value  of " + paramName + " is not valid." : message, innerException, posInfos);
 		this.paramName = paramName == null ? "" : paramName;
 	}
-	
-	/**
-	 * Returns the string representation of the stackTrace.
-	 * @return the string representation of the stackTrace.
-	 */
-	public override function toString():String return message + Default.newLine + paramName + Stack.toString(rawStackTrace)
 }
