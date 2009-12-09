@@ -1,4 +1,4 @@
-﻿/** ConcatIterable.hx
+﻿/** HistoryTrioEnumerable.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -15,11 +15,16 @@
  * limitations under the License.
  **/
 package haxe.more.data.flow;
-using haxe.more.data.IterableManipulation;
 
-class ConcatIterable<T> {
-	var _subjects:Iterable<Iterable<T>>;	
-	public function new(subjects:Iterable<Iterable<T>>)	_subjects = subjects
-	public function iterator():Iterator<T>
-		return new ConcatIterator(_subjects.select(function(iter) return iter.iterator()).iterator())
+class HistoryTrioEnumerable<T, V> implements Enumerable<T> {
+	var _subject:Enumerable<T>;
+	var _selector: T -> T -> T -> V;
+	
+	public function new(subject:Enumerable<T>, selector: T -> T -> T -> V) {
+		_subject = subject;
+		_selector = selector;
+	}
+	
+	public function getEnumerator():Iterator<V>
+		return new HistoryTrioIterator(_subject.getEnumerator(), _selector)
 }

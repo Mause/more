@@ -1,4 +1,4 @@
-﻿/** IteratorIterator.hx
+﻿/** UntilEnumerable.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -16,28 +16,15 @@
  **/
 package haxe.more.data.flow;
 
-class IteratorIterator<T> {
-	var _subject:IteratorIterable<T>;
-	var _index:Int;
-	var _iter:Iterator<T>;
+class UntilEnumerable<T> implements Enumerable<T> {
+	var _subject:Enumerable<T>;
+	var _predicate: T -> Bool;
 	
-	public function new(subject:IteratorIterable<T>) {
+	public function new(subject:Enumerable<T>, predicate: T -> Bool) {
 		_subject = subject;
-		_index = 0;
-		_iter = subject.iterated.iterator();
+		_predicate = predicate;
 	}
 	
-	public function hasNext():Bool
-		return _iter.hasNext() || _subject.subject.hasNext()
-	
-	public function next():T {
-		if (_iter.hasNext()) {
-			return _iter.next();
-		} else if(_subject.subject.hasNext()) {
-			var result = _subject.subject.next();
-			_subject.iterated.push(result);
-			return result;
-		}
-		return null;
-	}
+	public function getEnumerator():Iterator<T>
+		return new UntilIterator(_subject.getEnumerator(), _predicate)
 }

@@ -1,4 +1,4 @@
-﻿/** ConcatIterable.hx
+﻿/** AfterEnumerable.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -15,11 +15,16 @@
  * limitations under the License.
  **/
 package haxe.more.data.flow;
-using haxe.more.data.IterableManipulation;
 
-class ConcatIterable<T> {
-	var _subjects:Iterable<Iterable<T>>;	
-	public function new(subjects:Iterable<Iterable<T>>)	_subjects = subjects
-	public function iterator():Iterator<T>
-		return new ConcatIterator(_subjects.select(function(iter) return iter.iterator()).iterator())
+class AfterEnumerable<T> implements Enumerable<T> {
+	var _subject:Enumerable<T>;
+	var _predicate: T -> Bool;
+	
+	public function new(subject:Enumerable<T>, predicate: T -> Bool) {
+		_subject = subject;
+		_predicate = predicate;
+	}
+	
+	public function getEnumerator():Iterator<T>
+		return new AfterIterator(_subject.getEnumerator(), _predicate)
 }

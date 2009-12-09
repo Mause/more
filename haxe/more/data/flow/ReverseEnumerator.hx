@@ -1,4 +1,4 @@
-﻿/** ConcatIterable.hx
+﻿/** ReverseEnumerator.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -15,11 +15,28 @@
  * limitations under the License.
  **/
 package haxe.more.data.flow;
-using haxe.more.data.IterableManipulation;
 
-class ConcatIterable<T> {
-	var _subjects:Iterable<Iterable<T>>;	
-	public function new(subjects:Iterable<Iterable<T>>)	_subjects = subjects
-	public function iterator():Iterator<T>
-		return new ConcatIterator(_subjects.select(function(iter) return iter.iterator()).iterator())
+class ReverseEnumerator<T> {
+	var _subject:Enumerator<T>;
+	var _elements:Array<T>;
+	var _index:Int;
+	public function new(subject:Enumerator<T>) {
+		_subject = subject;
+		_index = -1;
+	}
+	
+	public function hasNext():Bool
+		return _index != 0 && ((_index == -1 && _subject.hasNext()) || _index <= _elements.length)
+		
+	public function next():T {
+		if (_index == -1) {		
+			_elements = new Array();
+			while (_subject.hasNext())
+				_elements.push(_subject.next());
+			_index = _elements.length;
+		} else if (_index == 0) {
+			return null;
+		}
+		return _elements[--_index];
+	}
 }

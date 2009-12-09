@@ -1,4 +1,4 @@
-﻿/** IteratorIterable.hx
+﻿/** WhereEnumerable.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -16,16 +16,15 @@
  **/
 package haxe.more.data.flow;
 
-class IteratorIterable<T> {
-	public var subject(default, null):Iterator<T>;
-	public var iterated(default, null):List<T>;
+class WhereEnumerable<T> implements Enumerable<T> {
+	var _subject:Enumerable<T>;
+	var _predicate: T -> Bool;
 	
-	public function new(subject:Iterator<T>) {
-		this.subject = subject;
-		iterated = new List();
-		var list = new List<T>();
+	public function new(subject:Enumerable<T>, predicate: T -> Bool) {
+		_subject = subject;
+		_predicate = predicate;
 	}
 	
-	public function iterator():Iterator<T>
-		return new IteratorIterator(this)
+	public function getEnumerator():Iterator<T>
+		return new WhereIterator(_subject.getEnumerator(), _predicate)
 }

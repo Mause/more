@@ -1,4 +1,4 @@
-﻿/** ConcatIterable.hx
+﻿/** ZipSelect2Enumerable.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -15,11 +15,18 @@
  * limitations under the License.
  **/
 package haxe.more.data.flow;
-using haxe.more.data.IterableManipulation;
 
-class ConcatIterable<T> {
-	var _subjects:Iterable<Iterable<T>>;	
-	public function new(subjects:Iterable<Iterable<T>>)	_subjects = subjects
-	public function iterator():Iterator<T>
-		return new ConcatIterator(_subjects.select(function(iter) return iter.iterator()).iterator())
+class ZipSelect2Enumerable<T1, T2, V> implements Enumerable<V> {
+	var _subject1:Enumerable<T1>;
+	var _subject2:Enumerable<T2>;
+	var _selector: T1 -> T2 -> V;
+	
+	public function new(subject1:Enumerable<T1>, subject2:Enumerable<T2>, selector: T1 -> T2 -> V) {
+		_subject1 = subject1;
+		_subject2 = subject2;
+		_selector = selector;
+	}
+	
+	public function getEnumerator():Iterator<V>
+		return new ZipSelect2Enumerable(_subject1.getEnumerator(), _subject2.getEnumerator(), _selector)
 }

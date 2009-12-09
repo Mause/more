@@ -1,4 +1,4 @@
-﻿/** ConcatIterable.hx
+﻿/** UntilEnumerator.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -15,11 +15,23 @@
  * limitations under the License.
  **/
 package haxe.more.data.flow;
-using haxe.more.data.IterableManipulation;
 
-class ConcatIterable<T> {
-	var _subjects:Iterable<Iterable<T>>;	
-	public function new(subjects:Iterable<Iterable<T>>)	_subjects = subjects
-	public function iterator():Iterator<T>
-		return new ConcatIterator(_subjects.select(function(iter) return iter.iterator()).iterator())
+class UntilEnumerator<T> implements Enumerator<T> {
+	var _subject:Enumerator<T>;
+	var _predicate: T -> Bool;
+	var _validated:Bool;
+	var _current:T;
+	var _hasNext:Bool;
+	
+	public var current(default, null):T;
+	
+	public function new(subject:Enumerator<T>, predicate: T -> Bool) {
+		_subject = subject;
+		_predicate = predicate;
+		_hasNext = true;
+		_validated = false;
+	}
+	
+	public function moveNext():Bool		
+		throw new NotImplementedException("moveNext");
 }
