@@ -38,7 +38,7 @@ class Exception {
 	 * The trace to the place where this exception was generated and thrown.
 	 */
 	public var stackTrace(default, null):Iterable<StackItem>;
-	var rawStackTrace:Array<StackItem>;
+	var _rawStackTrace:Array<StackItem>;
 	
 	/**
 	 * Constructs a new Exception and the corresponding stacktrace.
@@ -59,13 +59,13 @@ class Exception {
 	 * Calling this from somewhere else will result in a corrupted stacktrace.
 	 */
 	function generateStackTrace() {
-		rawStackTrace = Stack.callStack();
-		rawStackTrace.shift(); // Shift off this function
-		rawStackTrace.shift(); // And Exceptions constructor
+		_rawStackTrace = Stack.callStack();
+		_rawStackTrace.shift(); // Shift off this function
+		_rawStackTrace.shift(); // And Exceptions constructor
 		
 		var c:Class<Dynamic> = Type.getClass(this);
 		while (c != Exception) { // Shift off any Exception construction traces
-			rawStackTrace.shift();
+			_rawStackTrace.shift();
 			c = Type.getSuperClass(c);
 		}
 	}
@@ -85,11 +85,11 @@ class Exception {
 	 * Returns the string representation of the stackTrace.
 	 * @return the string representation of the stackTrace.
 	 */
-	public function toString():String return message + Stack.toString(rawStackTrace)
+	public function toString():String return message + Stack.toString(_rawStackTrace)
 	
 	/**
 	 * Returns an iterator to iterate through the stackTrace.
 	 * @return an iterator to iterate through the stackTrace.
 	 */
-	public function iterator():Iterator<StackItem> return stackTrace.iterator()
+	public function iterator():Iterator<StackItem> return _rawStackTrace.iterator()
 }
