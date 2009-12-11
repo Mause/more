@@ -21,20 +21,34 @@ class HistoryTrioEnumerator<T, V> implements Enumerator<V> {
 	var _selector: T -> T -> T -> V;
 	var _first:T;
 	var _second:T;
+	var _initialized:Bool;
 	
 	public var current(default, null):V;
 	
 	public function new(subject:Enumerator<T>, selector: T -> T -> T -> V) {
 		_subject = subject;
 		_selector = selector;
-		if (subject.hasNext()) {
-			_first = subject.next();			
-			if (subject.hasNext()) {
-				_second = subject.next();
-			}
+		_initialized = false;
+	}
+	
+	public function moveNext():Bool	{
+		initialize();
+		if (_subject.moveNext()) {
+			current = _selector(_first, _second, _subject.current);
+			_first = _second;
+			_second = _selector.current;
 		}
 	}
 	
-	public function moveNext():Bool		
-		throw new NotImplementedException("moveNext");
+	inline function initialize() {
+		if (!_initialized) {
+			if (_subject.moveNext()) {
+				_first = _subject.current;
+				if (_subject.moveNext()) {
+					_second = _subject.current;
+				}
+			}
+			_initialized = true;
+		}
+	}
 }

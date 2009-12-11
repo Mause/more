@@ -27,6 +27,11 @@ class SelectEnumerator<T, V> {
 		_selector = selector;
 	}
 	
-	public function moveNext():Bool		
-		throw new NotImplementedException("moveNext");
+	public function moveNext():Bool	{
+		if (_subject.moveNext()) {
+			current = _selector(_subject.current);
+			return true;
+		}
+		return false;
+	}
 }

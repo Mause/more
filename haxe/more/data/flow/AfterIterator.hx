@@ -19,18 +19,18 @@ package haxe.more.data.flow;
 class AfterIterator<T> {
 	var _subject:Iterator<T>;
 	var _predicate: T -> Bool;
-	var _evaluated:Bool;
+	var _initialized:Bool;
 	var _current:T;
 	
 	public function new(subject:Iterator<T>, predicate: T -> Bool) {
 		_subject = subject;
 		_predicate = predicate;
-		_evaluated = false;
+		_initialized = false;
 	}
 	
 	public function hasNext():Bool {
-		if (!_evaluated)
-			evaluate();
+		if (!_initialized)
+			initialize();
 		return _subject.hasNext();
 	}
 	
@@ -43,13 +43,13 @@ class AfterIterator<T> {
 		return null;
 	}
 	
-	function evaluate() {
+	function initialize() {
 		if (_subject.hasNext()) {
 			_current = _subject.next();
 			while (!_predicate(_current)) {
 				_current = _subject.next();
 			}
-			_evaluated = true;
+			_initialized = true;
 		}
 	}
 }

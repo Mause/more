@@ -17,7 +17,7 @@
 package haxe.more;
 using Std;
 using haxe.more.data.sources.StringSource;
-using haxe.more.data.Manipulation;
+using haxe.more.data.IterableManipulation;
 
 typedef IDisposable = {
 	function dispose():Void;

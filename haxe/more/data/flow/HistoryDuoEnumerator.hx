@@ -20,16 +20,29 @@ class HistoryDuoEnumerator<T, V> implements Enumerator<T> {
 	var _subject:Enumerator<T>;
 	var _selector: T -> T -> V;
 	var _first:T;
+	var _initialized:Bool;
 	
 	public var current(default, null):V;
 	
 	public function new(subject:Enumerator<T>, selector: T -> T -> V) {
 		_subject = subject;
 		_selector = selector;
-		if (subject.hasNext())
-			_first = subject.next();
+		_initialized = false;
 	}
 	
-	public function moveNext():Bool		
-		throw new NotImplementedException("moveNext");
+	public function moveNext():Bool	{
+		initialize();
+		if (_subject.moveNext()) {
+			current = _selector(_first, _subject.current);
+			_first = _selector.current;
+		}
+	}
+	
+	inline function initialize() {
+		if (!_initialized) {
+			if (_subject.moveNext())
+				_first = _subject.current;
+			_initialized = true;
+		}
+	}
 }

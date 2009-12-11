@@ -18,7 +18,7 @@ package haxe.more.data.sources;
 import haxe.more.Default;
 import haxe.more.exceptions.ArgumentNullException;
 using haxe.more.data.sources.Integer;
-using haxe.more.data.Manipulation;
+using haxe.more.data.IterableManipulation;
 
 class Integer {
 	public static function to(from:Int, to:Int, step:Int = 1):Iterable<Int>

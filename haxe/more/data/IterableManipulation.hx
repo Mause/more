@@ -1,4 +1,4 @@
-﻿/** Manipulation.hx
+﻿/** IterableManipulation.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -20,7 +20,6 @@ import haxe.more.data.flow.ConcatIterable;
 import haxe.more.data.flow.HistoryDuoIterable;
 import haxe.more.data.flow.HistoryQuattroIterable;
 import haxe.more.data.flow.HistoryTrioIterable;
-import haxe.more.data.flow.IteratorIterable;
 import haxe.more.data.flow.ReverseIterable;
 import haxe.more.data.flow.SelectIterable;
 import haxe.more.data.flow.UntilIterable;
@@ -32,14 +31,14 @@ import haxe.more.data.structures.Tuple;
 import haxe.more.exceptions.ArgumentNullException;
 import haxe.more.exceptions.Exception;
 import haxe.more.exceptions.NotImplementedException;
-using haxe.more.data.Manipulation;
+using haxe.more.data.IterableManipulation;
 using haxe.more.Default;
 
 /**
  * If you know Microsofts Linq, this will feel familiar to you.
  * OMG, code code!
  */
-class Manipulation {
+class IterableManipulation {
 	public static function after<T>(subject:Iterable<T>, predicate: T -> Bool):Iterable<T> {
 		if (subject == null) throw new ArgumentNullException("subject");
 		if (predicate == null) throw new ArgumentNullException("predicate");
@@ -167,11 +166,6 @@ class Manipulation {
 	
 	public static function historyQuattro<T, V>(subject:Iterable<T>, selector: T -> T -> T -> T -> V):Iterable<V> {
 		return new HistoryQuattroIterable(subject, selector);	
-	}
-
-	public static function iterable<T>(subject:Iterator<T>):Iterable<T> {
-		if (subject == null) throw new ArgumentNullException("subject");
-		return new IteratorIterable(subject);
 	}
 
 	public static function join<T>(scattered:Iterable<Iterable<T>>):Iterable<T> {

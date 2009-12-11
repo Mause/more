@@ -18,7 +18,7 @@ package haxe.more.timing;
 import haxe.more.data.structures.SingleLinkedList;
 import haxe.more.Default;
 import haxe.PosInfos;
-using haxe.more.data.Manipulation;
+using haxe.more.data.IterableManipulation;
 using Std;
 
 /**

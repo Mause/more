@@ -20,7 +20,6 @@ import haxe.more.exceptions.NotImplementedException;
 class WhereEnumerator<T> implements Enumerator<T>{
 	var _subject:Enumerator<T>;
 	var _predicate: T -> Bool;
-	var _hasNext:Bool;
 	var _current:T;
 	
 	public var current(default, null):T;
@@ -28,10 +27,15 @@ class WhereEnumerator<T> implements Enumerator<T>{
 	public function new(subject:Enumerator<T>, predicate: T -> Bool) {
 		_subject = subject;
 		_predicate = predicate;
-		_hasNext = true;
-		skipToNext();
 	}
 	
-	public function moveNext():Bool		
-		throw new NotImplementedException("moveNext");
+	public function moveNext():Bool	{
+		while (_subject.moveNext()) {
+			if (_predicate(_subject.current)) {
+				current = _subject.current;
+				return true;
+			}
+		}
+		return false;
+	}
 }

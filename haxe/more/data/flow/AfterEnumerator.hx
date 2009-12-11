@@ -19,17 +19,28 @@ package haxe.more.data.flow;
 class AfterEnumerator<T> implements Enumerator<Y> {
 	var _subject:Enumerator<T>;
 	var _predicate: T -> Bool;
-	var _evaluated:Bool;
-	var _current:T;
+	var _initialized:Bool;
 	
 	public var current(default, null):T;
 	
 	public function new(subject:Enumerator<T>, predicate: T -> Bool) {
 		_subject = subject;
 		_predicate = predicate;
-		_evaluated = false;
+		_initialized = false;
 	}
 	
-	public function moveNext():Bool		
-		throw new NotImplementedException("moveNext");
+	public function moveNext():Bool	{
+		if (!_initialized) {
+			_initialized = true;
+			while (_subject.moveNext()) {
+				if (_predicate(_subject.current))
+					break;
+			}
+		}
+		if (_subject.moveNext()) {
+			current = _subject.current;
+			return true;
+		}
+		return false;
+	}
 }

@@ -18,17 +18,30 @@ package haxe.more.data.flow;
 
 class ConcatEnumerator<T> implements Enumerator<T> {
 	var _subjects:Enumerator<Enumerator<T>>;
-	var _hasNext:Bool;
-	var _current:Enumerator<T>;
+	var _currentEnumer:Enumerator<T>;
+	var _done:Bool;
 	
 	public var current(default, null):T;
 	
 	public function new(subjects:Enumerator<Enumerator<T>>) {
 		_subjects = subjects;
-		_current = subjects.next();
-		_hasNext = true;
+		_done = false;
 	}
 	
-	public function moveNext():Bool		
-		throw new NotImplementedException("moveNext");
+	public function moveNext():Bool	{
+		if (_done)
+			return false;
+		if (_currentEnumer == null || !_currentEnumer.moveNext()) {
+			if (_subjects.moveNext()) {
+				_currentEnumer = _subjects.current;
+			}
+			else {
+				_done = true;
+			}
+			return moveNext(); // No fun, try again
+		}
+		
+		current = _currentEnumer.current;
+		return true;
+	}
 }
