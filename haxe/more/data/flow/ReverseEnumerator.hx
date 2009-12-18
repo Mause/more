@@ -1,4 +1,4 @@
-﻿/** ReverseEnumerator.hx
+﻿/** ReverseEnumerable.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -15,28 +15,27 @@
  * limitations under the License.
  **/
 package haxe.more.data.flow;
+using haxe.more.data.Manipulation;
 
-class ReverseEnumerator<T> {
-	var _subject:Enumerator<T>;
-	var _elements:Array<T>;
-	var _index:Int;
-	public function new(subject:Enumerator<T>) {
-		_subject = subject;
-		_index = -1;
-	}
+class ReverseEnumerator<T> implements Enumerator<T> {
+	var _subject:Enumerable<T>;
+	var _reversed:haxe.more.data.flow.Enumerator<T>;
 	
-	public function hasNext():Bool
-		return _index != 0 && ((_index == -1 && _subject.hasNext()) || _index <= _elements.length)
+	public var current(default, null):T;
+	
+	public function new(subject:Enumerable<T>)
+		_subject = subject
 		
-	public function next():T {
-		if (_index == -1) {		
-			_elements = new Array();
-			while (_subject.hasNext())
-				_elements.push(_subject.next());
-			_index = _elements.length;
-		} else if (_index == 0) {
-			return null;
+	public function moveNext():Bool {
+		if (_reversed == null)
+			_reversed =
+				_subject
+				.toDoubleLinkedList()
+				.getReversedEnumerator();
+		if (_reversed.moveNext()) {
+			current = _reversed.current;
+			return true;
 		}
-		return _elements[--_index];
+		return false;
 	}
 }

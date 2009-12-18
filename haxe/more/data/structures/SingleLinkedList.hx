@@ -16,6 +16,7 @@
  **/
 package haxe.more.data.structures;
 import haxe.more.data.sources.EmptyIterator;
+import haxe.more.data.flow.Enumerable;
 
 class SingleLinkedList<T> {
 	var sentinel:SingleLinkedListNode<T>;
@@ -42,12 +43,15 @@ class SingleLinkedList<T> {
 	/**
 	 * Constructs a new list.
 	 */
-	public function new(?initial:Iterable<T>) {
+	public function new(?initial:Enumerable<T>) {
 		length = 0;
 		sentinel = SingleLinkedListNodeOperator.create(this, null);
-		if(initial != null)
-			for (item in initial)
-				push(item);
+		
+		if(initial != null) {
+			var enumerator = initial.getEnumerator();
+			while(enumerator.moveNext())
+				push(enumerator.current);
+		}
 	}
 	
 	/**
@@ -100,7 +104,7 @@ class SingleLinkedList<T> {
 /**
  * Allows acces to the internals of SingleLinkedListNode. Bye nasty hacks.
  */
-class SingleLinkedListNodeOperator<T> extends SingleLinkedListNode<T>  {
+private class SingleLinkedListNodeOperator<T> extends SingleLinkedListNode<T>  {
 	public static function create<T>(list:SingleLinkedList<T>, value:T):SingleLinkedListNode<T> {
 		return new SingleLinkedListNode(list, value);
 	}

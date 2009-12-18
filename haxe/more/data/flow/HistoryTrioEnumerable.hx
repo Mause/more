@@ -16,7 +16,7 @@
  **/
 package haxe.more.data.flow;
 
-class HistoryTrioEnumerable<T, V> implements Enumerable<T> {
+class HistoryTrioEnumerable<T, V> implements Enumerable<V> {
 	var _subject:Enumerable<T>;
 	var _selector: T -> T -> T -> V;
 	
@@ -25,6 +25,6 @@ class HistoryTrioEnumerable<T, V> implements Enumerable<T> {
 		_selector = selector;
 	}
 	
-	public function getEnumerator():Iterator<V>
-		return new HistoryTrioIterator(_subject.getEnumerator(), _selector)
+	public function getEnumerator():Enumerator<V>
+		return new HistoryTrioEnumerator(_subject.getEnumerator(), _selector)
 }

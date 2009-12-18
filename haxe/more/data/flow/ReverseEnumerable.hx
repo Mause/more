@@ -15,10 +15,15 @@
  * limitations under the License.
  **/
 package haxe.more.data.flow;
+import haxe.more.data.structures.DoubleLinkedList;
+using haxe.more.Default;
 
 class ReverseEnumerable<T> implements Enumerable<T> {
-	var _subject(default, null):Enumerable<T>;
-	public function new(subject:Enumerable<T>) _subject = subject	
-	public function getEnumerator():Iterator<T>
-		return new ReverseIterator(_subject.getEnumerator())
+	var _subject:Enumerable<T>;
+	public function new(subject:Enumerable<T>)
+		_subject = subject
+	public function getEnumerator():Enumerator<T> {
+		var list:DoubleLinkedList<T> = cast _subject.as(DoubleLinkedList);
+		if(list == null) return list.getReversedEnumerator() else return new ReverseEnumerator(_subject);
+	}
 }

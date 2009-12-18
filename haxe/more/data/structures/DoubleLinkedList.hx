@@ -15,9 +15,12 @@
  * limitations under the License.
  **/
 package haxe.more.data.structures;
+import haxe.more.data.flow.Enumerable;
+import haxe.more.data.flow.Enumerator;
 import haxe.more.data.sources.EmptyIterator;
+import haxe.more.data.sources.EmptyEnumerator;
 
-class DoubleLinkedList<T> {
+class DoubleLinkedList<T> implements Enumerable<T> {
 	var sentinel:DoubleLinkedListNode<T>;
 	var endtinel:DoubleLinkedListNode<T>;
 	
@@ -44,10 +47,16 @@ class DoubleLinkedList<T> {
 	/**
 	 * Constructs a new list.
 	 */
-	public function new<T>() {
+	public function new(?initial:Enumerable<T>) {
 		var sendtinel = DoubleLinkedListNodeOperator.createSendtinel(this);
 		sentinel = sendtinel.sentinel;
 		endtinel = sendtinel.endtinel;
+		
+		if(initial != null) {
+			var enumerator = initial.getEnumerator();
+			while(enumerator.moveNext())
+				push(enumerator.current);
+		}
 	}
 	
 	/**
@@ -99,12 +108,28 @@ class DoubleLinkedList<T> {
 	public function reversedIterator():Iterator<T> {
 		if (isEmpty) return new EmptyIterator<T>(); else return tail.reversedIterator();
 	}
+	
+	/**
+	 * Returns an iterator to iterate trough this list.
+	 * @return an iterator to iterate trough this list.
+	 */
+	public function getEnumerator():Enumerator<T> {
+		if (isEmpty) return new EmptyEnumerator<T>(); else return head.getEnumerator();
+	}
+	
+	/**
+	 * Returns an iterator to iterate trough this list from tail to head.
+	 * @return an iterator to iterate trough this list from tail to head.
+	 */
+	public function getReversedEnumerator():Enumerator<T> {
+		if (isEmpty) return new EmptyEnumerator<T>(); else return tail.getReversedEnumerator();
+	}
 }
 
 /**
  * Allows acces to the internals of DoubleLinkedListNode. Bye nasty hacks.
  */
-class DoubleLinkedListNodeOperator<T> extends DoubleLinkedListNode<T>  {
+private class DoubleLinkedListNodeOperator<T> extends DoubleLinkedListNode<T>  {
 	public static function create<T>(list:DoubleLinkedList<T>, value:T):DoubleLinkedListNode<T> {
 		return new DoubleLinkedListNode(list, value);
 	}

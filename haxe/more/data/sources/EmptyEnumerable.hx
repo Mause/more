@@ -1,4 +1,4 @@
-﻿/** HistoryTrioIterable.hx
+﻿/** EmptyIterable.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -14,17 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-package haxe.more.data.flow;
+package haxe.more.data.sources;
+import haxe.more.data.flow.Enumerable;
 
-class HistoryTrioIterable<T, V> {
-	var _subject:Iterable<T>;
-	var _selector: T -> T -> T -> V;
+class EmptyIterable<T> implements Enumerable<T> {
+	var _enumerator:EmptyEnumerator<T>;
+	/**
+	 * Creates a new nothing iterator.
+	 */
+	public function new() _enumerator = new EmptyEnumerator()
 	
-	public function new(subject:Iterable<T>, selector: T -> T -> T -> V) {
-		_subject = subject;
-		_selector = selector;
-	}
+	/**
+	 * Returns always an empty iterator.
+	 * @return always an empty iterator.
+	 */
+	public function getEnumerator():Iterator<T> return _enumerator
 	
-	public function iterator():Iterator<V>
-		return new HistoryTrioIterator(_subject.iterator(), _selector)
+	/**
+	 * Returns the string representation of this.
+	 * @return the string representation of this.
+	 */
+	public function toString():String return "An empty enumerable."
 }

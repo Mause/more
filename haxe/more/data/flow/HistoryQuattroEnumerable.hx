@@ -25,6 +25,6 @@ class HistoryQuattroEnumerable<T, V> implements Enumerable<V> {
 		_selector = selector;
 	}
 	
-	public function geteEnumerator():Iterator<V>
-		return new HistoryQuattroIterator(_subject.getEnumerator(), _selector)
+	public function getEnumerator():Enumerator<V>
+		return new HistoryQuattroEnumerator(_subject.getEnumerator(), _selector)
 }

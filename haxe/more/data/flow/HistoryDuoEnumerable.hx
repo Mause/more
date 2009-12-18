@@ -25,6 +25,6 @@ class HistoryDuoEnumerable<T, V> implements Enumerable<V> {
 		_selector = selector;
 	}
 	
-	public function getEnumerator():Iterator<V>
-		return new HistoryDuoIterator(_subject.getEnumerator(), _selector)
+	public function getEnumerator():Enumerator<V>
+		return new HistoryDuoEnumerator(_subject.getEnumerator(), _selector)
 }

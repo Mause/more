@@ -23,14 +23,15 @@ class ConcatEnumerator<T> implements Enumerator<T> {
 	
 	public var current(default, null):T;
 	
-	public function new(subjects:Enumerator<Enumerator<T>>) {
-		_subjects = subjects;
+	public function new(subjects:Enumerable<Enumerator<T>>) {
+		_subjects = subjects.getEnumerator();
 		_done = false;
 	}
 	
 	public function moveNext():Bool	{
 		if (_done)
 			return false;
+		
 		if (_currentEnumer == null || !_currentEnumer.moveNext()) {
 			if (_subjects.moveNext()) {
 				_currentEnumer = _subjects.current;

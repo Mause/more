@@ -16,7 +16,7 @@
  **/
 package haxe.more.data.flow;
 
-class AfterEnumerator<T> implements Enumerator<Y> {
+class AfterEnumerator<T> implements Enumerator<T> {
 	var _subject:Enumerator<T>;
 	var _predicate: T -> Bool;
 	var _initialized:Bool;

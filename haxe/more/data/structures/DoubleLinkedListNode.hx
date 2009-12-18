@@ -15,9 +15,10 @@
  * limitations under the License.
  **/
 package haxe.more.data.structures;
+import haxe.more.data.flow.Enumerator;
+using haxe.more.data.IterableManipulation;
 
 class DoubleLinkedListNode<T> {
-	// ugh.. blech... needed.
 	public var list(default, null):DoubleLinkedList<T>;
 	public var next(default, null):DoubleLinkedListNode<T>;
 	public var previous(default, null):DoubleLinkedListNode<T>;
@@ -94,8 +95,24 @@ class DoubleLinkedListNode<T> {
 	 * Returns an iterator to iterate this linked list from this node to the tail.
 	 * @return An iterator to iterate this linked list from this node to the tail.
 	 */
+	public inline function getEnumerator():Enumerator<T> {
+		return new DoubleLinkedListEnumerator(this, list.tail);
+	}
+	
+	/**
+	 * Returns an iterator to iterate this linked list from this node to the tail.
+	 * @return An iterator to iterate this linked list from this node to the tail.
+	 */
 	public inline function iterator():Iterator<T> {
-		return new DoubleLinkedListIterator(this, list.tail);
+		return getEnumerator().asIterator();
+	}
+	
+	/**
+	 * Returns an iterator to iterate this linked list from this node to the head.
+	 * @return An iterator to iterate this linked list from this node to the head.
+	 */
+	public inline function getReversedEnumerator():Enumerator<T> {
+		return new DoubleLinkedListReversedEnumerator(this, list.head);
 	}
 	
 	/**
@@ -103,55 +120,56 @@ class DoubleLinkedListNode<T> {
 	 * @return An iterator to iterate this linked list from this node to the head.
 	 */
 	public inline function reversedIterator():Iterator<T> {
-		return new DoubleLinkedListReversedIterator(this, list.head);
+		return getReversedEnumerator().asIterator();
 	}
 }
-class DoubleLinkedListIterator<T> {
-	var current:DoubleLinkedListNode<T>;
-	var tail:DoubleLinkedListNode<T>;
+
+private class DoubleLinkedListEnumerator<T> implements Enumerator<T> {
+	var _current:DoubleLinkedListNode<T>;
+	var _last:DoubleLinkedListNode<T>;
+	
+	public var current(default, null):T;
+	
 	public function new(first:DoubleLinkedListNode<T>, last:DoubleLinkedListNode<T>):Void {
-		current = first;
-		tail = last;
+		_current = first;
+		_last = last;
 	}
-	public function hasNext():Bool {
-		return tail != null && current != tail.next;
-    }
-
-    public function next():T {
-		if (current == null) {
-			return null;
+	
+	public function moveNext():Bool {
+		if (_current != null || _current != _last) {
+			_current = _current.next;
+			current = _current.value;
+			return true;
 		}
-		var result:T = current.value;
-		current = current.next;
-		return result;
-    }
+		return false;
+	}
 }
 
-class DoubleLinkedListReversedIterator<T> {
-	var current:DoubleLinkedListNode<T>;
-	var head:DoubleLinkedListNode<T>;
+private class DoubleLinkedListReversedEnumerator<T> implements Enumerator<T> {
+	var _current:DoubleLinkedListNode<T>;
+	var _first:DoubleLinkedListNode<T>;
+	
+	public var current(default, null):T;
+	
 	public function new(last:DoubleLinkedListNode<T>, first:DoubleLinkedListNode<T>):Void {
-		current = last;
-		head = first;
+		_current = last;
+		_first = first;
 	}
-	public function hasNext():Bool {
-		return head != null && current != head.previous;
-    }
-
-    public function next():T {
-		if (current == null) {
-			return null;
+	
+	public function moveNext():Bool {
+		if (_current != null || _current != _first) {
+			_current = _current.previous;
+			current = _current.value;
+			return true;
 		}
-		var result:T = current.value;
-		current = current.previous;
-		return result;
-    }
+		return false;
+	}
 }
 
 /**
  * Allows acces to the internals of DoubleLinkedList. Bye nasty hacks.
  */
-class DoubleLinkedListOperator<T> extends DoubleLinkedList<T> {
+private class DoubleLinkedListOperator<T> extends DoubleLinkedList<T> {
 	public inline static function getSentinel<T>(list:DoubleLinkedList<T>):DoubleLinkedListNode<T> {
 		return list.sentinel;
 	}

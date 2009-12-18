@@ -16,7 +16,7 @@
  **/
 package haxe.more.data.flow;
 
-class HistoryDuoEnumerator<T, V> implements Enumerator<T> {
+class HistoryDuoEnumerator<T, V> implements Enumerator<V> {
 	var _subject:Enumerator<T>;
 	var _selector: T -> T -> V;
 	var _first:T;
@@ -34,8 +34,10 @@ class HistoryDuoEnumerator<T, V> implements Enumerator<T> {
 		initialize();
 		if (_subject.moveNext()) {
 			current = _selector(_first, _subject.current);
-			_first = _selector.current;
+			_first = _subject.current;
+			return true;
 		}
+		return false;
 	}
 	
 	inline function initialize() {

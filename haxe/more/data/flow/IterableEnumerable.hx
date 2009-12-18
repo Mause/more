@@ -23,6 +23,6 @@ class IterableEnumerable<T> implements Enumerable<T> {
 		_iterable = iterable;
 	}
 	
-	public function getEnumerator():Enumerable<T>
+	public function getEnumerator():Enumerator<T>
 		return new IteratorEnumerator(_iterable.iterator())
 }

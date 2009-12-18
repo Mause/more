@@ -136,7 +136,7 @@ class SingleLinkedListNode<T> {
 		return Std.string(value)
 }
 
-class SingleLinkedListIterator<T> {
+private class SingleLinkedListIterator<T> {
 	var current:SingleLinkedListNode<T>;
 	var tail:SingleLinkedListNode<T>;
 	public function new(first:SingleLinkedListNode<T>, last:SingleLinkedListNode<T>):Void {
@@ -160,7 +160,7 @@ class SingleLinkedListIterator<T> {
 /**
  * Allows acces to the internals of SingleLinkedList. Bye nasty hacks.
  */
-class SingleLinkedListOperator<T> extends SingleLinkedList<T> {
+private class SingleLinkedListOperator<T> extends SingleLinkedList<T> {
 	public inline static function getSentinel<T>(list:SingleLinkedList<T>):SingleLinkedListNode<T> {
 		return list.sentinel;
 	}

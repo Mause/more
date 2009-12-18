@@ -50,7 +50,8 @@ class Tuple {
 	public static inline function asTuple4<T1, T2, T3, T4, T5>(tuple:Tuple5<T1, T2, T3, T4, T5>):Tuple4<T1, T2, T3, T4>
 		return tuple
 }
-class InternalTuple2<T1, T2> {
+
+private class InternalTuple2<T1, T2> {
 	public var first(default, null):T1;
 	public var second(default, null):T2;
 	
@@ -68,7 +69,7 @@ class InternalTuple2<T1, T2> {
 		return "(" + first + ", " + second + ")";
 	}
 }
-class InternalTuple3<T1, T2, T3> extends InternalTuple2<T1, T2> {
+private class InternalTuple3<T1, T2, T3> extends InternalTuple2<T1, T2> {
 	public var third(default, null):T3;
 	
 	/**
@@ -89,7 +90,7 @@ class InternalTuple3<T1, T2, T3> extends InternalTuple2<T1, T2> {
 			+ third + ")";
 	}
 }
-class InternalTuple4<T1, T2, T3, T4> extends InternalTuple3<T1, T2, T3> {
+private class InternalTuple4<T1, T2, T3, T4> extends InternalTuple3<T1, T2, T3> {
 	public var fourth(default, null):T4;
 	
 	/**
@@ -112,7 +113,7 @@ class InternalTuple4<T1, T2, T3, T4> extends InternalTuple3<T1, T2, T3> {
 			+ fourth + ")";
 	}
 }
-class InternalTuple5<T1, T2, T3, T4, T5> extends InternalTuple4<T1, T2, T3, T4> {
+private class InternalTuple5<T1, T2, T3, T4, T5> extends InternalTuple4<T1, T2, T3, T4> {
 	public var fifth(default, null):T5;
 	
 	/**

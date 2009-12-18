@@ -15,11 +15,15 @@
  * limitations under the License.
  **/
 package haxe.more.data.flow;
-using haxe.more.data.EnumerableManipulation;
+using haxe.more.data.Manipulation;
 
 class ConcatEnumerable<T> implements Enumerable<T> {
-	var _subjects:Enumerable<Enumerable<T>>;	
-	public function new(subjects:Enumerable<Enumerable<T>>)	_subjects = subjects
-	public function getEnumerator():Iterator<T>
-	return new ConcatIterator(_subjects.select(function(enumer) return enumer.getEnumerator()).getEnumerator())
+	var _subjects:Enumerable<Enumerable<T>>;
+	
+	public function new(subjects:Enumerable<Enumerable<T>>) {
+		_subjects = subjects;
+	}
+	
+	public function getEnumerator():Enumerator<T>
+	return new ConcatEnumerator(_subjects.select(function(subject) return subject.getEnumerator()))
 }

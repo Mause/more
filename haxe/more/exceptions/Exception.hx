@@ -50,7 +50,7 @@ class Exception {
 		this.message = message == null ? "" : message;
 		this.innerException = innerException;
 		this.posInfos = posInfos;
-		this.stackTrace = this; // A stackTrace member is more clear then iterating this for getting the stackTrace
+		this.stackTrace = this; // A stackTrace member is more clear than iterating this for getting the stackTrace
 		generateStackTrace();
 	}
 	

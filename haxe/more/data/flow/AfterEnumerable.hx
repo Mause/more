@@ -25,6 +25,6 @@ class AfterEnumerable<T> implements Enumerable<T> {
 		_predicate = predicate;
 	}
 	
-	public function getEnumerator():Iterator<T>
-		return new AfterIterator(_subject.getEnumerator(), _predicate)
+	public function getEnumerator():Enumerator<T>
+		return new AfterEnumerator(_subject.getEnumerator(), _predicate)
 }

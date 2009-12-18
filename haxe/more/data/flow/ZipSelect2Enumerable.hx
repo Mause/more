@@ -27,6 +27,6 @@ class ZipSelect2Enumerable<T1, T2, V> implements Enumerable<V> {
 		_selector = selector;
 	}
 	
-	public function getEnumerator():Iterator<V>
-		return new ZipSelect2Enumerable(_subject1.getEnumerator(), _subject2.getEnumerator(), _selector)
+	public function getEnumerator():Enumerator<V>
+		return new ZipSelect2Enumerator(_subject1.getEnumerator(), _subject2.getEnumerator(), _selector)
 }

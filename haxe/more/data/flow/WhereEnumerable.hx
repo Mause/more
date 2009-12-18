@@ -25,6 +25,6 @@ class WhereEnumerable<T> implements Enumerable<T> {
 		_predicate = predicate;
 	}
 	
-	public function getEnumerator():Iterator<T>
-		return new WhereIterator(_subject.getEnumerator(), _predicate)
+	public function getEnumerator():Enumerator<T>
+		return new WhereEnumerator(_subject.getEnumerator(), _predicate)
 }

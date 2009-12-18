@@ -72,7 +72,7 @@ class Processing {
 	}
 }
 
-class ApplyIterable<T> {
+private class ApplyIterable<T> {
 	var _subject:Iterable<T>;
 	var _action: T -> Void;
 	
@@ -85,7 +85,7 @@ class ApplyIterable<T> {
 		return new ApplyIterator(_subject.iterator(), _action);
 	}
 }
-class ApplyIterator<T> {
+private class ApplyIterator<T> {
 	var _subject:Iterator<T>;
 	var _action: T -> Void;
 	
@@ -108,7 +108,7 @@ class ApplyIterator<T> {
 	}
 }
 
-class RangeIterable<T> {
+private class RangeIterable<T> {
 	var _generator: T -> T;
 	var _to:T;
 	var _seed:T;
@@ -123,7 +123,7 @@ class RangeIterable<T> {
 		return new RangeIterator(_generator, _to, _seed);
 	}
 }
-class RangeIterator<T> {
+private class RangeIterator<T> {
 	var _generator: T -> T;
 	var _to:T;
 	var _current:T;

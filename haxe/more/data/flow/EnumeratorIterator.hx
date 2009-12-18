@@ -1,4 +1,4 @@
-﻿/** ReverseIterable.hx
+﻿/** EnumeratorIterator.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -16,9 +16,30 @@
  **/
 package haxe.more.data.flow;
 
-class ReverseIterable<T> {
-	var _subject(default, null):Iterable<T>;
-	public function new(subject:Iterable<T>) _subject = subject	
-	public function iterator():Iterator<T>
-		return new ReverseIterator(_subject.iterator())
+class EnumeratorIterator<T> {
+	var _enumerator:Enumerator<T>;
+	var _movedNext:Bool;
+	var _hasNext:Bool;
+	
+	public function new(enumerator:Enumerator<T>) {
+		_enumerator = enumerator;
+		_movedNext = true;
+		_hasNext = false;
+	}
+	
+	public function hasNext():Bool {
+		if (_hasNext && !_movedNext) {
+			_hasNext = _enumerator.moveNext();
+			_movedNext = false;
+		}
+		return _hasNext;
+	}
+		
+	public function next():T {
+		if (hasNext()) {
+			_movedNext = true;
+			return _enumerator.current;
+		}
+		return null;
+	}
 }

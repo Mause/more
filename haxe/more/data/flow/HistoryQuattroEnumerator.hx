@@ -16,7 +16,7 @@
  **/
 package haxe.more.data.flow;
 
-class HistoryQuattroEnumerator<T, V> implements Enumerator<T> {
+class HistoryQuattroEnumerator<T, V> implements Enumerator<V> {
 	var _subject:Enumerator<T>;
 	var _selector: T -> T -> T -> T -> V;
 	var _first:T;
@@ -38,8 +38,10 @@ class HistoryQuattroEnumerator<T, V> implements Enumerator<T> {
 			current = _selector(_first, _second, _third, _subject.current);
 			_first = _second;
 			_second = _third;
-			_third = _selector.current;
+			_third = _subject.current;
+			return true;
 		}
+		return false;
 	}
 	
 	inline function initialize() {

@@ -15,16 +15,25 @@
  * limitations under the License.
  **/
 package haxe.more.data.sources;
+import haxe.more.data.flow.Enumerable;
+import haxe.more.data.flow.Enumerator;
 import haxe.more.exceptions.ArgumentNullException;
 
-class Functions {
+class Functions {	
+	/**
+	 * @param source	A function accepting a break function and returning the next value.
+	 */
+	public static function gather<T>(source: (Void -> Void) -> T):Enumerable<T> {
+		if (source == null) throw new ArgumentNullException("source");
+		return new GatherEnumerable(source);
+	}
 	
 	/**
 	 * @param source	A function accepting a break function and returning the next value.
 	 */
-	public static function gather<T>(source: (Void -> Void) -> T):Iterable<T> {
+	public static function endlessGather<T>(source: Void -> T):Enumerable<T> {
 		if (source == null) throw new ArgumentNullException("source");
-		return new GatherIterable(source);
+		return new EndlessGatherEnumerable(source);
 	}
 	
 	/**
@@ -32,14 +41,14 @@ class Functions {
 	 */
 	public static function statefullStatefullGather<T, S>(
 		source: (Void -> Void) -> S -> T,
-		startupStateGenerator: Void -> S):Iterable<T> {
+		startupStateGenerator: Void -> S):Enumerable<T> {
 		if (source == null) throw new ArgumentNullException("source");
 		if (startupStateGenerator == null) throw new ArgumentNullException("startupStateGenerator");
-		return new StatefullGatherIterable(source, startupStateGenerator);
+		return new StatefullGatherEnumerable(source, startupStateGenerator);
 	}
 }
 
-class StatefullGatherIterable<T, S> {
+private class StatefullGatherEnumerable<T, S> implements Enumerable<T> {
 	var _source: (Void -> Void) -> S -> T;
 	var _startupStateGenerator: Void -> S;
 	public function new(source: (Void -> Void) -> S -> T, startupStateGenerator: Void -> S) {
@@ -47,67 +56,87 @@ class StatefullGatherIterable<T, S> {
 		_startupStateGenerator = startupStateGenerator;
 	}
 	
-	public function iterator():Iterator<T> {
-		return new StatefullGatherIterator(_source, _startupStateGenerator());
+	public function getEnumerator():Enumerator<T> {
+		return new StatefullGatherEnumerator(_source, _startupStateGenerator());
 	}
 }
-class StatefullGatherIterator<T, S> {
+private class StatefullGatherEnumerator<T, S> implements Enumerator<T> {
 	var _source: (Void -> Void) -> S -> T;
-	var _hasNext:Bool;
+	var _continue:Bool;
 	var _state:S;
+	
+	public var current(default, null):T;
+	
 	public function new(source: (Void -> Void) -> S -> T, startupState:S) {
 		_source = source;
-		_hasNext = true;
+		_continue = true;
 		_state = startupState;
 	}
 	
+	public function moveNext():Bool {
+		if (!_continue) return false;
+		current = _source(stop, _state);
+		return _continue;
+	}
+	
 	function stop():Void {
-		_hasNext = false;
-	}
-	
-	public function hasNext():Bool {
-		return _hasNext;
-	}
-	
-	public function next():T {
-		if(hasNext()) {
-			return _source(stop, _state);
-		}
-		return null;
+		_continue = false;
 	}
 }
 
-class GatherIterable<T, S> {
+private class GatherEnumerable<T> implements Enumerable<T> {
 	var _source: (Void -> Void) -> T;
-	var _startupStateGenerator: Void -> S;
 	public function new(source: (Void -> Void) -> T) {
 		_source = source;
 	}
 	
-	public function iterator():Iterator<T> {
-		return new GatherIterator(_source);
+	public function getEnumerator():Enumerator<T> {
+		return new GatherEnumerator(_source);
 	}
 }
-class GatherIterator<T, S> {
+private class GatherEnumerator<T> implements Enumerator<T> {
 	var _source: (Void -> Void) -> T;
-	var _hasNext:Bool;
+	var _continue:Bool;
+	
+	public var current(default, null):T;
+	
 	public function new(source: (Void -> Void) -> T) {
 		_source = source;
-		_hasNext = true;
+		_continue = true;
 	}
 	
-	function stop():Void {
-		_hasNext = false;
+	public function moveNext():Bool {
+		if (!_continue) return false;
+		current = _source(stop);
+		return _continue;
 	}
 	
-	public function hasNext():Bool {
-		return _hasNext;
+	function stop() {
+		_continue = false;
+	}
+}
+
+private class EndlessGatherEnumerable<T> implements Enumerable<T> {
+	var _source: Void -> T;
+	public function new(source: Void -> T) {
+		_source = source;
 	}
 	
-	public function next():T {
-		if(hasNext()) {
-			return _source(stop);
-		}
-		return null;
+	public function getEnumerator():Enumerator<T> {
+		return new EndlessGatherEnumerator(_source);
+	}
+}
+private class EndlessGatherEnumerator<T> implements Enumerator<T> {
+	var _source: Void -> T;
+	
+	public var current(default, null):T;
+	
+	public function new(source: Void -> T) {
+		_source = source;
+	}
+	
+	public function moveNext():Bool {
+		current = _source();
+		return true;
 	}
 }

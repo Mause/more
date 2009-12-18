@@ -1,10 +1,5 @@
 ﻿package haxe.more.data.flow;
 
 interface Enumerable<T> {
-	function getEnumerator():IEnumerator<T>;
+	function getEnumerator():Enumerator<T>;
 }
-/*
-interface Enumerable<T> {
-	var enumerator(getEnumerator, null):IEnumerator<T>;
-}
-*/

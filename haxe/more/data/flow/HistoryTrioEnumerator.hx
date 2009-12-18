@@ -36,8 +36,10 @@ class HistoryTrioEnumerator<T, V> implements Enumerator<V> {
 		if (_subject.moveNext()) {
 			current = _selector(_first, _second, _subject.current);
 			_first = _second;
-			_second = _selector.current;
+			_second = _subject.current;
+			return true;
 		}
+		return false;
 	}
 	
 	inline function initialize() {

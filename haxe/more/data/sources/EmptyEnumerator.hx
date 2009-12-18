@@ -1,4 +1,4 @@
-﻿/** SelectIterable.hx
+﻿/** EmptyIterator.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -14,17 +14,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-package haxe.more.data.flow;
+package haxe.more.data.sources;
+import haxe.more.data.flow.Enumerator;
 
-class SelectIterable<T, V> {
-	var _subject:Iterable<T>;
-	var _selector: T -> V;
+class EmptyEnumerator<T> implements Enumerator<T> {
+	public var current(default, null):T;
 	
-	public function new(subject:Iterable<T>, selector: T -> V) {
-		_subject = subject;
-		_selector = selector;
-	}
+	/**
+	 * Creates a new nothing iterator.
+	 */
+	public function new();
 	
-	public function iterator():Iterator<V>
-		return new SelectIterator(_subject.iterator(), _selector)
+	/**
+	 * Returns always false.
+	 * @return always false.
+	 */
+	public function moveNext():Bool return false
+	
+	/**
+	 * Returns the string representation of this.
+	 * @return the string representation of this.
+	 */
+	public function toString():String return "An empty enumerator."
 }

@@ -19,19 +19,22 @@ package haxe.more.data.flow;
 class UntilEnumerator<T> implements Enumerator<T> {
 	var _subject:Enumerator<T>;
 	var _predicate: T -> Bool;
-	var _validated:Bool;
-	var _current:T;
-	var _hasNext:Bool;
+	var _finished:Bool;
 	
 	public var current(default, null):T;
 	
 	public function new(subject:Enumerator<T>, predicate: T -> Bool) {
 		_subject = subject;
 		_predicate = predicate;
-		_hasNext = true;
-		_validated = false;
+		_finished = false;
 	}
 	
-	public function moveNext():Bool		
-		throw new NotImplementedException("moveNext");
+	public function moveNext():Bool {
+		if (_finished) return false;
+		if (_subject.moveNext() && !_predicate(_subject.current)) {
+			return true;
+		}
+		_finished = true;
+		return false;
+	}
 }

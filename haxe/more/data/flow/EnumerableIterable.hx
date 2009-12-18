@@ -1,4 +1,4 @@
-﻿/** HistoryDuoIterator.hx
+﻿/** IterableEnumerable.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -16,24 +16,13 @@
  **/
 package haxe.more.data.flow;
 
-class HistoryDuoIterator<T, V> {
-	var _subject:Iterator<T>;
-	var _selector: T -> T -> V;
-	var _first:T;
+class EnumerableIterable<T> {
+	var _enumerable:Enumerable<T>;
 	
-	public function new(subject:Iterator<T>, selector: T -> T -> V) {
-		_subject = subject;
-		_selector = selector;
-		if (subject.hasNext())
-			_first = subject.next();
+	public function new(enumerable:Enumerable<T>) {
+		_enumerable = enumerable;
 	}
 	
-	public function hasNext():Bool return _subject.hasNext()
-	
-	public function next():V {
-		var second = _subject.next();
-		var result = _selector(_first, second);
-		_first = second;
-		return result;
-	}
+	public function iterator():Iterator<T>
+		return new EnumeratorIterator(_enumerable.getEnumerator())
 }

@@ -16,7 +16,7 @@
  **/
 package haxe.more.data.flow;
 
-class SelectEnumerable<T, V> implements Enumerable<T> {
+class SelectEnumerable<T, V> implements Enumerable<V> {
 	var _subject:Enumerable<T>;
 	var _selector: T -> V;
 	
@@ -25,6 +25,6 @@ class SelectEnumerable<T, V> implements Enumerable<T> {
 		_selector = selector;
 	}
 	
-	public function getEnumerator():Iterator<V>
-		return new SelectIterator(_subject.getEnumerator(), _selector)
+	public function getEnumerator():Enumerator<V>
+		return new SelectEnumerator(_subject.getEnumerator(), _selector)
 }

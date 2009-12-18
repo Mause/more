@@ -25,6 +25,6 @@ class UntilEnumerable<T> implements Enumerable<T> {
 		_predicate = predicate;
 	}
 	
-	public function getEnumerator():Iterator<T>
-		return new UntilIterator(_subject.getEnumerator(), _predicate)
+	public function getEnumerator():Enumerator<T>
+		return new UntilEnumerator(_subject.getEnumerator(), _predicate)
 }
