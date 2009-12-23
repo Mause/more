@@ -19,7 +19,7 @@ import haxe.more.threading.Threading;
 
 interface IThreadProcessor {	
 	public var count(default, null):Int;
-	public function add(thread:ThreadRunnerDelegate, priority:Int = 128):IThread;	
+	public function add(thread:ThreadRunnerDelegate, priority:Int = 128):IThreadProcessor;	
 	public function adjust(thread:ThreadRunnerDelegate, priority:Int):Bool;	
 	/**
 	 * Removes a thread.

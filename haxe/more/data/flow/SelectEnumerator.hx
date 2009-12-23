@@ -16,18 +16,16 @@
  **/
 package haxe.more.data.flow;
 
-class SelectEnumerator<T, V> implements Enumerator<V> {
+class SelectEnumerator<T, V> extends BaseEnumerator<V> {
 	var _subject:Enumerator<T>;
 	var _selector: T -> V;
-	
-	public var current(default, null):V;
 	
 	public function new(subject:Enumerator<T>, selector: T -> V) {
 		_subject = subject;
 		_selector = selector;
 	}
 	
-	public function moveNext():Bool	{
+	public override function moveNext():Bool	{
 		if (_subject.moveNext()) {
 			current = _selector(_subject.current);
 			return true;

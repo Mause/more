@@ -26,6 +26,7 @@ import haxe.more.data.flow.HistoryTrioEnumerable;
 import haxe.more.data.flow.IterableEnumerable;
 import haxe.more.data.flow.IteratorEnumerator;
 import haxe.more.data.flow.SelectEnumerable;
+import haxe.more.data.flow.RangeEnumerable;
 import haxe.more.data.flow.ReverseEnumerable;
 import haxe.more.data.flow.UntilEnumerable;
 import haxe.more.data.flow.WhereEnumerable;
@@ -202,6 +203,10 @@ class Manipulation {
 		return new SelectEnumerable(subject, selector);
 	}
 	
+	public static function skip<T>(subject:Enumerable<T>, skip:Int):Enumerable<T> {
+		return return subject.range(skip, -1);
+	}
+	
 	public static function sum(subject:Enumerable<Float>):Float {
 		if (subject == null) throw new ArgumentNullException("subject");
 		return subject.fold(function(number, total) return total + number, 0.0);
@@ -212,10 +217,18 @@ class Manipulation {
 		if (converter == null) throw new ArgumentNullException("converter");
 		return subject.select(converter).sum();
 	}
+	
+	public static function range<T>(subject:Enumerable<T>, skip:Int, take:Int):Enumerable<T> {
+		return new RangeEnumerable(subject, skip, take);
+	}
 
 	public static function reverse<T>(subject:Enumerable<T>):Enumerable<T> {
 		if (subject == null) throw new ArgumentNullException("subject");
 		return new ReverseEnumerable(subject);
+	}
+	
+	public static function take<T>(subject:Enumerable<T>, take:Int):Enumerable<T> {
+		return return subject.range(0, take);
 	}
 	
 	public static function toArray<T>(subject:Enumerable<T>):Array<T> {

@@ -16,12 +16,10 @@
  **/
 package haxe.more.data.flow;
 
-class AfterEnumerator<T> implements Enumerator<T> {
+class AfterEnumerator<T> extends BaseEnumerator<T> {
 	var _subject:Enumerator<T>;
 	var _predicate: T -> Bool;
 	var _initialized:Bool;
-	
-	public var current(default, null):T;
 	
 	public function new(subject:Enumerator<T>, predicate: T -> Bool) {
 		_subject = subject;
@@ -29,7 +27,7 @@ class AfterEnumerator<T> implements Enumerator<T> {
 		_initialized = false;
 	}
 	
-	public function moveNext():Bool	{
+	public override function moveNext():Bool	{
 		if (!_initialized) {
 			_initialized = true;
 			while (_subject.moveNext()) {

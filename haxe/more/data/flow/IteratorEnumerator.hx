@@ -16,15 +16,14 @@
  **/
 package haxe.more.data.flow;
 
-class IteratorEnumerator<T> implements Enumerator<T> {
+class IteratorEnumerator<T> extends BaseEnumerator<T> {
 	var _iterator:Iterator<T>;
+	
 	public function new(iterator:Iterator<T>) {
 		_iterator = iterator;
 	}
 	
-	public var current(default, null):T;
-	
-	public function moveNext():Bool {
+	public override function moveNext():Bool {
 		if (_iterator.hasNext()) {
 			current = _iterator.next();
 			return true;

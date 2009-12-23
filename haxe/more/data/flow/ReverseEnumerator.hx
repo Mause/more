@@ -17,16 +17,14 @@
 package haxe.more.data.flow;
 using haxe.more.data.Manipulation;
 
-class ReverseEnumerator<T> implements Enumerator<T> {
+class ReverseEnumerator<T> extends BaseEnumerator<T> {
 	var _subject:Enumerable<T>;
 	var _reversed:haxe.more.data.flow.Enumerator<T>;
-	
-	public var current(default, null):T;
 	
 	public function new(subject:Enumerable<T>)
 		_subject = subject
 		
-	public function moveNext():Bool {
+	public override function moveNext():Bool {
 		if (_reversed == null)
 			_reversed =
 				_subject

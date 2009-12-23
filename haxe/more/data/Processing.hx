@@ -15,14 +15,16 @@
  * limitations under the License.
  **/
 package haxe.more.data;
+import haxe.more.data.flow.Enumerable;
+import haxe.more.data.flow.Enumerator;
 import haxe.Timer;
 import haxe.more.exceptions.ArgumentNullException;
 using haxe.more.data.Processing;
 
 class Processing {	
-	public static function evaluate<T>(subject:Iterable<T>, timeSpan:Int = 0, evaluationsPerTick:Int = 1, ?completed:Void -> Void):Void {
+	public static function evaluate<T>(subject:Enumerable<T>, timeSpan:Int = 0, evaluationsPerTick:Int = 1, ?completed:Void -> Void):Void {
 		if (subject == null) throw new ArgumentNullException("subject");
-		var iter = subject.iterator();
+		var ator = subject.getEnumerator();
 		if (timeSpan != 0) {
 			if (evaluationsPerTick != 1) {
 				var evaluations:Int;
@@ -30,9 +32,7 @@ class Processing {
 				t.run = function() {
 					evaluations = evaluationsPerTick;
 					while(evaluations-- != 0) {
-						if (iter.hasNext()) {
-							iter.next();
-						} else {
+						if (!ator.moveNext()) {
 							t.stop();
 							if(completed != null) completed();
 							break;
@@ -42,112 +42,59 @@ class Processing {
 			} else {
 				var t = new Timer(timeSpan);
 				t.run = function() {
-					if (iter.hasNext()) {
-						iter.next();
-					} else {
+					if (!ator.moveNext()) {
 						t.stop();
 						if(completed != null) completed();
 					}
 				};
 			}
 		} else {
-			while (iter.hasNext()) iter.next();
+			while (ator.moveNext()) 0+0;
 			if(completed != null) completed();
 		}
 	}
 	
-	public static function trace<T>(subject:Iterable<T>):Iterable<T> {
+	public static function trace<T>(subject:Enumerable<T>):Enumerable<T> {
 		return subject.apply(function(item) trace(item));
 	}
 	
-	public static function apply<T>(subject:Iterable<T>, action: T -> Void):Iterable<T> {
+	public static function apply<T>(subject:Enumerable<T>, action: T -> Void):Enumerable<T> {
 		if (subject == null) throw new ArgumentNullException("subject");
 		if (action == null) throw new ArgumentNullException("action");
-		return new ApplyIterable(subject, action);
-	}
-	
-	public static function range<T>(generator: T -> T, to:T, ?seed:T):Iterable<T> {
-		if (generator == null) throw new ArgumentNullException("generator");
-		return new RangeIterable(generator, to, seed);
+		return new ApplyEnumerable(subject, action);
 	}
 }
 
-private class ApplyIterable<T> {
-	var _subject:Iterable<T>;
+private class ApplyEnumerable<T> implements Enumerable<T> {
+	var _subject:Enumerable<T>;
 	var _action: T -> Void;
 	
-	public function new(subject:Iterable<T>, action: T -> Void) {
+	public function new(subject:Enumerable<T>, action: T -> Void) {
 		_subject = subject;
 		_action = action;
 	}
 	
-	public function iterator():Iterator<T> {
-		return new ApplyIterator(_subject.iterator(), _action);
+	public function getEnumerator():Enumerator<T> {
+		return new ApplyEnumerator(_subject.getEnumerator(), _action);
 	}
 }
-private class ApplyIterator<T> {
-	var _subject:Iterator<T>;
+private class ApplyEnumerator<T> implements Enumerator<T> {
+	var _subject:Enumerator<T>;
 	var _action: T -> Void;
 	
-	public function new(subject:Iterator<T>, action: T -> Void) {
+	public var current(default, null):T;
+	
+	public function new(subject:Enumerator<T>, action: T -> Void) {
 		_subject = subject;
 		_action = action;
 	}
 	
-	public function hasNext():Bool {
-		return _subject.hasNext();
-	}
-	
-	public function next():T {
-		if (hasNext()) {
-			var result = _subject.next();
-			_action(result);
-			return result;
+	public function moveNext():Bool {
+		if(_subject.moveNext()) {
+			current = _subject.current;
+			_action(current);
+			return true;
 		}
-		return null;
-	}
-}
-
-private class RangeIterable<T> {
-	var _generator: T -> T;
-	var _to:T;
-	var _seed:T;
-	
-	public function new(generator: T -> T, to:T, ?seed:T) {
-		_generator = generator;
-		_to = to;
-		_seed = seed;
-	}
-	
-	public function iterator():Iterator<T> {
-		return new RangeIterator(_generator, _to, _seed);
-	}
-}
-private class RangeIterator<T> {
-	var _generator: T -> T;
-	var _to:T;
-	var _current:T;
-	var _previous:T;
-	var _hasNext:Bool;
-	
-	public function new(generator: T -> T, to:T, ?seed:T) {
-		_generator = generator;
-		_to = to;
-		_previous = seed;
-		_hasNext = true;
-	}
-	
-	public function hasNext():Bool {
-		return _hasNext;
-	}
-	
-	public function next():T {
-		if (hasNext()) {
-			_previous = _current;
-			_current = _generator(_current);
-			if (_current == _to) _hasNext = false;
-			return _previous;
-		}
-		return null;
+		return false;
 	}
 }

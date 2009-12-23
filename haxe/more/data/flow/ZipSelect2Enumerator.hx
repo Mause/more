@@ -20,12 +20,10 @@ import haxe.more.exceptions.NotImplementedException;
 /**
  * Does do a select on two iterables synchonous.
  */
-class ZipSelect2Enumerator<T1, T2, V> implements Enumerator<V> {
+class ZipSelect2Enumerator<T1, T2, V> extends BaseEnumerator<V> {
 	var _subject1:Enumerator<T1>;
 	var _subject2:Enumerator<T2>;
 	var _selector: T1 -> T2 -> V;
-	
-	public var current(default, null):V;
 	
 	/**
 	 * Creates a new ZipSelect2Enumerator
@@ -39,7 +37,7 @@ class ZipSelect2Enumerator<T1, T2, V> implements Enumerator<V> {
 		_selector = selector;
 	}
 	
-	public function moveNext():Bool {
+	public override function moveNext():Bool {
 		if (_subject1.moveNext() && _subject2.moveNext()) {
 			current = _selector(_subject1.current, _subject2.current);
 			return true;

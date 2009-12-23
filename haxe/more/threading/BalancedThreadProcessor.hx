@@ -19,7 +19,7 @@ import haxe.more.Default;
 import haxe.more.threading.Threading;
 import haxe.more.exceptions.ArgumentNullException;
 
-class BalancedThreadProcessor implements IThread {
+class BalancedThreadProcessor implements IThreadProcessor {
 	// Is negative it the processor used more time than allowed in the previous run. It is an extra stabelizing mechanism.
 	var _karma:Float;
 	// The base node, simplifying modifications on the list.
@@ -35,7 +35,7 @@ class BalancedThreadProcessor implements IThread {
 		_karma = 0;
 	}
 	
-	public function add(thread:ThreadRunnerDelegate, priority:Int = 128):IThread {
+	public function add(thread:ThreadRunnerDelegate, priority:Int = 128):IThreadProcessor {
 		if (thread == null) throw new ArgumentNullException("thread");
 		count++;
 		_last = new LinkedThreadListNode(thread, _last);

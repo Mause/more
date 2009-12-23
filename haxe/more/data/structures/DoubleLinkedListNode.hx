@@ -136,7 +136,7 @@ private class DoubleLinkedListEnumerator<T> implements Enumerator<T> {
 	}
 	
 	public function moveNext():Bool {
-		if (_current != null || _current != _last) {
+		if (_current != null && _current.next != null && _current != _last) {
 			_current = _current.next;
 			current = _current.value;
 			return true;

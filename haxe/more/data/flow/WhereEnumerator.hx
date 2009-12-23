@@ -17,19 +17,17 @@
 package haxe.more.data.flow;
 import haxe.more.exceptions.NotImplementedException;
 
-class WhereEnumerator<T> implements Enumerator<T>{
+class WhereEnumerator<T> extends BaseEnumerator<T>{
 	var _subject:Enumerator<T>;
 	var _predicate: T -> Bool;
 	var _current:T;
-	
-	public var current(default, null):T;
 	
 	public function new(subject:Enumerator<T>, predicate: T -> Bool) {
 		_subject = subject;
 		_predicate = predicate;
 	}
 	
-	public function moveNext():Bool	{
+	public override function moveNext():Bool	{
 		while (_subject.moveNext()) {
 			if (_predicate(_subject.current)) {
 				current = _subject.current;
