@@ -40,6 +40,10 @@ class StringBuilder {
 		return this;
 	}
 	
+	public inline function appendX(?value:Dynamic):StringBuilder {
+		return append(Std.string(value));
+	}
+	
 	public inline function appendChar(char:Int) {
 		#if flash
 			_strings.writeInt(char);
