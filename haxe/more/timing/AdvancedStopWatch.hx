@@ -47,6 +47,7 @@ class AdvancedStopWatch {
 	public function toString():String {
 		return
 			this
+			.asEnumerable()
 			.historyDuo(function(first, second)
 				return first.posInfos.fileName
 					+ (first.message.isNullOrWhiteSpace() ? ": " : "(\"" + first.message + "\"): ")

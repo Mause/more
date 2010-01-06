@@ -18,7 +18,7 @@ package haxe.more.timing;
 import haxe.more.data.structures.SingleLinkedList;
 import haxe.more.Default;
 import haxe.PosInfos;
-using haxe.more.data.IterableManipulation;
+using haxe.more.data.Manipulation;
 using Std;
 
 /**
@@ -50,6 +50,7 @@ class StopWatch {
 	public function toString():String {
 		return
 			this
+			.asEnumerable()
 			.delta()
 			.select(function(timing) return timing.string() + " ms" + Default.newLine)
 			.fold(function(string, folded) return folded + string, "");
