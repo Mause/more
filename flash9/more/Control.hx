@@ -20,6 +20,8 @@ import flash.events.EventDispatcher;
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
 import flash.ui.Keyboard;
+import org.hsl.Signaler;
+import org.hsl.SlotList;
 import haxe.more.exceptions.ArgumentNullException;
 
 class Control {
@@ -46,7 +48,11 @@ class Control {
 		
 		object.addEventListener(MouseEvent.MOUSE_MOVE, _mouseMove);
 		mouseX = mouseY = mouseStageX = mouseStageY = 0;
-		mouseMoved = false;
+		mouseMoved = false;		
+		
+		keyDown = new SlotList(_keyDownSignaller = new Signaler(this));
+		keyUp = new SlotList(_keyUpSignaller = new Signaler(this));
+		keyPressed = new SlotList(_keyPressedSignaller = new Signaler(this));
 		
 		object.addEventListener(KeyboardEvent.KEY_DOWN, _keyDown);
 		object.addEventListener(KeyboardEvent.KEY_UP, _keyUp);
@@ -55,8 +61,12 @@ class Control {
 			_keys.push(false);
 	}
 	
-	//public var keyDown(default, null):haxe.more.interaction.Event<KeyEventArgs>;
-	//public var keyUp(default, null):haxe.more.interaction.Event<KeyEventArgs>;
+	public var keyDown(default, null):ISlotList<Int>;
+	var _keyDownSignaller(default, null):ISignaler<Int>;
+	public var keyUp(default, null):ISlotList<Int>;
+	var _keyUpSignaller(default, null):ISignaler<Int>;
+	public var keyPressed(default, null):ISlotList<Int>;
+	var _keyPressedSignaller(default, null):ISignaler<Int>;
 	
 	public function isKeyDown(keyCode:Int):Bool return _keys[keyCode]
 	public function isKeyUp(keyCode:Int):Bool return !_keys[keyCode]
@@ -70,17 +80,24 @@ class Control {
 	public inline var isSpaceDown(gIsSpaceDown, null):Bool;
 	inline function gIsSpaceDown() return _keys[Keyboard.SPACE]
 	
-	function _enterFrame(e:Event) mouseClicked = mouseMoved = false
 	function _mouseDown(e:MouseEvent) mouseUp = !(mouseDown = true)
 	function _mouseUp(e:MouseEvent) mouseUp = !(mouseDown = false)
 	function _mouseClicked(e:MouseEvent) mouseClicked = true
 	function _keyUp(e:KeyboardEvent) {
 		_keys[e.keyCode] = false;
-		//onKeyUp(e.keyCode);
+		_keyUpSignaller.dispatchSignal(e.keyCode);
 	}
 	function _keyDown(e:KeyboardEvent) {
 		_keys[e.keyCode] = true;
-		//onKeyDown(e.keyCode);
+		_keyDownSignaller.dispatchSignal(e.keyCode);		
+	}
+	
+	function _enterFrame(e:Event) {
+		mouseClicked = mouseMoved = false;
+		for (key in 0..._keys.length) {
+			if (_keys[key])
+				_keyPressedSignaller.dispatchSignal(key);
+		}
 	}
 	
 	function _mouseMove(e:MouseEvent) {

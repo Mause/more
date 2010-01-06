@@ -16,10 +16,10 @@
  **/
 package haxe.more.spatial;
 import haxe.more.exceptions.Exception;
-import haxe.more.spatial.flat.IVector;
+import haxe.more.spatial.flat.Point;
 import haxe.more.data.structures.SingleLinkedList;
 import haxe.more.data.sources.EmptyIterable;
-import haxe.more.spatial.flat.Vector;
+import haxe.more.spatial.flat.Point;
 import haxe.more.threading.Threading;
 import haxe.more.threading.Task;
 
@@ -30,7 +30,7 @@ enum Quad {
 	bottomRight;
 }
 
-class QuadTree<T:IVector> {
+class QuadTree<T:PointDef> {
 	var _initialized:Bool;
 	var _preInitDepth:Int;
 	

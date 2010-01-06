@@ -19,7 +19,7 @@ using Std;
 using haxe.more.data.sources.StringSource;
 using haxe.more.data.IterableManipulation;
 
-typedef IDisposable = {
+typedef Disposable = {
 	function dispose():Void;
 }
 

@@ -18,26 +18,27 @@ package haxe.more.data.flow;
 
 class EnumeratorIterator<T> {
 	var _enumerator:Enumerator<T>;
-	var _movedNext:Bool;
-	var _hasNext:Bool;
+	var _state:Int; //0=end;1=loaded;2=unloaded
 	
 	public function new(enumerator:Enumerator<T>) {
 		_enumerator = enumerator;
-		_movedNext = true;
-		_hasNext = false;
+		_state = 2;
 	}
 	
 	public function hasNext():Bool {
-		if (_hasNext && !_movedNext) {
-			_hasNext = _enumerator.moveNext();
-			_movedNext = false;
-		}
-		return _hasNext;
+		switch(_state) {
+			case 1:
+				return true;
+			case 2:
+				_state = _enumerator.moveNext() ? 1 : 0;
+				return hasNext();
+			}
+		return false;
 	}
 		
 	public function next():T {
 		if (hasNext()) {
-			_movedNext = true;
+			_state = 2;
 			return _enumerator.current;
 		}
 		return null;
