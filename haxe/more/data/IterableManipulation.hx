@@ -90,7 +90,7 @@ class IterableManipulation {
 		return subject.asEnumerable().firstOrDefault(defaultValue, predicate)
 	
 	public static function fold<T, C>(subject:Iterable<T>, aggregator: T -> C -> C, ?seed:C):C
-		return subject.asEnumerable().fold(aggregator)
+		return subject.asEnumerable().fold(aggregator, seed)
 	
 	public static function historyDuo<T, V>(subject:Iterable<T>, selector: T -> T -> V):Iterable<V>
 		return subject.asEnumerable().historyDuo(selector).asIterable()

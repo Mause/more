@@ -54,7 +54,9 @@ class Default {
 	public static inline function equals(a:Float, b:Float, margin:Float):Bool return (abs(a - b) < margin)
 
 	
-	public static inline function abs(a:Float):Float (return a < 0 ? -a : a)
+	public static inline function abs(a:Float):Float {
+		return a < 0 ? -a : a;
+	}
 	
 	public static inline function random(max:Float, min:Float = 0) return (Math.random() * (max - min) + min)
 	
@@ -76,7 +78,7 @@ class Default {
 		return string == null || string.iterable().all(function(char) return " \t\r\n".indexOf(char) != -1)
 	
 	/**
-		Get's the current time in miliseconds.
+		Gets the current time in milliseconds.
 	**/
 	public static inline var microtime(get_time, null):Float;
 	static inline function get_time():Float {

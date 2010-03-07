@@ -204,7 +204,7 @@ class Manipulation {
 	}
 	
 	public static function skip<T>(subject:Enumerable<T>, skip:Int):Enumerable<T> {
-		return return subject.range(skip, -1);
+		return subject.range(skip, -1);
 	}
 	
 	public static function sum(subject:Enumerable<Float>):Float {
@@ -228,7 +228,7 @@ class Manipulation {
 	}
 	
 	public static function take<T>(subject:Enumerable<T>, take:Int):Enumerable<T> {
-		return return subject.range(0, take);
+		return subject.range(0, take);
 	}
 	
 	public static function toArray<T>(subject:Enumerable<T>):Array<T> {
