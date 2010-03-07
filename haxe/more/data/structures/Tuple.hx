@@ -15,17 +15,17 @@
  * limitations under the License.
  **/
 package haxe.more.data.structures;
-typedef Tuple2<T1, T2> = {
+typedef Tuple2#if!H<T1, T2>#end = {
 	var first(default, null):T1;
 	var second(default, null):T2;
 }
-typedef Tuple3<T1, T2, T3> = {> Tuple2<T1, T2>,
+typedef Tuple3#if!H<T1, T2, T3>#end = {> Tuple2<T1, T2>,
 	var third(default, null):T3;
 }
-typedef Tuple4<T1, T2, T3, T4> = {> Tuple3<T1, T2, T3>,
+typedef Tuple4#if!H<T1, T2, T3, T4>#end = {> Tuple3<T1, T2, T3>,
 	var fourth(default, null):T4;
 }
-typedef Tuple5<T1, T2, T3, T4, T5> = {> Tuple4<T1, T2, T3, T4>,
+typedef Tuple5#if!H<T1, T2, T3, T4, T5>#end = {> Tuple4<T1, T2, T3, T4>,
 	var fifth(default, null):T5;
 }
 

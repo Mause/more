@@ -16,7 +16,7 @@
  **/
 package haxe.more.data.flow;
 
-class SelectEnumerator<T, V> extends BaseEnumerator<V> {
+class SelectEnumerator#if!H<T, V>#end extends BaseEnumerator<V> {
 	var _subject:Enumerator<T>;
 	var _selector: T -> V;
 	

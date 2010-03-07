@@ -17,7 +17,7 @@
 package haxe.more.data.sources;
 import haxe.more.data.flow.Enumerator;
 
-class EmptyEnumerator<T> implements Enumerator<T> {
+class EmptyEnumerator#if!H<T>#end implements Enumerator<T> {
 	public var current(default, null):T;
 	
 	/**

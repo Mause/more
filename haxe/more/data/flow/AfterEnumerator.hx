@@ -16,7 +16,7 @@
  **/
 package haxe.more.data.flow;
 
-class AfterEnumerator<T> extends BaseEnumerator<T> {
+class AfterEnumerator#if!H<T>#end extends BaseEnumerator<T> {
 	var _subject:Enumerator<T>;
 	var _predicate: T -> Bool;
 	var _initialized:Bool;

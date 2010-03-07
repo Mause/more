@@ -17,7 +17,7 @@
 package haxe.more.data.sources;
 import haxe.more.exceptions.Exception;
 typedef Blender<A, B, C> = A -> B -> Float -> C;
-class Transition<A, B, C> {
+class Transition#if!H<A, B, C>#end {
 	public var a:A;
 	public var b:B;
 	public var blender:Blender<A, B, C>;
@@ -36,7 +36,7 @@ class Transition<A, B, C> {
 	}
 }
 
-class TransitionIterable<A, B, C> {
+private class TransitionIterable<A, B, C> {
 	var _transition:Transition<A, B, C>;
 	var _parts:Int;
 	public function new(transition:Transition<A, B, C>, parts:Int = 256) {
@@ -47,7 +47,7 @@ class TransitionIterable<A, B, C> {
 	public function iterator():Iterator<C>
 		return new TransitionIterator<A, B, C>(_transition, _parts)
 }
-class TransitionIterator<A, B, C> {
+private class TransitionIterator<A, B, C> {
 	var _transition:Transition<A, B, C>;
 	var _step:Float;
 	var _current:Float;

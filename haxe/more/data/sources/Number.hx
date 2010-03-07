@@ -23,7 +23,6 @@ using haxe.more.data.sources.Number;
 using haxe.more.data.Manipulation;
 
 class Number {
-	
 	public inline static var evenNaturals(gEvenNaturals, null):Enumerable<Int>;
 	inline static function gEvenNaturals() return 0.to(Default.maxInt, 2)
 	

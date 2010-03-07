@@ -16,7 +16,7 @@
  **/
 package haxe.more.data.structures;
 
-class Stack<T> {
+class Stack#if!H<T>#end {
 	var list:SingleLinkedList<T>;
 	
 	public var length(gLength, null):Int;

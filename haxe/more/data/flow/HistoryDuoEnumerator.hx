@@ -16,7 +16,7 @@
  **/
 package haxe.more.data.flow;
 
-class HistoryDuoEnumerator<T, V> extends BaseEnumerator<V> {
+class HistoryDuoEnumerator#if!H<T, V>#end extends BaseEnumerator<V> {
 	var _subject:Enumerator<T>;
 	var _selector: T -> T -> V;
 	var _first:T;

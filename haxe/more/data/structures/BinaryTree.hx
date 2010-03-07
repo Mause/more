@@ -20,7 +20,7 @@ import haxe.more.exceptions.ArgumentNullException;
 typedef Comperator<T> = T -> T -> Int;
 typedef Finder<T, K> = K -> T -> Int;
 
-class BinaryTree<T> {	
+class BinaryTree#if!H<T>#end {	
 	public static function integerComparator(left:Int, right:Int):Int
 		return left - right
 	
@@ -63,7 +63,7 @@ class BinaryTree<T> {
 	public function levelOrderIterator():Iterator<T> return node.levelOrderIterator()
 }
 // I want acces to the BinaryTreeNode's internals, but not expose this in the public BinaryTree. This internal class solves the problem nicely.
-class BinaryTreeNodeOperator<T> extends BinaryTreeNode<T> {
+private class BinaryTreeNodeOperator<T> extends BinaryTreeNode<T> {
 	var _tree:BinaryTree<T>;
 	public function new(tree:BinaryTree<T>) {
 		super(null);

@@ -18,7 +18,7 @@ package haxe.more.data.flow;
 import haxe.more.data.structures.DoubleLinkedList;
 using haxe.more.Default;
 
-class ReverseEnumerable<T> implements Enumerable<T> {
+class ReverseEnumerable#if!H<T>#end implements Enumerable<T> {
 	var _subject:Enumerable<T>;
 	public function new(subject:Enumerable<T>)
 		_subject = subject

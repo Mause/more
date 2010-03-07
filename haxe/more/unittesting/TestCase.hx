@@ -3,7 +3,7 @@
  * @author Tyler MacLeod
  */
 
-package haxe.more.unit;
+package haxe.more.unittesting;
 import haxe.PosInfos;
 
 using Std;

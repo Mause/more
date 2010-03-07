@@ -17,7 +17,7 @@
 package haxe.more.data.sources;
 import haxe.more.data.flow.Enumerable;
 
-class EmptyIterable<T> implements Enumerable<T> {
+class EmptyIterable#if!H<T>#end implements Enumerable<T> {
 	var _enumerator:EmptyEnumerator<T>;
 	/**
 	 * Creates a new nothing iterator.

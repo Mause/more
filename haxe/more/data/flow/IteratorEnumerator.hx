@@ -16,7 +16,7 @@
  **/
 package haxe.more.data.flow;
 
-class IteratorEnumerator<T> extends BaseEnumerator<T> {
+class IteratorEnumerator#if!H<T>#end extends BaseEnumerator<T> {
 	var _iterator:Iterator<T>;
 	
 	public function new(iterator:Iterator<T>) {

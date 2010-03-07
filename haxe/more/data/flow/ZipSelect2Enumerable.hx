@@ -16,7 +16,7 @@
  **/
 package haxe.more.data.flow;
 
-class ZipSelect2Enumerable<T1, T2, V> implements Enumerable<V> {
+class ZipSelect2Enumerable#if!H<T1, T2, V>#end implements Enumerable<V> {
 	var _subject1:Enumerable<T1>;
 	var _subject2:Enumerable<T2>;
 	var _selector: T1 -> T2 -> V;

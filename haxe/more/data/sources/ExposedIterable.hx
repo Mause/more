@@ -16,7 +16,7 @@
  **/
 package haxe.more.data.sources;
 
-class ExposedIterable<T> {
+class ExposedIterable#if!H<T>#end {
 	var _next: Void -> T;
 	var _hasNext: Void -> Bool;
 	public function new(next: Void -> T, hasNext: Void -> Bool) {
@@ -27,7 +27,7 @@ class ExposedIterable<T> {
 	public function iterator():Iterator<T>
 		return new ExposedIterator(_next, _hasNext)
 }
-class ExposedIterator<T> {
+class ExposedIterator#if!H<T>#end {
 	var _next: Void -> T;
 	var _hasNext: Void -> Bool;
 	public function new(next: Void -> T, hasNext: Void -> Bool) {

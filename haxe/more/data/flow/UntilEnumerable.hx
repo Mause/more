@@ -16,7 +16,7 @@
  **/
 package haxe.more.data.flow;
 
-class UntilEnumerable<T> implements Enumerable<T> {
+class UntilEnumerable#if!H<T>#end implements Enumerable<T> {
 	var _subject:Enumerable<T>;
 	var _predicate: T -> Bool;
 	

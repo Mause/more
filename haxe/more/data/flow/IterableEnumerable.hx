@@ -16,7 +16,7 @@
  **/
 package haxe.more.data.flow;
 
-class IterableEnumerable<T> implements Enumerable<T> {
+class IterableEnumerable#if!H<T>#end implements Enumerable<T> {
 	var _iterable:Iterable<T>;
 	
 	public function new(iterable:Iterable<T>) {

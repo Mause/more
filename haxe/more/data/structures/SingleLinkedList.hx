@@ -18,7 +18,7 @@ package haxe.more.data.structures;
 import haxe.more.data.sources.EmptyIterator;
 import haxe.more.data.flow.Enumerable;
 
-class SingleLinkedList<T> {
+class SingleLinkedList#if!H<T>#end {
 	var sentinel:SingleLinkedListNode<T>;
 	
 	/**

@@ -30,7 +30,7 @@ enum Quad {
 	bottomRight;
 }
 
-class QuadTree<T:PointDef> {
+class QuadTree#if!H<T:PointDef>#end {
 	var _initialized:Bool;
 	var _preInitDepth:Int;
 	

@@ -17,7 +17,7 @@
 package haxe.more.data.flow;
 using haxe.more.data.Manipulation;
 
-class ReverseEnumerator<T> extends BaseEnumerator<T> {
+class ReverseEnumerator#if!H<T>#end extends BaseEnumerator<T> {
 	var _subject:Enumerable<T>;
 	var _reversed:haxe.more.data.flow.Enumerator<T>;
 	

@@ -17,7 +17,7 @@
 package haxe.more.data.flow;
 using haxe.more.data.Manipulation;
 
-class ConcatEnumerable<T> implements Enumerable<T> {
+class ConcatEnumerable#if!H<T>#end implements Enumerable<T> {
 	var _subjects:Enumerable<Enumerable<T>>;
 	
 	public function new(subjects:Enumerable<Enumerable<T>>) {

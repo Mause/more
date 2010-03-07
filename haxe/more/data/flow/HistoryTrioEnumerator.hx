@@ -16,7 +16,7 @@
  **/
 package haxe.more.data.flow;
 
-class HistoryTrioEnumerator<T, V> extends BaseEnumerator<V> {
+class HistoryTrioEnumerator#if!H<T, V>#end extends BaseEnumerator<V> {
 	var _subject:Enumerator<T>;
 	var _selector: T -> T -> T -> V;
 	var _first:T;

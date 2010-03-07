@@ -5,7 +5,7 @@
 
 package haxe.more.data.flow;
 
-class RangeEnumerable<T> implements Enumerable<T> {
+class RangeEnumerable#if!H<T>#end implements Enumerable<T> {
 	var _subject:Enumerable<T>;
 	var _skip:Int;
 	var _take:Int;

@@ -17,7 +17,7 @@
 package haxe.more.data.structures;
 import haxe.more.exceptions.ArgumentNullException;
 
-class ReadOnlyArray<T> {
+class ReadOnlyArray#if!H<T>#end {
 	var _array:Array<T>;
 	/**
 	 * Constructs a new Readonly Array.

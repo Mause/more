@@ -17,7 +17,7 @@
 package haxe.more.data.flow;
 import haxe.more.exceptions.NotImplementedException;
 
-class WhereEnumerator<T> extends BaseEnumerator<T>{
+class WhereEnumerator#if!H<T>#end extends BaseEnumerator<T>{
 	var _subject:Enumerator<T>;
 	var _predicate: T -> Bool;
 	var _current:T;

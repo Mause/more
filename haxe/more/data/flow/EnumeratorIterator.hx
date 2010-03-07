@@ -16,7 +16,7 @@
  **/
 package haxe.more.data.flow;
 
-class EnumeratorIterator<T> {
+class EnumeratorIterator#if!H<T>#end {
 	var _enumerator:Enumerator<T>;
 	var _state:Int; //0=end;1=loaded;2=unloaded
 	

@@ -16,7 +16,7 @@
  **/
 package haxe.more.data.datastructures.bare;
 
-class BareBinaryTree<T> {
+class BareBinaryTree#if!H<T>#end {
 	public var left:BareBinaryTree<T>;
 	public var right:BareBinaryTree<T>;
 	public var value:T;

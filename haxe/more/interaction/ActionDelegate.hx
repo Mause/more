@@ -22,7 +22,7 @@ import haxe.more.Functional;
 using haxe.more.data.Manipulation;
 
 class ActionDelegate {
-	var _handlers:DoubleLinkedList<Action>;
+	var _handlers:DoubleLinkedList#if!H<Action>#end;
 	var _iterable:Iterable<Void>;
 	
 	public function new() {

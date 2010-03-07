@@ -16,7 +16,7 @@
  **/
 package haxe.more.data.structures;
 
-class SingleLinkedListNode<T> {
+class SingleLinkedListNode#if!H<T>#end {
 	// ugh.. blech... needed.
 	public var list(default, null):SingleLinkedList<T>;
 	public var next(default, null):SingleLinkedListNode<T>;

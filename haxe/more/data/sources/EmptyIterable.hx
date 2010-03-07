@@ -16,7 +16,7 @@
  **/
 package haxe.more.data.sources;
 
-class EmptyIterable<T> {
+class EmptyIterable#if!H<T>#end {
 	var _iterator:EmptyIterator<T>;
 	/**
 	 * Creates a new nothing iterator.

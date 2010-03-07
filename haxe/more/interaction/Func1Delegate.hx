@@ -21,7 +21,7 @@ import haxe.more.Functional;
 
 using haxe.more.data.Manipulation;
 
-class Func1Delegate<A, R> {
+class Func1Delegate#if!H<A, R>#end {
 	var _handlers:DoubleLinkedList<Func1<A, R>>;
 	
 	public function new() {

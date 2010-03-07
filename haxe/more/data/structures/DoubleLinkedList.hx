@@ -20,7 +20,7 @@ import haxe.more.data.flow.Enumerator;
 import haxe.more.data.sources.EmptyIterator;
 import haxe.more.data.sources.EmptyEnumerator;
 
-class DoubleLinkedList<T> implements Enumerable<T> {
+class DoubleLinkedList#if!H<T>#end implements Enumerable<T> {
 	var sentinel:DoubleLinkedListNode<T>;
 	var endtinel:DoubleLinkedListNode<T>;
 	

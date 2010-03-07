@@ -18,7 +18,7 @@ package haxe.more.data.structures;
 import haxe.more.data.flow.Enumerator;
 using haxe.more.data.IterableManipulation;
 
-class DoubleLinkedListNode<T> {
+class DoubleLinkedListNode#if!H<T>#end {
 	public var list(default, null):DoubleLinkedList<T>;
 	public var next(default, null):DoubleLinkedListNode<T>;
 	public var previous(default, null):DoubleLinkedListNode<T>;

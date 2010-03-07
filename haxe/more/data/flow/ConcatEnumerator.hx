@@ -16,7 +16,7 @@
  **/
 package haxe.more.data.flow;
 
-class ConcatEnumerator<T> extends BaseEnumerator<T> {
+class ConcatEnumerator#if!H<T>#end extends BaseEnumerator<T> {
 	var _subjects:Enumerator<Enumerator<T>>;
 	var _currentEnumer:Enumerator<T>;
 	var _done:Bool;

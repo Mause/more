@@ -18,7 +18,7 @@ package haxe.more.data.structures;
 import haxe.more.data.structures.Queue;
 import haxe.more.data.structures.Stack;
 
-class BinaryTreeNode<T> {
+class BinaryTreeNode#if!H<T>#end {
 	public var left(default, null):BinaryTreeNode<T>;
 	public var right(default, null):BinaryTreeNode<T>;
 	public var value(default, null):T;
@@ -49,7 +49,7 @@ class BinaryTreeNode<T> {
 	public function levelOrderIterator():Iterator<T> return new LevelOrderIterator(this)
 	public function toString():String return Std.string(value)
 }
-class TreeIterator<T> {	
+private class TreeIterator<T> {	
 	var _tree:BinaryTree<T>;
 	var _current:BinaryTreeNode<T>;
 	public function new(tree:BinaryTree<T>) {
@@ -58,7 +58,7 @@ class TreeIterator<T> {
 	
 	public function hasNext() return _current != null
 }
-class PreOrderIterator<T> extends TreeIterator<T>  {
+private class PreOrderIterator<T> extends TreeIterator<T>  {
 	var _stack:Stack<BinaryTreeNode<T>>;
 	public function new(root:BinaryTreeNode<T>) {
 		super(root.root);
@@ -81,7 +81,7 @@ class PreOrderIterator<T> extends TreeIterator<T>  {
 		return _current.value;
 	}
 }
-class InOrderIterator<T> extends TreeIterator<T>  {
+private class InOrderIterator<T> extends TreeIterator<T>  {
 	public function new(root:BinaryTreeNode<T>) {
 		super(root.root);
 	}
@@ -90,7 +90,7 @@ class InOrderIterator<T> extends TreeIterator<T>  {
 		return null;
 	}
 }
-class PostOrderIterator<T> extends TreeIterator<T>  {
+private class PostOrderIterator<T> extends TreeIterator<T>  {
 	var _stack:Stack<BinaryTreeNode<T>>;
 	public function new(root:BinaryTreeNode<T>) {
 		super(root.root);
@@ -100,7 +100,7 @@ class PostOrderIterator<T> extends TreeIterator<T>  {
 		return null;
 	}
 }
-class LevelOrderIterator<T> {
+private class LevelOrderIterator<T> {
 	var _queue:Queue<BinaryTreeNode<T>>;
 	public function new(root:BinaryTreeNode<T>) {
 		_queue = new Queue<BinaryTreeNode<T>>();

@@ -7,7 +7,7 @@ package haxe.more.data.flow;
 import haxe.more.Default;
 using Std;
 
-class RangeEnumerator<T> extends BaseEnumerator<T> {
+class RangeEnumerator#if!H<T>#end extends BaseEnumerator<T> {
 	var _subject:Enumerator<T>;
 	var _skip:Int;
 	var _take:Int;

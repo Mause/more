@@ -16,7 +16,7 @@
  **/
 package haxe.more.data.flow;
 
-class HistoryDuoEnumerable<T, V> implements Enumerable<V> {
+class HistoryDuoEnumerable#if!H<T, V>#end implements Enumerable<V> {
 	var _subject:Enumerable<T>;
 	var _selector: T -> T -> V;
 	

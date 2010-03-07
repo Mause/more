@@ -16,7 +16,7 @@
  **/
 package haxe.more.data.structures;
 
-class Queue<T> {
+class Queue#if!H<T>#end {
 	var list:DoubleLinkedList<T>;
 	
 	public var length(gLength, null):Int;
