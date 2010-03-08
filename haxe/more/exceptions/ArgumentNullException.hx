@@ -26,6 +26,6 @@ class ArgumentNullException extends ArgumentException {
 	 * @param	?posInfos The info about the place this exception is thrown.
 	 */
 	public function new(?paramName:String, ?innerException:Exception, ?posInfos:PosInfos) {
-		super(paramName, paramName == null ? "Argument cannot be null." : "Argument \"" + paramName + "\" cannot be null.", innerException, posInfos);
+		super(paramName, paramName == null ? "Argument cannot be null." : "Argument '" + paramName + "' cannot be null.", innerException, posInfos);
 	}
 }

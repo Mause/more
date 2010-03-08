@@ -15,6 +15,6 @@ class BaseEnumerator#if!H<T>#end implements Enumerator<T> {
 	}
 	
 	public function toString():String {
-		return Std.string(current);
+		return Std.string("[...," + current + ",...]");
 	}
 }

@@ -15,6 +15,7 @@
  * limitations under the License.
  **/
 package haxe.more.data.flow;
+import haxe.more.exceptions.ArgumentNullException;
 import haxe.more.exceptions.NotImplementedException;
 
 class WhereEnumerator#if!H<T>#end extends BaseEnumerator<T>{
@@ -23,6 +24,8 @@ class WhereEnumerator#if!H<T>#end extends BaseEnumerator<T>{
 	var _current:T;
 	
 	public function new(subject:Enumerator<T>, predicate: T -> Bool) {
+		if (subject == null) throw new ArgumentNullException("subject");
+		if (predicate == null) throw new ArgumentNullException("predicate");
 		_subject = subject;
 		_predicate = predicate;
 	}

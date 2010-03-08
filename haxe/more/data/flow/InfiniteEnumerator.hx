@@ -1,4 +1,4 @@
-﻿/** UntilEnumerator.hx
+﻿/** InfiniteEnumerator.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -15,28 +15,13 @@
  * limitations under the License.
  **/
 package haxe.more.data.flow;
-import haxe.more.exceptions.ArgumentNullException;
 
-class UntilEnumerator#if!H<T>#end extends BaseEnumerator<T> {
-	var _subject:Enumerator<T>;
-	var _predicate: T -> Bool;
-	var _finished:Bool;
-	
-	public function new(subject:Enumerator < T > , predicate: T -> Bool) {
-		if (subject == null) throw new ArgumentNullException("subject");
-		if (predicate == null) throw new ArgumentNullException("predicate");
-		_subject = subject;
-		_predicate = predicate;
-		_finished = false;
+class InfiniteEnumerator#if!H<T>#end extends BaseEnumerator<T> {	
+	public function new(element:T) {
+		current = element;
 	}
 	
 	public override function moveNext():Bool {
-		if (_finished) return false;
-		if (_subject.moveNext() && !_predicate(_subject.current)) {
-			current = _subject.current;
-			return true;
-		}
-		_finished = true;
-		return false;
+		return true;
 	}
 }

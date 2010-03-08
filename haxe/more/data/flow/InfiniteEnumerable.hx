@@ -1,4 +1,4 @@
-﻿/** WhereEnumerable.hx
+﻿/** InfiniteEnumerable.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -16,16 +16,13 @@
  **/
 package haxe.more.data.flow;
 
-class WhereEnumerable#if!H<T>#end implements Enumerable<T> {
-	var _subject:Enumerable<T>;
-	var _predicate: T -> Bool;
+class InfiniteEnumerable#if!H<T>#end implements Enumerable<T> {
+	var _element:T;
 	
-	public function new(subject:Enumerable<T>, predicate: T -> Bool) {
-		_subject = subject;
-		_predicate = predicate;
+	public function new(element:T) {
+		_element = element;
 	}
 	
-	public function getEnumerator():Enumerator<T> {
-		return new WhereEnumerator(_subject.getEnumerator(), _predicate);
-	}
+	public function getEnumerator():Enumerator<T>
+		return new InfiniteEnumerator(_element)
 }

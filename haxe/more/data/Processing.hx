@@ -49,7 +49,7 @@ class Processing {
 				};
 			}
 		} else {
-			while (ator.moveNext()) 0+0;
+			while (ator.moveNext()) {}
 			if(completed != null) completed();
 		}
 	}
@@ -90,7 +90,7 @@ private class ApplyEnumerator<T> implements Enumerator<T> {
 	}
 	
 	public function moveNext():Bool {
-		if(_subject.moveNext()) {
+		if (_subject.moveNext()) {
 			current = _subject.current;
 			_action(current);
 			return true;

@@ -151,7 +151,8 @@ class Manipulation {
 
 	public static function first<T>(subject:Enumerable<T>, ?predicate: T -> Bool):T {
 		if (subject == null) throw new ArgumentNullException("subject");
-		var enumerator = predicate != null ? subject.where(predicate).getEnumerator() : subject.getEnumerator();
+		var enumerable = predicate != null ? subject.where(predicate) : subject;
+		var enumerator = enumerable.getEnumerator();
 		if (!enumerator.moveNext()) throw new Exception("Element not found");
 		return enumerator.current;
 	}
@@ -195,6 +196,26 @@ class Manipulation {
 	public static function join<T>(scattered:Enumerable<Enumerable<T>>):Enumerable<T> {
 		if (scattered == null) throw new ArgumentNullException("scattered");
 		return new ConcatEnumerable(scattered);
+	}
+	
+	public static function last<T>(subject:Enumerable<T>, ?predicate: T -> Bool):T {
+		if (subject == null) throw new ArgumentNullException("subject");
+		var enumerator = predicate != null ? subject.where(predicate).getEnumerator() : subject.getEnumerator();
+		if (!enumerator.moveNext()) throw new Exception("Element not found");
+		while (enumerator.moveNext()){}
+		return enumerator.current;
+	}
+
+	public static function lastOrNull<T>(subject:Enumerable<T>, ?predicate: T -> Bool):T {
+		return subject.lastOrDefault(null, predicate);
+	}
+	
+	public static function lastOrDefault<T>(subject:Enumerable<T>, defaultValue:T, ?predicate: T -> Bool):T {
+		if (subject == null) throw new ArgumentNullException("subject");
+		var enumerator = predicate != null ? subject.where(predicate).getEnumerator() : subject.getEnumerator();
+		if (!enumerator.moveNext())	return defaultValue;
+		while (enumerator.moveNext()){}
+		return enumerator.current;
 	}
 
 	public static function select<T, V>(subject:Enumerable<T>, selector: T -> V):Enumerable<V> {

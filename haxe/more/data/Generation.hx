@@ -1,4 +1,4 @@
-﻿/** WhereEnumerable.hx
+﻿/** Generation.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
  * 
@@ -14,18 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-package haxe.more.data.flow;
+package haxe.more.data;
+import haxe.more.data.flow.Enumerable;
+import haxe.more.data.flow.InfiniteEnumerable;
+import haxe.more.exceptions.ArgumentOutOfRangeException;
+using haxe.more.data.Manipulation;
 
-class WhereEnumerable#if!H<T>#end implements Enumerable<T> {
-	var _subject:Enumerable<T>;
-	var _predicate: T -> Bool;
-	
-	public function new(subject:Enumerable<T>, predicate: T -> Bool) {
-		_subject = subject;
-		_predicate = predicate;
-	}
-	
-	public function getEnumerator():Enumerator<T> {
-		return new WhereEnumerator(_subject.getEnumerator(), _predicate);
+class Generation {
+	public static function repeat<T>(element:T, count:Int = -1):Enumerable<T> {
+		if (count < -1)
+			throw new ArgumentOutOfRangeException("count", count, "-1 or more");
+		return (count == -1) ? new InfiniteEnumerable(element) : new InfiniteEnumerable(element).until(function(element) return count-- <= 0);
 	}
 }
