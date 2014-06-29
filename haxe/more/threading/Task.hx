@@ -40,7 +40,7 @@ class Task {
 		}
 	}
 
-	public static function addTask(thread:IThread, task:Task):IThread {
+	public static function addTask(thread:IThreadProcessor, task:Task):IThreadProcessor {
 		return thread.add(task.process);
 	}
 }
