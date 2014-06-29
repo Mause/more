@@ -74,8 +74,11 @@ class Default {
 	public static inline function isNullOrEmpty(string:String):Bool
 		return string == null || string == "";
 
-	public static function isNullOrWhiteSpace(string:String):Bool
-		return string == null || string.iterable().all(function(char) return " \t\r\n".indexOf(char) != -1)
+	public static function isNullOrWhiteSpace(string:String):Bool {
+		return string == null || string.iterable().all(
+			function(char) return " \t\r\n".indexOf(char) != -1
+		);
+	}
 
 	/**
 		Gets the current time in milliseconds.
