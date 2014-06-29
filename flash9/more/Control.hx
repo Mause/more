@@ -68,21 +68,21 @@ class Control {
 	public var keyPressed(default, null):ISlotList<Int>;
 	var _keyPressedSignaller(default, null):ISignaler<Int>;
 
-	public function isKeyDown(keyCode:Int):Bool return _keys[keyCode]
-	public function isKeyUp(keyCode:Int):Bool return !_keys[keyCode]
+	public function isKeyDown(keyCode:Int):Bool return _keys[keyCode];
+	public function isKeyUp(keyCode:Int):Bool return !_keys[keyCode];
 
 	public inline var isCtrlDown(gIsCtrlDown, null):Bool;
-	inline function gIsCtrlDown() return _keys[Keyboard.CONTROL]
+	inline function gIsCtrlDown() return _keys[Keyboard.CONTROL];
 	public inline var isEnterDown(gIsEnterDown, null):Bool;
-	inline function gIsEnterDown() return _keys[Keyboard.ENTER]
+	inline function gIsEnterDown() return _keys[Keyboard.ENTER];
 	public inline var isShiftDown(gIsShiftDown, null):Bool;
-	inline function gIsShiftDown() return _keys[Keyboard.SHIFT]
+	inline function gIsShiftDown() return _keys[Keyboard.SHIFT];
 	public inline var isSpaceDown(gIsSpaceDown, null):Bool;
-	inline function gIsSpaceDown() return _keys[Keyboard.SPACE]
+	inline function gIsSpaceDown() return _keys[Keyboard.SPACE];
 
-	function _mouseDown(e:MouseEvent) mouseUp = !(mouseDown = true)
-	function _mouseUp(e:MouseEvent) mouseUp = !(mouseDown = false)
-	function _mouseClicked(e:MouseEvent) mouseClicked = true
+	function _mouseDown(e:MouseEvent) mouseUp = !(mouseDown = true);
+	function _mouseUp(e:MouseEvent) mouseUp = !(mouseDown = false);
+	function _mouseClicked(e:MouseEvent) mouseClicked = true;
 	function _keyUp(e:KeyboardEvent) {
 		_keys[e.keyCode] = false;
 		_keyUpSignaller.dispatchSignal(e.keyCode);
