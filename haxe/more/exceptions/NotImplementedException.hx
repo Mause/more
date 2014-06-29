@@ -16,7 +16,7 @@
  **/
 package haxe.more.exceptions;
 import haxe.PosInfos;
-import haxe.Stack;
+import haxe.CallStack;
 
 class NotImplementedException extends Exception {
 	public var methodName(default, null):String;

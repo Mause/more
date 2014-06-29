@@ -19,7 +19,7 @@ import haxe.more.exceptions.ArgumentNullException;
 import haxe.more.data.structures.ReadOnlyArray;
 import haxe.more.exceptions.NotImplementedException;
 import haxe.more.Default;
-import haxe.Stack;
+import haxe.CallStack;
 using haxe.more.color.Hsl;
 using haxe.more.data.Manipulation;
 using haxe.more.Default;

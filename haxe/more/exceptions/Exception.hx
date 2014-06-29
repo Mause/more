@@ -16,7 +16,7 @@
  **/
 package haxe.more.exceptions;
 import haxe.PosInfos;
-import haxe.Stack;
+import haxe.CallStack;
 
 /**
  * General base class for Exceptions. Automatically generates stackTraces.
@@ -59,7 +59,7 @@ class Exception {
 	 * Calling this from somewhere else will result in a corrupted stacktrace.
 	 */
 	function generateStackTrace() {
-		_rawStackTrace = Stack.callStack();
+		_rawStackTrace = CallStack.callStack();
 		_rawStackTrace.shift(); // Shift off this function
 		_rawStackTrace.shift(); // And Exceptions constructor
 
@@ -85,7 +85,7 @@ class Exception {
 	 * Returns the string representation of the stackTrace.
 	 * @return the string representation of the stackTrace.
 	 */
-	public function toString():String return message + Stack.toString(_rawStackTrace)
+	public function toString():String return message + CallStack.toString(_rawStackTrace);
 
 	/**
 	 * Returns an iterator to iterate through the stackTrace.

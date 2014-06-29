@@ -17,7 +17,7 @@
 package haxe.more.exceptions;
 import haxe.more.Default;
 import haxe.PosInfos;
-import haxe.Stack;
+import haxe.CallStack;
 
 class ArgumentException extends Exception {
 	/**
