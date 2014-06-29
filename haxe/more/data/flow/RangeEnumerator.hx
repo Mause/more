@@ -1,6 +1,6 @@
 ﻿/**
  * ...
- * @author 
+ * @author
  */
 
 package haxe.more.data.flow;
@@ -12,14 +12,14 @@ class RangeEnumerator#if!H<T>#end extends BaseEnumerator<T> {
 	var _skip:Int;
 	var _take:Int;
 	var _state:Int;//-1=clean;0=end;1=taking;2=endless
-	
+
 	public function new(subject:Enumerator<T>, skip:Int = 0, take:Int = -1) {
 		_subject = subject;
 		_skip = Default.max(skip, 0).int();
 		_take = take;
 		_state = -1;
 	}
-	
+
 	public override function moveNext():Bool {
 		switch(_state) {
 			case -1:
@@ -41,7 +41,7 @@ class RangeEnumerator#if!H<T>#end extends BaseEnumerator<T> {
 					current = _subject.current;
 					return true;
 				}
-				_state = 0;		
+				_state = 0;
 		}
 		return false;
 	}

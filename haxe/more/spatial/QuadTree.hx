@@ -1,13 +1,13 @@
 ﻿/** QuadTree.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,16 +33,16 @@ enum Quad {
 class QuadTree#if!H<T:PointDef>#end {
 	var _initialized:Bool;
 	var _preInitDepth:Int;
-	
+
 	var _points(default, null):Iterable<T>;
-	
+
 	public var x(default, null):Float;
 	public var width(default, null):Float;
 	public var dividerX(default, null):Float;
 	public var y(default, null):Float;
 	public var height(default, null):Float;
 	public var dividerY(default, null):Float;
-	
+
 	var _topLeft:QuadTree<T>;
 	public var topLeft(gTopLeft, null):QuadTree<T>;
 	function gTopLeft() {
@@ -67,7 +67,7 @@ class QuadTree#if!H<T:PointDef>#end {
 		initialize();
 		return _bottomRight;
 	}
-	
+
 	public function new(points:Iterable<T>, x:Float, width:Float, y:Float, height:Float, preInitDepth:Int = 0) {
 		_points = points;
 		this.x = x;
@@ -75,10 +75,10 @@ class QuadTree#if!H<T:PointDef>#end {
 		this.y = y;
 		this.width = width;
 		_initialized = false;
-		
+
 		dividerX = x + width / 2;
 		dividerY = y + height / 2;
-		
+
 		if (preInitDepth > 0) {
 			_preInitDepth = preInitDepth - 1;
 			initializeQuads();
@@ -86,10 +86,10 @@ class QuadTree#if!H<T:PointDef>#end {
 			_preInitDepth = 0;
 		}
 	}
-	
+
 	public function iterator():Iterator<T>
-		return _points.iterator()	
-	
+		return _points.iterator()
+
 	public  function get(quad:Quad):QuadTree<T> {
 		initialize();
 		return switch(quad) {
@@ -99,7 +99,7 @@ class QuadTree#if!H<T:PointDef>#end {
 			case bottomRight: _bottomRight;
 		}
 	}
-	
+
 	public function getQuadTreeAt(x:Float, y:Float, depth:Int = 0):QuadTree<T> {
 		var quad = this;
 		while (depth-- > 0) {
@@ -107,9 +107,9 @@ class QuadTree#if!H<T:PointDef>#end {
 		}
 		return quad;
 	}
-	
+
 	public function getQuadAt(x:Float, y:Float):Quad {
-		return 
+		return
 			if (y <= dividerY) {
 				if (x <= dividerX)
 					Quad.topLeft;
@@ -123,17 +123,17 @@ class QuadTree#if!H<T:PointDef>#end {
 			}
 
 	}
-	
+
 	public function calculate(depth:Int = 0):Task { // The broken state machine, only init's himself.
 		var state = 0;
 		var self = this;
 		var currentTask:Task = null;
-		
+
 		depth--;
-		
+
 		return new Task(function(time) {
 			if (depth < 1) return true;
-			
+
 			if(currentTask == null || currentTask.process(time)) { // if there isn't a current task, or the current task is done, change the current task
 				switch(state) {
 				case 0:
@@ -160,17 +160,17 @@ class QuadTree#if!H<T:PointDef>#end {
 			return false; // Hey, I am not done yet
 		});
 	}
-	
+
 	inline function initialize()
 		if (!_initialized) initializeQuads()
-	
+
 	function initializeQuads() {
 		_initialized = true;
 		var topLeftIterable:Iterable<T>;
 		var topRightIterable:Iterable<T>;
 		var bottomLeftIterable:Iterable<T>;
 		var bottomRightIterable:Iterable<T>;
-		
+
 		var iter = _points.iterator();
 		if (iter.hasNext()) {
 			createFilledSources(iter);
@@ -178,18 +178,18 @@ class QuadTree#if!H<T:PointDef>#end {
 			createEmptySources();
 		}
 	}
-	
-	function createFilledSources(points:Iterator<T>) {		
+
+	function createFilledSources(points:Iterator<T>) {
 		var topLeftList = new SingleLinkedList<T>();
 		var topRightList = new SingleLinkedList<T>();
 		var bottomLeftList = new SingleLinkedList<T>();
 		var bottomRightList = new SingleLinkedList<T>();
-		
+
 		pushItems(points, topLeftList, topRightList, bottomLeftList, bottomRightList);
-		
+
 		createAndAssignQuadTrees(topLeftList, topRightList, bottomLeftList, bottomRightList);
 	}
-	
+
 	function pushItems(points:Iterator<T>, topLeft:SingleLinkedList<T>, topRight:SingleLinkedList<T>, bottomLeft:SingleLinkedList<T>, bottomRight:SingleLinkedList<T>)
 	{
 		for (item in points) {
@@ -208,12 +208,12 @@ class QuadTree#if!H<T:PointDef>#end {
 			}
 		}
 	}
-	
+
 	inline function createEmptySources() {
 		var iterable = new EmptyIterable();
 		createAndAssignQuadTrees(iterable, iterable, iterable, iterable);
 	}
-	
+
 	function createAndAssignQuadTrees(topLeftIterable:Iterable<T>, topRightIterable:Iterable<T>, bottomLeftIterable:Iterable<T>, bottomRightIterable:Iterable<T>) {
 		var halfWidth = width / 2;
 		var halfHeight = height / 2;

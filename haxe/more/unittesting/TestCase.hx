@@ -15,7 +15,7 @@ class TestCase extends haxe.unit.TestCase
 	{
 		throw setAndGetFailTest(msg, c);
 	}
-	
+
 	function assertClass<T, Y>(clazz:Class<T>, item:Y, ?c : PosInfos)
 	{
 		if (!item.is(clazz))
@@ -23,7 +23,7 @@ class TestCase extends haxe.unit.TestCase
 			throw setAndGetFailTest("Invalid type, expecting " + clazz.getClassName() + " and recieved " + item.getClass().getClassName(), c);
 		}
 	}
-	
+
 	function assertNotNull<T>(item:T, ?c : PosInfos)
 	{
 		if (item == null)
@@ -31,7 +31,7 @@ class TestCase extends haxe.unit.TestCase
 			throw setAndGetFailTest("Item was null", c);
 		}
 	}
-	
+
 	inline function setAndGetFailTest(error:String, c : PosInfos)
 	{
 		currentTest.success = false;

@@ -1,13 +1,13 @@
 ﻿/** SingleLinkedListNode.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,10 +21,10 @@ class SingleLinkedListNode#if!H<T>#end {
 	public var list(default, null):SingleLinkedList<T>;
 	public var next(default, null):SingleLinkedListNode<T>;
 	public var value:T;
-	
+
 	public inline var isAlive(gIsAlive, null):Bool;
 	inline function gIsAlive() return (list != null)
-	
+
 	/**
 	 * Constructs a new node. This is a private action.
 	 * @param	list
@@ -34,7 +34,7 @@ class SingleLinkedListNode#if!H<T>#end {
 		this.list = list;
 		this.value = value;
 	}
-	
+
 	/**
 	 * Appends a value to the current node.
 	 * @param	?value The value to append. After the operation, the next node will contain this value.
@@ -42,15 +42,15 @@ class SingleLinkedListNode#if!H<T>#end {
 	public function append(value:T):Void {
 		if (!isAlive) return;
 		var subject = new SingleLinkedListNode(list, value);
-		SingleLinkedListOperator.setLength(list, list.length + 1);		
-		
+		SingleLinkedListOperator.setLength(list, list.length + 1);
+
 		subject.next = next;
 		next = subject;
-		
+
 		if (subject.next == null)
 			SingleLinkedListOperator.setTail(list, subject);
 	}
-	
+
 	/**
 	 * Prepends a value to the current node.
 	 * @param	?value The value to prepend. After the operation, the previous node will contain this value.
@@ -59,12 +59,12 @@ class SingleLinkedListNode#if!H<T>#end {
 	 */
 	public function prepend(value:T, ?previous:SingleLinkedListNode<T>):Void {
 		if (!isAlive) return;
-		
+
 		previous = getPrevious(previous);
-		
-		previous.append(value);		
+
+		previous.append(value);
 	}
-	
+
 	/**
 	 * Removes the current node out of the list. All references to the containing list are in this node removed.
 	 * @param	?previous The node previous to this one. Supplying this can greatly speed up things.
@@ -73,48 +73,48 @@ class SingleLinkedListNode#if!H<T>#end {
 	 */
 	public function remove(?previous:SingleLinkedListNode<T>):T {
 		if (!isAlive) return value;
-		
+
 		previous = getPrevious(previous);
-		
+
 		return previous.removeNext();
 	}
-	
+
 	/**
 	 * Removes the next node out of the list. All references to the containing list are in that node removed.
 	 * @return	The value the next node contained.
 	 */
 	public function removeNext():T {
 		if (!isAlive) return null;
-		
+
 		var subject = next;
 		var result = subject.value;
-		
+
 		SingleLinkedListOperator.setLength(list, list.length - 1);
-		
+
 		next = next.next;
-		
+
 		if (next == null)
 			if (this == SingleLinkedListOperator.getSentinel(list))
 				SingleLinkedListOperator.setTail(list, null);
 			else
 				SingleLinkedListOperator.setTail(list, this);
-		
+
 		subject.next = null;
 		subject.list = null;
 		return result;
 	}
-	
+
 	/**
 	 * Makes sure the supplied node is really the previous node. If not, the real previous node is returned.
 	 * @param	previous The node maybe being the previous node.
 	 * @return	The real previous node.
 	 */
 	inline function getPrevious(previous:SingleLinkedListNode<T>):SingleLinkedListNode<T> {
-		
+
 		// Make sure the right "previous" was given
 		if (previous != null && previous.next != this)
 			previous = null;
-		
+
 		// make sure the previous is in fact really the previous node
 		if (previous == null) {
 			previous = cast SingleLinkedListOperator.getSentinel(list);
@@ -123,7 +123,7 @@ class SingleLinkedListNode#if!H<T>#end {
 		}
 		return previous;
 	}
-	
+
 	/**
 	 * Returns an iterator to iterate this linked list from this node to the tail.
 	 * @return An iterator to iterate this linked list from this node to the tail.
@@ -131,7 +131,7 @@ class SingleLinkedListNode#if!H<T>#end {
 	public inline function iterator():Iterator<T> {
 		return new SingleLinkedListIterator(this, list.tail);
 	}
-	
+
 	public function toString():String
 		return Std.string(value)
 }

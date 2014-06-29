@@ -1,13 +1,13 @@
 ﻿/** Tuple.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -42,7 +42,7 @@ class Tuple {
 	public static function two<T1, T2>(first:T1, second:T2):Tuple2<T1, T2> {
 		return new InternalTuple2(first, second);
 	}
-	
+
 	public static inline function asTuple2<T1, T2, T3>(tuple:Tuple3<T1, T2, T3>):Tuple2<T1, T2>
 		return tuple
 	public static inline function asTuple3<T1, T2, T3, T4>(tuple:Tuple4<T1, T2, T3, T4>):Tuple3<T1, T2, T3>
@@ -54,7 +54,7 @@ class Tuple {
 private class InternalTuple2<T1, T2> {
 	public var first(default, null):T1;
 	public var second(default, null):T2;
-	
+
 	/**
 	 * Creates a new tuple.
 	 * @param	first The first value.
@@ -64,14 +64,14 @@ private class InternalTuple2<T1, T2> {
 		this.first = first;
 		this.second = second;
 	}
-	
+
 	public function toString():String {
 		return "(" + first + ", " + second + ")";
 	}
 }
 private class InternalTuple3<T1, T2, T3> extends InternalTuple2<T1, T2> {
 	public var third(default, null):T3;
-	
+
 	/**
 	 * Creates a new tuple.
 	 * @param	first The first value.
@@ -82,7 +82,7 @@ private class InternalTuple3<T1, T2, T3> extends InternalTuple2<T1, T2> {
 		super(first, second);
 		this.third = third;
 	}
-	
+
 	public override function toString():String {
 		return "("
 			+ first + ", "
@@ -92,7 +92,7 @@ private class InternalTuple3<T1, T2, T3> extends InternalTuple2<T1, T2> {
 }
 private class InternalTuple4<T1, T2, T3, T4> extends InternalTuple3<T1, T2, T3> {
 	public var fourth(default, null):T4;
-	
+
 	/**
 	 * Creates a new tuple.
 	 * @param	first The first value.
@@ -104,7 +104,7 @@ private class InternalTuple4<T1, T2, T3, T4> extends InternalTuple3<T1, T2, T3> 
 		super(first, second, third);
 		this.fourth = fourth;
 	}
-	
+
 	public override function toString():String {
 		return "("
 			+ first + ", "
@@ -115,7 +115,7 @@ private class InternalTuple4<T1, T2, T3, T4> extends InternalTuple3<T1, T2, T3> 
 }
 private class InternalTuple5<T1, T2, T3, T4, T5> extends InternalTuple4<T1, T2, T3, T4> {
 	public var fifth(default, null):T5;
-	
+
 	/**
 	 * Creates a new tuple.
 	 * @param	first The first value.
@@ -128,7 +128,7 @@ private class InternalTuple5<T1, T2, T3, T4, T5> extends InternalTuple4<T1, T2, 
 		super(first, second, third, fourth);
 		this.fifth = fifth;
 	}
-	
+
 	public override function toString():String {
 		return "("
 			+ first + ", "

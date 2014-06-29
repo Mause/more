@@ -1,13 +1,13 @@
 ﻿/** SingleLinkedList.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,40 +20,40 @@ import haxe.more.data.flow.Enumerable;
 
 class SingleLinkedList#if!H<T>#end {
 	var sentinel:SingleLinkedListNode<T>;
-	
+
 	/**
 	 * The first node of the list.
 	 */
 	public var head(gHead, null):SingleLinkedListNode<T>;
 	function gHead() return sentinel.next
-	
+
 	public var length(default, null):Int;
-	
+
 	/**
 	 * The last node of the list.
 	 */
 	public var tail(default, null):SingleLinkedListNode<T>;
-	
+
 	/**
 	 * Returns true if this list does not contain any nodes.
 	 */
 	public inline var isEmpty(gIsEmpty, null):Bool;
 	inline function gIsEmpty():Bool return (length == 0)
-	
+
 	/**
 	 * Constructs a new list.
 	 */
 	public function new(?initial:Enumerable<T>) {
 		length = 0;
 		sentinel = SingleLinkedListNodeOperator.create(this, null);
-		
+
 		if(initial != null) {
 			var enumerator = initial.getEnumerator();
 			while(enumerator.moveNext())
 				push(enumerator.current);
 		}
 	}
-	
+
 	/**
 	 * Adds value to the tail of the list.
 	 * @param	value The value to add to the tail.
@@ -64,7 +64,7 @@ class SingleLinkedList#if!H<T>#end {
 		else
 			tail.append(value);
 	}
-	
+
 	/**
 	 * Removes the node at the tail of the list.
 	 * @return The value of the removed node.
@@ -73,16 +73,16 @@ class SingleLinkedList#if!H<T>#end {
 		if (isEmpty) throw new EmptyStructureException();
 		return tail.remove();
 	}
-	
+
 	/**
 	 * Removes the node at the head of the list.
 	 * @return The value of the removed node.
 	 */
 	public function shift():T {
-		if (isEmpty) throw new EmptyStructureException();	
+		if (isEmpty) throw new EmptyStructureException();
 		return sentinel.removeNext();
 	}
-	
+
 	/**
 	 * Adds value to the head of the list.
 	 * @param	value The value to add to the head.
@@ -90,7 +90,7 @@ class SingleLinkedList#if!H<T>#end {
 	public function unshift(value:T):Void {
 		sentinel.append(value);
 	}
-	
+
 	/**
 	 * Returns an iterator to iterate trough this list.
 	 * @return an iterator to iterate trough this list.

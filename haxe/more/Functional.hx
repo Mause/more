@@ -1,13 +1,13 @@
 ﻿/** Functional.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,25 +40,25 @@ class Functional {
 		var rec:Recursive1<A, R> =function(r) return function(a) return f(r(r))(a);
 		return rec(rec);
 	}
-	
+
 	public static function y2<A1, A2, R>(f: Func2<A1, A2, R> -> Func2<A1, A2, R>):Func2<A1, A2, R> {
 		if (f == null) throw new ArgumentNullException("f");
 		var rec:Recursive2<A1, A2, R> = function(r) return function(a1, a2) return f(r(r))(a1, a2);
 		return rec(rec);
 	}
-	
+
 	public static function y3<A1, A2, A3, R>(f: Func3<A1, A2, A3, R> -> Func3<A1, A2, A3, R>):Func3<A1, A2, A3, R> {
 		if (f == null) throw new ArgumentNullException("f");
 		var rec:Recursive3<A1, A2, A3, R> = function(r) return function(a1, a2, a3) return f(r(r))(a1, a2, a3);
 		return rec(rec);
 	}
-	
+
 	public static function y4<A1, A2, A3, A4, R>(f: Func4<A1, A2, A3, A4, R> -> Func4<A1, A2, A3, A4, R>):Func4<A1, A2, A3, A4, R> {
 		if (f == null) throw new ArgumentNullException("f");
 		var rec:Recursive4<A1, A2, A3, A4, R> = function(r) return function(a1, a2, a3, a4) return f(r(r))(a1, a2, a3, a4);
 		return rec(rec);
 	}
-	
+
 	public static function compose2<A, B, C>(f1:Func1<A, B>,  f2:Func1<B, C>):Func1<A, C> {
 		if (f1 == null) throw new ArgumentNullException("f1");
 		if (f2 == null) throw new ArgumentNullException("f2");

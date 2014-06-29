@@ -1,13 +1,13 @@
 ﻿/** BalancedThreadProcessor.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,7 +26,7 @@ class BalancedThreadProcessor implements IThreadProcessor {
 	var _sentinel:LinkedThreadListNode;
 	var _last:LinkedThreadListNode;
 	var _disposeAtExhaustion:Bool;
-	
+
 	public var count(default, null):Int;
 
 	public function new(disposeAtExhaustion:Bool = false) {
@@ -34,7 +34,7 @@ class BalancedThreadProcessor implements IThreadProcessor {
 		_disposeAtExhaustion = disposeAtExhaustion;
 		_karma = 0;
 	}
-	
+
 	public function add(thread:ThreadRunnerDelegate, priority:Int = 128):IThreadProcessor {
 		if (thread == null) throw new ArgumentNullException("thread");
 		count++;
@@ -43,7 +43,7 @@ class BalancedThreadProcessor implements IThreadProcessor {
 		updateShares();
 		return this;
 	}
-	
+
 	public function adjust(thread:ThreadRunnerDelegate, priority:Int):Bool {
 		if (thread == null) throw new ArgumentNullException("thread");
 		var current = _sentinel;
@@ -56,7 +56,7 @@ class BalancedThreadProcessor implements IThreadProcessor {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Removes a thread.
 	 * @param	thread the thread to remove.
@@ -80,7 +80,7 @@ class BalancedThreadProcessor implements IThreadProcessor {
 		}
 		return false;
 	}
-	
+
 	public function contains(thread:ThreadRunnerDelegate):Int {
 		if (thread == null) throw new ArgumentNullException("thread");
 		var count = 0;
@@ -92,17 +92,17 @@ class BalancedThreadProcessor implements IThreadProcessor {
 		}
 		return count;
 	}
-	
+
 	public function process(time:Int):Bool {
 		// No threads, no job
 		if (_sentinel.next == null) {
 			return _disposeAtExhaustion;
 		}
-		
+
 		// If it used up waaay to much time the previous run, halt for a while.
 		_karma += time;
 		if (_karma <= 0) return false;
-		
+
 		// Start the payment of time here, saving the starting time in endTime.
 		var endTime = Default.microtime + _karma;
 
@@ -111,7 +111,7 @@ class BalancedThreadProcessor implements IThreadProcessor {
 		do {
 			current.timeLeft += _karma * current.relativeShare;
 		} while ((current = current.next) != null);
-		
+
 		// Start executing the threads untill no time is left
 		do {
 			// check if there are threads left.
@@ -130,13 +130,13 @@ class BalancedThreadProcessor implements IThreadProcessor {
 				}
 			} while ((current = current.next) != null);
 		} while (endTime > Default.microtime);
-		
+
 		_karma = endTime - Default.microtime;
 		if (_karma > 0) _karma = 0;
-		
+
 		return false;
 	}
-	
+
 	function updateShares():Void {
 		if (_sentinel.next == null) return;
 		var totalShare = 0.0;
@@ -144,12 +144,12 @@ class BalancedThreadProcessor implements IThreadProcessor {
 		do {
 			totalShare += current.share;
 		} while ((current = current.next ) != null);
-		
+
 		current = _sentinel.next;
 		do {
 			current.relativeShare = current.share / totalShare;
 		} while ((current = current.next )!= null);
-	}	
+	}
 }
 class LinkedThreadListNode {
 	public var next:LinkedThreadListNode;
@@ -157,7 +157,7 @@ class LinkedThreadListNode {
 	public var relativeShare:Float;
 	public var timeLeft:Float;
 	public var share:Int;
-	
+
 	public function new(thread:ThreadRunnerDelegate, ?previous:LinkedThreadListNode) {
 		this.thread = thread;
 		relativeShare = timeLeft = 0;

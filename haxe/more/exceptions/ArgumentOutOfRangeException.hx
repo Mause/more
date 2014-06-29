@@ -1,13 +1,13 @@
 ﻿/** ArgumentOutOfRangeException.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,12 +22,12 @@ class ArgumentOutOfRangeException extends ArgumentException {
 	 * The value being out of range.
 	 */
 	public var actualValue(default, null):Dynamic;
-	
+
 	/**
 	 * The expected range.
 	 */
 	public var expectedRange(default, null):String;
-	
+
 	/**
 	 * Constructs a new ArgumentException.
 	 * @param	?paramName The name of the parameter having an incorrect value.
@@ -38,5 +38,5 @@ class ArgumentOutOfRangeException extends ArgumentException {
 	public function new(?paramName:String, ?actualValue:Dynamic, ?expectedRange:String , ?innerException:Exception, ?posInfos:PosInfos) {
 		super(paramName, "Value" + (paramName == null ? "" : " of '" + paramName + "'") + " does not fall within " + (expectedRange == null ? "the expected range" : expectedRange) + ".", innerException, posInfos);
 		this.actualValue = actualValue;
-	}	
+	}
 }

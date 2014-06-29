@@ -1,6 +1,6 @@
 ﻿/**
  * ...
- * @author 
+ * @author
  */
 
 package haxe.more.data.flow;
@@ -14,7 +14,7 @@ class RangeEnumerable#if!H<T>#end implements Enumerable<T> {
 		_skip = skip;
 		_take = take;
 	}
-	
+
 	public function getEnumerator():Enumerator<T>
 		return new RangeEnumerator(_subject.getEnumerator(), _skip, _take)
 }

@@ -1,13 +1,13 @@
 ﻿/** Integer.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,16 +25,16 @@ using haxe.more.data.Manipulation;
 class Number {
 	public inline static var evenNaturals(gEvenNaturals, null):Enumerable<Int>;
 	inline static function gEvenNaturals() return 0.to(Default.maxInt, 2)
-	
+
 	public inline static var naturals(gNaturals, null):Enumerable<Int>;
 	inline static function gNaturals() return 0.to(Default.maxInt)
-	
+
 	public inline static var random(gRandom, null):Enumerable<Float>;
 	inline static function gRandom() return Functions.endlessGather(Math.random)
-	
+
 	public static function to(from:Int, to:Int, step:Int = 1):Enumerable<Int>
 		return new IntRangeEnumerable(from, to, step)
-	
+
 	public inline static var unevenNaturals(gUnevenNaturals, null):Enumerable<Int>;
 	inline static function gUnevenNaturals() return 1.to(Default.maxInt, 2)
 }
@@ -54,16 +54,16 @@ class IntRangeEnumerator implements Enumerator<Int> {
 	var _state:Int; // -1=clean;0=end;1=taking
 	var _to:Int;
 	var _step:Int;
-	
+
 	public var current(default, null):Int;
-	
+
 	public function new(from:Int, to:Int, step:Int = 1) {
 		current = from;
 		_to = to;
 		_step = step;
 		_state = -1;
 	}
-	
+
 	public function moveNext():Bool {
 		switch(_state) {
 			case -1:
@@ -80,5 +80,5 @@ class IntRangeEnumerator implements Enumerator<Int> {
 		}
 		return false;
 	}
-	
+
 }

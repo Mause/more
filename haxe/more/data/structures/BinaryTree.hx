@@ -1,13 +1,13 @@
 ﻿/** BinaryTreeNode.hx
  *
  * Copyright 2009 Mark de Bruijn (kramieb@gmail.com | Dykam.nl)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,26 +20,26 @@ import haxe.more.exceptions.ArgumentNullException;
 typedef Comperator<T> = T -> T -> Int;
 typedef Finder<T, K> = K -> T -> Int;
 
-class BinaryTree#if!H<T>#end {	
+class BinaryTree#if!H<T>#end {
 	public static function integerComparator(left:Int, right:Int):Int
 		return left - right
-	
-	public var comperator(default, default):Comperator<T>;		
+
+	public var comperator(default, default):Comperator<T>;
 	public var node(default, null):BinaryTreeNode<T>;
 	function sNode(value) node = value
 	public var operator:BinaryTreeNodeOperator<T>;
-	
+
 	public function new(comperator:Comperator<T>) {
 		if (comperator == null) throw new ArgumentNullException("comperator");
-		this.comperator = comperator;		
+		this.comperator = comperator;
 		operator = new BinaryTreeNodeOperator(this);
 	}
-	
+
 	public function add(value:T):BinaryTree<T> {
 		operator.add(value);
 		return this;
 	}
-	
+
 	public function find<K>(value:K, finder:Finder<T, K>):T {
 		if (finder == null) throw new ArgumentNullException("finder");
 		var current = node;
@@ -55,8 +55,8 @@ class BinaryTree#if!H<T>#end {
 		}
 		return null;
 	}
-	
-	public function iterator():Iterator<T> 	return node.iterator()	
+
+	public function iterator():Iterator<T> 	return node.iterator()
 	public function preOrderIterator():Iterator<T> return node.preOrderIterator()
 	public function postOrderIterator():Iterator<T> return node.postOrderIterator()
 	public function inOrderIterator():Iterator<T>  return node.inOrderIterator()
