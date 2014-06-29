@@ -20,20 +20,20 @@ interface IHsl implements IFixedHsl {
 	/**
 	 * The alpha component of this color.
 	 */
-	public var a(gA, sA):Float;
+	public var a(get_a, set_a):Float;
 
 	/**
 	 * The hue component of this color.
 	 */
-	public var h(gH, sH):Float;
+	public var h(get_h, set_h):Float;
 
 	/**
 	 * The saturation component of this color.
 	 */
-	public var s(gS, sS):Float;
+	public var s(get_s, set_s):Float;
 
 	/**
 	 * The lightness component of this color.
 	 */
-	public var l(gL, sL):Float;
+	public var l(get_l, set_l):Float;
 }

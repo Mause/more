@@ -26,16 +26,16 @@ class BinaryTreeNode#if!H<T>#end {
 
 	function new(value:T) this.value = value;
 
-	public var leftMost(gLeftMost, null):T;
-	function gLeftMost():T {
+	public var leftMost(get_leftMost, null):T;
+	function get_leftMost():T {
 		var current = this;
 		while (current.left != null)
 			current = current.left;
 		return current.value;
 	}
 
-	public var rightMost(gRightMost, null):T;
-	function gRightMost():T {
+	public var rightMost(get_rightMost, null):T;
+	function get_rightMost():T {
 		var current = this;
 		while (current.right != null)
 			current = current.right;

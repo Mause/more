@@ -49,11 +49,11 @@ class Rgb implements IRgb {
 	/**
 	 * The alpha component of this color.
 	 */
-	public var a(gA, sA):Float;
-	function gA():Float {
+	public var a(get_a, set_a):Float;
+	function get_a():Float {
 		return _a;
 	}
-	function sA(value:Float):Float {
+	function set_a(value:Float):Float {
 		_a = max(0, min(1, value));
 		return _a;
 	}
@@ -61,11 +61,11 @@ class Rgb implements IRgb {
 	/**
 	 * The red component of this color.
 	 */
-	public var r(gR, sR):Float;
-	function gR():Float {
+	public var r(get_r, set_r):Float;
+	function get_r():Float {
 		return _r;
 	}
-	function sR(value:Float):Float {
+	function set_r(value:Float):Float {
 		_r = max(0, min(1, value));
 		return _r;
 	}
@@ -73,11 +73,11 @@ class Rgb implements IRgb {
 	/**
 	 * The green component of this color.
 	 */
-	public var g(gG, sG):Float;
-	function gG():Float {
+	public var g(get_g, set_g):Float;
+	function get_g():Float {
 		return _g;
 	}
-	function sG(value:Float):Float {
+	function set_g(value:Float):Float {
 		_g = max(0, min(1, value));
 		return _g;
 	}
@@ -85,11 +85,11 @@ class Rgb implements IRgb {
 	/**
 	 * The blue component of this color.
 	 */
-	public var b(gB, sB):Float;
-	function gB():Float {
+	public var b(get_b, set_b):Float;
+	function get_b():Float {
 		return _b;
 	}
-	function sB(value:Float):Float {
+	function set_b(value:Float):Float {
 		_b = max(0, min(1, value));
 		return _b;
 	}

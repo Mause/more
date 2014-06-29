@@ -26,18 +26,18 @@ class Rectangle {
 	public var x(default, default):Float;
 	public var y(default, default):Float;
 
-	public var left(gLeft, sLeft):Float;
-	inline function gLeft() return getLeft(this)
-	inline function sLeft(value)return setLeft(this, value)
-	public var right(gRight, sRight):Float;
-	inline function gRight() return getRight(this)
-	inline function sRight(value:Float) return setRight(this, value)
-	public var top(gTop, sTop):Float;
-	inline function gTop() return getTop(this)
-	inline function sTop(value) return setTop(this, value)
-	public var bottom(gBottom, sBottom):Float;
-	inline function gBottom() return getBottom(this)
-	inline function sBottom(value:Float) return setBottom(this, value)
+	public var left(get_left, set_left):Float;
+	inline function get_left() 		return getLeft(this);
+	inline function set_left(value)	return setLeft(this, value);
+	public var right(get_right, set_right):Float;
+	inline function get_right()				return getRight(this);
+	inline function set_right(value:Float) 	return setRight(this, value);
+	public var top(get_top, set_top):Float;
+	inline function get_top()		return getTop(this);
+	inline function set_top(value)	return setTop(this, value);
+	public var bottom(get_bottom, set_bottom):Float;
+	inline function get_bottom()			return getBottom(this);
+	inline function set_bottom(value:Float) return setBottom(this, value);
 
 	public function new(width:Float, height:Float, x:Float = 0, y:Float = 0) {
 		this.width = width;
@@ -65,14 +65,14 @@ class Rectangle {
 			.fold(function(rect, box:Rectangle) return rect == box ? rect.asRectangle() : rect.boundingBox(box));
 	}
 
-	public static inline function getLeft(rect:RectangleDef) return rect.x
-	public static inline function setLeft(rect:Rectangle, value:Float) return rect.x = value
-	public static inline function getRight(rect:RectangleDef) return rect.x + rect.width
-	public static inline function setRight(rect:Rectangle, value:Float) return rect.width = value - rect.x
-	public static inline function getTop(rect:RectangleDef) return rect.y
-	public static inline function setTop(rect:Rectangle, value:Float) return rect.y = value
-	public static inline function getBottom(rect:RectangleDef) return rect.y + rect.height
-	public static inline function setBottom(rect:Rectangle, value:Float) return rect.height = value - rect.y
+	public static inline function getLeft(rect:RectangleDef) return rect.x;
+	public static inline function setLeft(rect:Rectangle, value:Float) return rect.x = value;
+	public static inline function getRight(rect:RectangleDef) return rect.x + rect.width;
+	public static inline function setRight(rect:Rectangle, value:Float) return rect.width = value - rect.x;
+	public static inline function getTop(rect:RectangleDef) return rect.y;
+	public static inline function setTop(rect:Rectangle, value:Float) return rect.y = value;
+	public static inline function getBottom(rect:RectangleDef) return rect.y + rect.height;
+	public static inline function setBottom(rect:Rectangle, value:Float) return rect.height = value - rect.y;
 
 	public function toString():String {
 		return "{ x: " + x + ", y: " + y + ", width: " + width + ", height: " + height + " }";

@@ -19,8 +19,8 @@ package haxe.more.data.structures;
 class Stack#if!H<T>#end {
 	var list:SingleLinkedList<T>;
 
-	public var length(gLength, null):Int;
-	function gLength() return list.length
+	public var length(get_length, null):Int;
+	function get_length() return list.length;
 
 	public function new():Void {
 		length = 0;

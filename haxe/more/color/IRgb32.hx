@@ -20,30 +20,30 @@ interface IRgb32 implements IFixedRgb32 {
 	/**
 	 * The rgb value of this color.
 	 */
-	public var rgb(gRgb, sRgb):Int;
+	public var rgb(get_rgb, set_rgb):Int;
 
 	/**
 	 * The alpha component of this color.
 	 */
-	public var a(gA, sA):Int;
+	public var a(get_a, set_a):Int;
 
 	/**
 	 * The red component of this color.
 	 */
-	public var r(gR, sR):Int;
+	public var r(get_r, set_r):Int;
 
 	/**
 	 * The green component of this color.
 	 */
-	public var g(gG, sG):Int;
+	public var g(get_g, set_g):Int;
 
 	/**
 	 * The blue component of this color.
 	 */
-	public var b(gB, sB):Int;
+	public var b(get_b, set_b):Int;
 
 	/**
 	 * The rgba value of this color.
 	 */
-	public var rgba(gRgba, sRgba):#if neko Int32 #else Int #end;
+	public var rgba(get_rgba, set_rgba):#if neko Int32 #else Int #end;
 }

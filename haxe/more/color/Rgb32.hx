@@ -44,11 +44,11 @@ class Rgb32 implements IRgb32 {
 	/**
 	 * The rgb value of this color.
 	 */
-	public var rgb(gRgb, sRgb):Int;
-	function gRgb():Int {
+	public var rgb(get_rgb, set_rgb):Int;
+	function get_rgb():Int {
 		return _rgb;
 	}
-	function sRgb(value:Int):Int {
+	function set_rgb(value:Int):Int {
 		_rgb = value & 0xFFFFFF;
 		return _rgb;
 	}
@@ -56,11 +56,11 @@ class Rgb32 implements IRgb32 {
 	/**
 	 * The alpha component of this color.
 	 */
-	public var a(gA, sA):Int;
-	function gA():Int {
+	public var a(get_a, set_a):Int;
+	function get_a():Int {
 		return _a;
 	}
-	function sA(value:Int):Int {
+	function set_a(value:Int):Int {
 		_a = m(value);
 		return _a;
 	}
@@ -68,11 +68,11 @@ class Rgb32 implements IRgb32 {
 	/**
 	 * The red component of this color.
 	 */
-	public var r(gR, sR):Int;
-	function gR():Int {
+	public var r(get_r, set_r):Int;
+	function get_r():Int {
 		return m(rgb >> 16);
 	}
-	function sR(value:Int):Int {
+	function set_r(value:Int):Int {
 		rgb = rgb & 0x00FFFF | m(value) << 16;
 		return r;
 	}
@@ -80,11 +80,11 @@ class Rgb32 implements IRgb32 {
 	/**
 	 * The green component of this color.
 	 */
-	public var g(gG, sG):Int;
-	function gG():Int {
+	public var g(get_g, set_g):Int;
+	function get_g():Int {
 		return m(rgb >> 8);
 	}
-	function sG(value:Int):Int {
+	function set_g(value:Int):Int {
 		rgb = rgb & 0x00FFFF | m(value) << 8;
 		return g;
 	}
@@ -92,11 +92,11 @@ class Rgb32 implements IRgb32 {
 	/**
 	 * The blue component of this color.
 	 */
-	public var b(gB, sB):Int;
-	function gB():Int {
+	public var b(get_b, set_b):Int;
+	function get_b():Int {
 		return m(rgb);
 	}
-	function sB(value:Int):Int {
+	function set_b(value:Int):Int {
 		rgb = rgb & 0x00FFFF | m(value);
 		return b;
 	}
@@ -105,21 +105,21 @@ class Rgb32 implements IRgb32 {
 	 * The rgba value of this color.
 	 */
 	#if neko
-	public var rgba(gRgba, sRgba):Int32;
-	function gRgb32a():Int32 {
+	public var rgba(get_rgba, set_rgba):Int32;
+	function get_rgb32a():Int32 {
 		return Int32.make(rgb >> 8 & 0xFFFF, rgb << 8 & 0xFF00 | _a);
 	}
-	function sRgba(value:Int32):Int32 {
+	function set_rgba(value:Int32):Int32 {
 		rgb = value.shr(8).toInt() & 0xFFFFFF;
 		_a = m(value.toInt());
 		return rgba;
 	}
 	#else
-	public var rgba(gRgba, sRgba):Int;
-	function gRgba():Int {
+	public var rgba(get_rgba, set_rgba):Int;
+	function get_rgba():Int {
 		return rgb << 8 | _a;
 	}
-	function sRgba(value:Int):Int {
+	function set_rgba(value:Int):Int {
 		rgb = value >> 8 & 0xFFFFFF;
 		_a = m(value);
 		return rgba;
@@ -130,21 +130,21 @@ class Rgb32 implements IRgb32 {
 	 * The argb value of this color.
 	 */
 	#if neko
-	public var argb(gArgb, sArgb):Int32;
-	function gArgb():Int32 {
+	public var argb(get_argb, set_argb):Int32;
+	function get_argb():Int32 {
 		return Int32.make(_a << 8 | (_rgb >> 16 & 0xFF) | _rgb & 0xFFFF);
 	}
-	function sRgba(value:Int32):Int32 {
+	function set_rgba(value:Int32):Int32 {
 		rgb = value.toInt();
 		_a = m(value.shr(24).toInt());
 		return rgba;
 	}
 	#else
-	public var argb(gArgb, sArgb):Int;
-	function gArgb():Int {
+	public var argb(get_argb, set_argb):Int;
+	function get_argb():Int {
 		return (_a << 24) | _rgb;
 	}
-	function sArgb(value:Int):Int {
+	function set_argb(value:Int):Int {
 		rgb = value;
 		_a = m(value >> 24);
 		return rgba;

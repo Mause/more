@@ -20,20 +20,20 @@ interface IFixedHsl {
 	/**
 	 * The alpha component of this color.
 	 */
-	public var a(gA, null):Float;
+	public var a(get_a, null):Float;
 
 	/**
 	 * The hue component of this color.
 	 */
-	public var h(gH, null):Float;
+	public var h(get_h, null):Float;
 
 	/**
 	 * The saturation component of this color.
 	 */
-	public var s(gS, null):Float;
+	public var s(get_s, null):Float;
 
 	/**
 	 * The lightness component of this color.
 	 */
-	public var l(gL, null):Float;
+	public var l(get_l, null):Float;
 }

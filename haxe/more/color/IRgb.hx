@@ -20,20 +20,20 @@ interface IRgb implements IFixedRgb {
 	/**
 	 * The alpha component of this color.
 	 */
-	public var a(gA, sA):Float;
+	public var a(get_a, set_a):Float;
 
 	/**
 	 * The red component of this color.
 	 */
-	public var r(gR, sR):Float;
+	public var r(get_r, set_r):Float;
 
 	/**
 	 * The green component of this color.
 	 */
-	public var g(gG, sG):Float;
+	public var g(get_g, set_g):Float;
 
 	/**
 	 * The blue component of this color.
 	 */
-	public var b(gB, sB):Float;
+	public var b(get_b, set_b):Float;
 }

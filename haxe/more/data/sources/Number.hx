@@ -23,20 +23,20 @@ using haxe.more.data.sources.Number;
 using haxe.more.data.Manipulation;
 
 class Number {
-	public inline static var evenNaturals(gEvenNaturals, null):Enumerable<Int>;
-	inline static function gEvenNaturals() return 0.to(Default.maxInt, 2)
+	public static var evenNaturals(get_evenNaturals, null):Enumerable<Int>;
+	inline static function get_evenNaturals() return 0.to(Default.maxInt, 2);
 
-	public inline static var naturals(gNaturals, null):Enumerable<Int>;
-	inline static function gNaturals() return 0.to(Default.maxInt)
+	public static var naturals(get_naturals, null):Enumerable<Int>;
+	inline static function get_naturals() return 0.to(Default.maxInt);
 
-	public inline static var random(gRandom, null):Enumerable<Float>;
-	inline static function gRandom() return Functions.endlessGather(Math.random)
+	public static var random(get_random, null):Enumerable<Float>;
+	inline static function get_random() return Functions.endlessGather(Math.random);
 
 	public static function to(from:Int, to:Int, step:Int = 1):Enumerable<Int>
 		return new IntRangeEnumerable(from, to, step);
 
-	public inline static var unevenNaturals(gUnevenNaturals, null):Enumerable<Int>;
-	inline static function gUnevenNaturals() return 1.to(Default.maxInt, 2)
+	public static var unevenNaturals(get_unevenNaturals, null):Enumerable<Int>;
+	inline static function get_unevenNaturals() return 1.to(Default.maxInt, 2);
 }
 class IntRangeEnumerable implements Enumerable<Int> {
 	var _from:Int;

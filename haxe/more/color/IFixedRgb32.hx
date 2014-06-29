@@ -20,30 +20,30 @@ interface IFixedRgb32 {
 	/**
 	 * The rgb value of this color.
 	 */
-	public var rgb(gRgb, null):Int;
+	public var rgb(get_rgb, null):Int;
 
 	/**
 	 * The alpha component of this color.
 	 */
-	public var a(gA, null):Int;
+	public var a(get_a, null):Int;
 
 	/**
 	 * The red component of this color.
 	 */
-	public var r(gR, null):Int;
+	public var r(get_r, null):Int;
 
 	/**
 	 * The green component of this color.
 	 */
-	public var g(gG, null):Int;
+	public var g(get_g, null):Int;
 
 	/**
 	 * The blue component of this color.
 	 */
-	public var b(gB, null):Int;
+	public var b(get_b, null):Int;
 
 	/**
 	 * The rgba value of this color.
 	 */
-	public var rgba(gRgba, null):#if neko Int32 #else Int #end;
+	public var rgba(get_rgba, null):#if neko Int32 #else Int #end;
 }

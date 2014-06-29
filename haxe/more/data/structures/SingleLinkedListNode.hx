@@ -22,8 +22,8 @@ class SingleLinkedListNode#if!H<T>#end {
 	public var next(default, null):SingleLinkedListNode<T>;
 	public var value:T;
 
-	public inline var isAlive(gIsAlive, null):Bool;
-	inline function gIsAlive() return (list != null)
+	public var isAlive(get_isAlive, null):Bool;
+	inline function get_isAlive() return (list != null);
 
 	/**
 	 * Constructs a new node. This is a private action.

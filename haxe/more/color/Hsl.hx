@@ -48,46 +48,30 @@ class Hsl implements IHsl {
 	/**
 	 * The alpha component of this color.
 	 */
-	public var a(gA, sA):Float;
-	function gA():Float {
-		return _a;
-	}
-	function sA(value:Float):Float {
-		return _a = cap(0, 1, value);
-	}
+	public var a(get_a, set_a):Float;
+	function get_a():Float return _a;
+	function set_a(value:Float):Float return _a = cap(0, 1, value);
 
 	/**
 	 * The hue component of this color.
 	 */
-	public var h(gH,sH):Float;
-	function gH():Float {
-		return _h;
-	}
-	function sH(value:Float):Float {
-		return _h = mod(360, value);
-	}
+	public var h(get_h,set_h):Float;
+	function get_h():Float return _h;
+	function set_h(value:Float):Float return _h = mod(360, value);
 
 	/**
 	 * The saturation component of this color.
 	 */
-	public var s(gS, sS):Float;
-	function gS():Float {
-		return _s;
-	}
-	function sS(value:Float):Float {
-		return _s = cap(0, 1, value);
-	}
+	public var s(get_s, set_s):Float;
+	function get_s():Float return _s;
+	function set_s(value:Float):Float return _s = cap(0, 1, value);
 
 	/**
 	 * The lightness component of this color.
 	 */
-	public var l(gL, sL):Float;
-	function gL():Float {
-		return _l;
-	}
-	function sL(value:Float):Float {
-		return _l = cap(0, 1, value);
-	}
+	public var l(get_l, set_l):Float;
+	function get_l():Float return _l;
+	function set_l(value:Float):Float return _l = cap(0, 1, value);
 
 	/** Using methods **/
 	/**

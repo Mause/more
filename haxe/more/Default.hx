@@ -83,8 +83,8 @@ class Default {
 	/**
 		Gets the current time in milliseconds.
 	**/
-	public static inline var microtime(get_time, null):Float;
-	static inline function get_time():Float {
+	public static var microtime(get_microtime, null):Float;
+	static inline function get_microtime():Float {
 		#if flash
 		return flash.Lib.getTimer();
 		#elseif php

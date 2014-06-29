@@ -24,8 +24,8 @@ class SingleLinkedList#if!H<T>#end {
 	/**
 	 * The first node of the list.
 	 */
-	public var head(gHead, null):SingleLinkedListNode<T>;
-	function gHead() return sentinel.next
+	public var head(get_head, null):SingleLinkedListNode<T>;
+	function get_head() return sentinel.next;
 
 	public var length(default, null):Int;
 
@@ -37,8 +37,8 @@ class SingleLinkedList#if!H<T>#end {
 	/**
 	 * Returns true if this list does not contain any nodes.
 	 */
-	public inline var isEmpty(gIsEmpty, null):Bool;
-	inline function gIsEmpty():Bool return (length == 0)
+	public var isEmpty(get_isEmpty, null):Bool;
+	inline function get_isEmpty():Bool return (length == 0);
 
 	/**
 	 * Constructs a new list.

@@ -32,8 +32,8 @@ class ReadOnlyArray#if!H<T>#end {
 	/**
 	 * The length of the Array
 	 */
-	public var length(gLength, null):Int;
-	function gLength() return _array.length
+	public var length(get_length, null):Int;
+	function get_length() return _array.length;
 
 	/**
 	 * Retrieves that item at the given index

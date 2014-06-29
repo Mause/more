@@ -73,8 +73,8 @@ class Exception {
 	/**
 	 * The base exception.
 	 */
-	public inline var baseException(gBaseException, null):Exception;
-	inline function gBaseException() {
+	public var baseException(get_baseException, null):Exception;
+	inline function get_baseException() {
 		var inner = innerException;
 		while (inner.innerException != null)
 			inner = inner.innerException;

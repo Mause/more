@@ -20,20 +20,20 @@ interface IFixedRgb {
 	/**
 	 * The alpha component of this color.
 	 */
-	public var a(gA, null):Float;
+	public var a(get_a, null):Float;
 
 	/**
 	 * The red component of this color.
 	 */
-	public var r(gR, null):Float;
+	public var r(get_r, null):Float;
 
 	/**
 	 * The green component of this color.
 	 */
-	public var g(gG, null):Float;
+	public var g(get_g, null):Float;
 
 	/**
 	 * The blue component of this color.
 	 */
-	public var b(gB, null):Float;
+	public var b(get_b, null):Float;
 }

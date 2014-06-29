@@ -27,22 +27,22 @@ class DoubleLinkedList#if!H<T>#end implements Enumerable<T> {
 	/**
 	 * The first node of the list.
 	 */
-	public var head(gHead, null):DoubleLinkedListNode<T>;
-	function gHead() return sentinel.next == endtinel ? null : sentinel.next
+	public var head(get_head, null):DoubleLinkedListNode<T>;
+	function get_head() return sentinel.next == endtinel ? null : sentinel.next;
 
 	public var length(default, null):Int;
 
 	/**
 	 * The last node of the list.
 	 */
-	public var tail(gTail, null):DoubleLinkedListNode<T>;
-	function gTail() return endtinel.previous == sentinel ? null : endtinel.previous
+	public var tail(get_tail, null):DoubleLinkedListNode<T>;
+	function get_tail() return endtinel.previous == sentinel ? null : endtinel.previous;
 
 	/**
 	 * Returns true if this list does not contain any nodes.
 	 */
-	public inline var isEmpty(gIsEmpty, null):Bool;
-	inline function gIsEmpty():Bool return length == 0
+	public var isEmpty(get_isEmpty, null):Bool;
+	inline function get_isEmpty():Bool return length == 0;
 
 	/**
 	 * Constructs a new list.

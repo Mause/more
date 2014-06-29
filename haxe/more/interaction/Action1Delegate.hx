@@ -27,8 +27,8 @@ class Action1Delegate#if!H<A>#end {
 	public function new() {
 	}
 
-	public var isEmpty(gIsEmpty, null):Bool;
-	function gIsEmpty() return _handlers.isEmpty
+	public var isEmpty(get_isEmpty, null):Bool;
+	function get_isEmpty() return _handlers.isEmpty;
 
 	public function add(handler:Action1<A>):Void {
 		_handlers.push(handler);

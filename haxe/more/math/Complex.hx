@@ -3,34 +3,34 @@ class Complex {
 	public var re:Float;
 	public var im:Float;
 
-	public static var zero(gZero, null):Complex;
-	static function gZero() return new Complex(0, 0)
+	public static var zero(get_zero, null):Complex;
+	static function get_zero() return new Complex(0, 0);
 
-	public static var one(gOne, null):Complex;
-	static function gOne() return new Complex(1, 0)
+	public static var one(get_one, null):Complex;
+	static function get_one() return new Complex(1, 0);
 
-	public static var i(gI, null):Complex;
-	static function gI() return new Complex(0, 1)
+	public static var i(get_i, null):Complex;
+	static function get_i() return new Complex(0, 1);
 
 	public function new(real:Float, imaginary:Float = 0) {
 		this.re = real;
 		this.im = imaginary;
 	}
 
-	public inline var arg(gArg, null):Float;
-	inline function gArg() return Math.atan2(im, re)
+	public var arg(get_arg, null):Float;
+	inline function get_arg() return Math.atan2(im, re);
 
-	public inline var conj(gConj, null):Complex;
-	inline function gConj() return new Complex(re, -im)
+	public var conj(get_conj, null):Complex;
+	inline function get_conj() return new Complex(re, -im);
 
-	public inline var mod(gMod, null):Float;
-	inline function gMod() return Math.sqrt(squareMod)
+	public var mod(get_mod, null):Float;
+	inline function get_mod() return Math.sqrt(squareMod);
 
-	public inline var neg(gNeg, null):Complex;
-	inline function gNeg() return new Complex(-re, -im)
+	public var neg(get_neg, null):Complex;
+	inline function get_neg() return new Complex(-re, -im);
 
-	public inline var squareMod(gSquareMod, null):Float;
-	inline function gSquareMod() return re * re + im * im
+	public var squareMod(get_squareMod, null):Float;
+	inline function get_squareMod() return re * re + im * im;
 
 	public function add(c:Complex):Complex {
 		return new Complex(re + c.re, im + c.im);

@@ -20,8 +20,8 @@ class Point {
 	public var x:Float;
 	public var y:Float;
 
-	public static var zero(gZero, null):Point;
-	static inline function gZero() return new Point()
+	public static var zero(get_zero, null):Point;
+	static inline function get_zero() return new Point();
 
 	public function new(x:Float = 0, y:Float = 0) {
 		this.x = x;
