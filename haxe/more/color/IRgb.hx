@@ -16,7 +16,7 @@
  **/
 package haxe.more.color;
 
-interface IRgb implements IFixedRgb {
+interface IRgb extends IFixedRgb {
 	/**
 	 * The alpha component of this color.
 	 */

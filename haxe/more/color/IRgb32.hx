@@ -16,7 +16,7 @@
  **/
 package haxe.more.color;
 
-interface IRgb32 implements IFixedRgb32 {
+interface IRgb32 extends IFixedRgb32 {
 	/**
 	 * The rgb value of this color.
 	 */

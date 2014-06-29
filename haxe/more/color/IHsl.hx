@@ -16,7 +16,7 @@
  **/
 package haxe.more.color;
 
-interface IHsl implements IFixedHsl {
+interface IHsl extends IFixedHsl {
 	/**
 	 * The alpha component of this color.
 	 */
