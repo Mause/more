@@ -42,9 +42,11 @@ class Action1Delegate#if!H<A>#end {
 		}
 	}
 
-	public function invoke(arg:A):Void
-		for (handler in _handlers)
-			handler(arg)
+	public function invoke(arg:A):Void {
+		for (handler in _handlers) {
+			handler(arg);
+		}
+	}
 
 	public function iterator(arg:A):Iterator<Void> {
 		return _handlers.select(function(handler) return handler(arg)).iterator();

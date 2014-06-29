@@ -42,9 +42,11 @@ class Action3Delegate#if!H<A1, A2, A3>#end {
 		}
 	}
 
-	public function invoke(arg1:A1, arg2:A2, arg3:A3):Void
-		for (handler in _handlers)
-			handler(arg1, arg2, arg3)
+	public function invoke(arg1:A1, arg2:A2, arg3:A3):Void {
+		for (handler in _handlers) {
+			handler(arg1, arg2, arg3);
+		}
+	}
 
 	public function iterator(arg1:A1, arg2:A2, arg3:A3):Iterator<Void> {
 		return _handlers.select(function(handler) return handler(arg1, arg2, arg3)).iterator();

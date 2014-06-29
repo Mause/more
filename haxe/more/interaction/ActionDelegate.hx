@@ -44,9 +44,11 @@ class ActionDelegate {
 		}
 	}
 
-	public function invoke():Void
-		for (handler in _handlers)
-			handler()
+	public function invoke():Void {
+		for (handler in _handlers) {
+			handler();
+		}
+	}
 
 	public function iterator():Iterator<Void> {
 		return _iterable.iterator();
