@@ -25,5 +25,5 @@ class ConcatEnumerable#if!H<T>#end implements Enumerable<T> {
 	}
 
 	public function getEnumerator():Enumerator<T>
-	return new ConcatEnumerator(_subjects.select(function(subject) return subject.getEnumerator()))
+	return new ConcatEnumerator(_subjects.select(function(subject) return subject.getEnumerator()));
 }

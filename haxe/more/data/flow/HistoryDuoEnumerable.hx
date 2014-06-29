@@ -26,5 +26,5 @@ class HistoryDuoEnumerable#if!H<T, V>#end implements Enumerable<V> {
 	}
 
 	public function getEnumerator():Enumerator<V>
-		return new HistoryDuoEnumerator(_subject.getEnumerator(), _selector)
+		return new HistoryDuoEnumerator(_subject.getEnumerator(), _selector);
 }

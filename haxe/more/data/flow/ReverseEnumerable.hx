@@ -20,8 +20,10 @@ using haxe.more.Default;
 
 class ReverseEnumerable#if!H<T>#end implements Enumerable<T> {
 	var _subject:Enumerable<T>;
+
 	public function new(subject:Enumerable<T>)
-		_subject = subject
+		_subject = subject;
+
 	public function getEnumerator():Enumerator<T> {
 		var list:DoubleLinkedList<T> = cast _subject.as(DoubleLinkedList);
 		if(list == null) return list.getReversedEnumerator() else return new ReverseEnumerator(_subject);

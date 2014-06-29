@@ -28,5 +28,5 @@ class ZipSelect2Enumerable#if!H<T1, T2, V>#end implements Enumerable<V> {
 	}
 
 	public function getEnumerator():Enumerator<V>
-		return new ZipSelect2Enumerator(_subject1.getEnumerator(), _subject2.getEnumerator(), _selector)
+		return new ZipSelect2Enumerator(_subject1.getEnumerator(), _subject2.getEnumerator(), _selector);
 }

@@ -24,5 +24,5 @@ class InfiniteEnumerable#if!H<T>#end implements Enumerable<T> {
 	}
 
 	public function getEnumerator():Enumerator<T>
-		return new InfiniteEnumerator(_element)
+		return new InfiniteEnumerator(_element);
 }

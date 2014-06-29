@@ -23,17 +23,17 @@ class EmptyEnumerator#if!H<T>#end implements Enumerator<T> {
 	/**
 	 * Creates a new nothing iterator.
 	 */
-	public function new();
+	public function new(){};
 
 	/**
 	 * Returns always false.
 	 * @return always false.
 	 */
-	public function moveNext():Bool return false
+	public function moveNext():Bool return false;
 
 	/**
 	 * Returns the string representation of this.
 	 * @return the string representation of this.
 	 */
-	public function toString():String return "An empty enumerator."
+	public function toString():String return "An empty enumerator.";
 }

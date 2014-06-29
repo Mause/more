@@ -25,7 +25,7 @@ class ExposedIterable#if!H<T>#end {
 	}
 
 	public function iterator():Iterator<T>
-		return new ExposedIterator(_next, _hasNext)
+		return new ExposedIterator(_next, _hasNext);
 }
 class ExposedIterator#if!H<T>#end {
 	var _next: Void -> T;
@@ -35,6 +35,6 @@ class ExposedIterator#if!H<T>#end {
 		_hasNext = hasNext;
 	}
 
-	public function hasNext() return _hasNext()
-	public function next() return _next()
+	public function hasNext() return _hasNext();
+	public function next() return _next();
 }

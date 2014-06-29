@@ -41,7 +41,7 @@ class Rgb implements IRgb {
 	}
 
 	public function toString():String
-		return "rgba( " + r + ", " + g + ", " + b + ", " + a + ")"
+		return "rgba( " + r + ", " + g + ", " + b + ", " + a + ")";
 
 
 	/** Below all the code to correctly apply the colors **/
@@ -117,7 +117,7 @@ class Rgb implements IRgb {
 	 * @return A clone of [a].
 	 */
 	public static inline function clone(a:IFixedRgb):Rgb
-		return new Rgb(a.r, a.g, a.b, a.a)
+		return new Rgb(a.r, a.g, a.b, a.a);
 
 	/**
 	 * Modifies the color of [a] by avaraging with [b].
@@ -198,9 +198,9 @@ class Rgb implements IRgb {
 
 
 	/** Default **/
-	static inline function max(a:Float, b) return a > b ? a : b
-	static inline function min(a:Float, b) return a < b ? a : b
-	static inline function m(color) return color & 0xFF // masks.
+	static inline function max(a:Float, b) return a > b ? a : b;
+	static inline function min(a:Float, b) return a < b ? a : b;
+	static inline function m(color) return color & 0xFF; // masks.
 
 	/** Presets **/
 

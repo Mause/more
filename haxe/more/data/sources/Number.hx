@@ -33,7 +33,7 @@ class Number {
 	inline static function gRandom() return Functions.endlessGather(Math.random)
 
 	public static function to(from:Int, to:Int, step:Int = 1):Enumerable<Int>
-		return new IntRangeEnumerable(from, to, step)
+		return new IntRangeEnumerable(from, to, step);
 
 	public inline static var unevenNaturals(gUnevenNaturals, null):Enumerable<Int>;
 	inline static function gUnevenNaturals() return 1.to(Default.maxInt, 2)
@@ -48,7 +48,7 @@ class IntRangeEnumerable implements Enumerable<Int> {
 		_step = step;
 	}
 	public function getEnumerator():Enumerator<Int>
-	return new IntRangeEnumerator(_from, _to, _step)
+		return new IntRangeEnumerator(_from, _to, _step);
 }
 class IntRangeEnumerator implements Enumerator<Int> {
 	var _state:Int; // -1=clean;0=end;1=taking

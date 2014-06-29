@@ -26,5 +26,5 @@ class HistoryQuattroEnumerable#if!H<T, V>#end implements Enumerable<V> {
 	}
 
 	public function getEnumerator():Enumerator<V>
-		return new HistoryQuattroEnumerator(_subject.getEnumerator(), _selector)
+		return new HistoryQuattroEnumerator(_subject.getEnumerator(), _selector);
 }

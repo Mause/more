@@ -30,7 +30,7 @@ class ActionDelegate {
 	}
 
 	public var isEmpty(gIsEmpty, null):Bool;
-	function gIsEmpty() return _handlers.isEmpty
+	function gIsEmpty() return _handlers.isEmpty;
 
 	public function add(handler:Action):Void {
 		_handlers.push(handler);

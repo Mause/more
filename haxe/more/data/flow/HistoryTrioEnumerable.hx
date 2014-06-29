@@ -26,5 +26,5 @@ class HistoryTrioEnumerable#if!H<T, V>#end implements Enumerable<V> {
 	}
 
 	public function getEnumerator():Enumerator<V>
-		return new HistoryTrioEnumerator(_subject.getEnumerator(), _selector)
+		return new HistoryTrioEnumerator(_subject.getEnumerator(), _selector);
 }

@@ -29,9 +29,9 @@ class Timer {
 
 	public var repeatsLeft(gRepeatsLeft, sRepeatsLeft):Int;
 	function gRepeatsLeft():Int
-		return _repeatsLeft
+		return _repeatsLeft;
 	function sRepeatsLeft(value:Int):Int
-		return _repeatsLeft = value.max(0).int()
+		return _repeatsLeft = value.max(0).int();
 
 	public var running(default, null):Bool;
 

@@ -28,9 +28,9 @@ class Queue#if!H<T>#end {
 	}
 
 	public function iterator():Iterator<T>
-		return list.iterator()
+		return list.iterator();
 	public function peek():T
-		return list.length == 0 ? null : list.tail.value
+		return list.length == 0 ? null : list.tail.value;
 	public function pop():T {
 		var result = list.shift();
 		return result;

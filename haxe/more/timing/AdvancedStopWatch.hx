@@ -28,7 +28,7 @@ class AdvancedStopWatch {
 	/**
 	 * Creates a new stopwatch.
 	 */
-	public function new() _times = new SingleLinkedList<Timing>()
+	public function new() _times = new SingleLinkedList<Timing>();
 	/**
 	 * Saves a timestamp, so you can iterate through it later on.
 	 * @return the current time.
@@ -42,7 +42,7 @@ class AdvancedStopWatch {
 	 * @return an iterator to iterate trough the timings.
 	 */
 	public function iterator():Iterator<Timing>
-		return _times.iterator()
+		return _times.iterator();
 
 	public function toString():String {
 		return

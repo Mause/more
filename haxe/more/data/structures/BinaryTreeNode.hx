@@ -24,7 +24,7 @@ class BinaryTreeNode#if!H<T>#end {
 	public var value(default, null):T;
 	public var root(default, null):BinaryTree<T>;
 
-	function new(value:T) this.value = value
+	function new(value:T) this.value = value;
 
 	public var leftMost(gLeftMost, null):T;
 	function gLeftMost():T {
@@ -42,12 +42,12 @@ class BinaryTreeNode#if!H<T>#end {
 		return current.value;
 	}
 
-	public function inOrderIterator():Iterator<T> return new InOrderIterator(this)
-	public function iterator():Iterator<T> 	return inOrderIterator()
-	public function preOrderIterator():Iterator<T> return new PreOrderIterator(this)
-	public function postOrderIterator():Iterator<T> return new PostOrderIterator(this)
-	public function levelOrderIterator():Iterator<T> return new LevelOrderIterator(this)
-	public function toString():String return Std.string(value)
+	public function inOrderIterator():Iterator<T> return new InOrderIterator(this);
+	public function iterator():Iterator<T> 	return inOrderIterator();
+	public function preOrderIterator():Iterator<T> return new PreOrderIterator(this);
+	public function postOrderIterator():Iterator<T> return new PostOrderIterator(this);
+	public function levelOrderIterator():Iterator<T> return new LevelOrderIterator(this);
+	public function toString():String return Std.string(value);
 }
 private class TreeIterator<T> {
 	var _tree:BinaryTree<T>;
@@ -56,7 +56,7 @@ private class TreeIterator<T> {
 		_tree = tree;
 	}
 
-	public function hasNext() return _current != null
+	public function hasNext() return _current != null;
 }
 private class PreOrderIterator<T> extends TreeIterator<T>  {
 	var _stack:Stack<BinaryTreeNode<T>>;
@@ -67,7 +67,7 @@ private class PreOrderIterator<T> extends TreeIterator<T>  {
 		_current = root;
 	}
 
-	public override function hasNext() return super.hasNext() && _stack.length != 0
+	public override function hasNext() return super.hasNext() && _stack.length != 0;
 
 	public function next():T {
 		if (!hasNext()) return null;
@@ -107,7 +107,7 @@ private class LevelOrderIterator<T> {
 		_queue.push(root);
 	}
 
-	public function hasNext() return _queue.length != 0
+	public function hasNext() return _queue.length != 0;
 
 	public function next():T {
 		if (hasNext()) {

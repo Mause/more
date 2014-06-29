@@ -43,7 +43,7 @@ class Hsl implements IHsl {
 	}
 
 	public function toString():String
-		return "hsla(" + h + ", " + s + ", " + l + ", " + a + ")"
+		return "hsla(" + h + ", " + s + ", " + l + ", " + a + ")";
 
 	/**
 	 * The alpha component of this color.
@@ -96,7 +96,7 @@ class Hsl implements IHsl {
 	 * @return A clone of [a].
 	 */
 	public static inline function clone(a:IFixedHsl):Hsl
-		return new Hsl(a.h, a.s, a.l, a.a)
+		return new Hsl(a.h, a.s, a.l, a.a);
 
 	/**
 	 * Modifies the color of [a] by avaraging with [b].
@@ -249,11 +249,11 @@ class Hsl implements IHsl {
 	}
 
 		/** Default **/
-	static inline function max(a:Float, b) return a > b ? a : b
-	static inline function min(a:Float, b) return a < b ? a : b
-	static inline function cap(minimum:Float, maximum, value) return min(maximum, max(minimum, value))
-	static inline function mod(moderator:Float, value) return value >= moderator ? value % moderator : value < 0 ? value % moderator + moderator : value
-	static inline function sMod(c:Float, value) return value < 0 ? value + c : value > c ? value - c : value
+	static inline function max(a:Float, b) return a > b ? a : b;
+	static inline function min(a:Float, b) return a < b ? a : b;
+	static inline function cap(minimum:Float, maximum, value) return min(maximum, max(minimum, value));
+	static inline function mod(moderator:Float, value) return value >= moderator ? value % moderator : value < 0 ? value % moderator + moderator : value;
+	static inline function sMod(c:Float, value) return value < 0 ? value + c : value > c ? value - c : value;
 
 	/** Presets **/
 

@@ -28,7 +28,7 @@ class Func4Delegate#if!H<A1, A2, A3, A4, R>#end {
 	}
 
 	public var isEmpty(gIsEmpty, null):Bool;
-	function gIsEmpty() return _handlers.isEmpty
+	function gIsEmpty() return _handlers.isEmpty;
 
 	public function add(handler:Func4<A1, A2, A3, A4, R>):Void {
 		_handlers.push(handler);

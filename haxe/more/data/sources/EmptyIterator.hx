@@ -20,23 +20,23 @@ class EmptyIterator#if!H<T>#end {
 	/**
 	 * Creates a new nothing iterator.
 	 */
-	public function new();
+	public function new() {};
 
 	/**
 	 * Returns always false.
 	 * @return always false.
 	 */
-	public function hasNext():Bool return false
+	public function hasNext():Bool return false;
 
 	/**
 	 * Returns always null.
 	 * @return always null.
 	 */
-	public function next():T return null
+	public function next():T return null;
 
 	/**
 	 * Returns the string representation of this.
 	 * @return the string representation of this.
 	 */
-	public function toString():String return "An empty iterator."
+	public function toString():String return "An empty iterator.";
 }

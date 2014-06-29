@@ -24,5 +24,5 @@ class IterableEnumerable#if!H<T>#end implements Enumerable<T> {
 	}
 
 	public function getEnumerator():Enumerator<T>
-		return new IteratorEnumerator(_iterable.iterator())
+		return new IteratorEnumerator(_iterable.iterator());
 }

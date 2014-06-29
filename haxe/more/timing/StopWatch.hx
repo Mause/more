@@ -31,7 +31,7 @@ class StopWatch {
 	/**
 	 * Creates a new stopwatch.
 	 */
-	public function new() _times = new SingleLinkedList<Float>()
+	public function new() _times = new SingleLinkedList<Float>();
 	/**
 	 * Saves a timestamp, so you can iterate through it later on.
 	 * @return the current time.
@@ -45,7 +45,7 @@ class StopWatch {
 	 * @return an iterator to iterate trough the timings.
 	 */
 	public function iterator():Iterator<Float>
-		return _times.iterator()
+		return _times.iterator();
 
 	public function toString():String {
 		return

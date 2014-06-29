@@ -37,7 +37,7 @@ class Rgb32 implements IRgb32 {
 	}
 
 	public function toString():String
-		return "rgba32( " + r + ", " + g + ", " + b + ", " + a + ")"
+		return "rgba32( " + r + ", " + g + ", " + b + ", " + a + ")";
 
 
 	/** Below all the code to correctly apply the colors **/
@@ -171,7 +171,7 @@ class Rgb32 implements IRgb32 {
 	 * @return A clone of [a].
 	 */
 	public static inline function clone(a:IFixedRgb32):Rgb32
-		return new Rgb32(a.r, a.g, a.b, a.a)
+		return new Rgb32(a.r, a.g, a.b, a.a);
 
 	/**
 	 * Modifies the color of [a] by avaraging with [b].
@@ -276,11 +276,11 @@ class Rgb32 implements IRgb32 {
 
 
 	/** Default **/
-	static inline function max(a, b) return a > b ? a : b
-	static inline function min(a, b) return a < b ? a : b
-	static inline function m(color) return color & 0xFF // masks.
-	static inline function maxF(a:Float, b):Float return a > b ? a : b
-	static inline function minF(a:Float, b) return a < b ? a : b
+	static inline function max(a, b) return a > b ? a : b;
+	static inline function min(a, b) return a < b ? a : b;
+	static inline function m(color) return color & 0xFF; // masks.
+	static inline function maxF(a:Float, b):Float return a > b ? a : b;
+	static inline function minF(a:Float, b) return a < b ? a : b;
 
 	/** Presets **/
 

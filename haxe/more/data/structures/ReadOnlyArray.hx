@@ -41,7 +41,7 @@ class ReadOnlyArray#if!H<T>#end {
 	 * @param	index	the index of the element to retrieve.
 	 * @return	The element
 	 */
-	public function getAt(index:Int):T return _array[index]
+	public function getAt(index:Int):T return _array[index];
 
 	/**
 	 * Returns a new Array by appending [a] to [this].
@@ -49,7 +49,7 @@ class ReadOnlyArray#if!H<T>#end {
 	 * @return a new Array by appending [a] to [this].
 	 */
 	public function concat(a:Array<T>):Array<T>
-		return _array.concat(a)
+		return _array.concat(a);
 
 	/**
 	 * Returns a representation of an array with [sep] for separating each element.
@@ -57,7 +57,7 @@ class ReadOnlyArray#if!H<T>#end {
 	 * @return a representation of an array with [sep] for separating each element.
 	 */
 	public function join(sep:String):String
-		return _array.join(sep)
+		return _array.join(sep);
 
 	/**
 	 * Copies the range of the array starting at [pos] up to, but not including, [end].
@@ -67,26 +67,26 @@ class ReadOnlyArray#if!H<T>#end {
 	 * @return	A slice of [this].
 	 */
 	public function slice(pos:Int, ?end:Int):Array<T>
-		return _array.slice(pos, end)
+		return _array.slice(pos, end);
 
 	/**
 	 * Returns a displayable representation of the Array content.
 	 * @return a displayable representation of the Array content.
 	 */
 	public function toString():String
-		return _array.toString()
+		return _array.toString();
 
 	/**
 	 * Returns a copy of the Array. The values are not copied, only the Array structure.
 	 * @return a copy of the Array.
 	 */
 	public function copy():Array<T>
-		return _array.copy()
+		return _array.copy();
 
 	/**
 	 * Returns an iterator of the Array values.
 	 * @return an iterator of the Array values.
 	 */
 	public function iterator():Iterator<Null<T>>
-		return _array.iterator()
+		return _array.iterator();
 }

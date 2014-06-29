@@ -22,7 +22,7 @@ class ReverseEnumerator#if!H<T>#end extends BaseEnumerator<T> {
 	var _reversed:haxe.more.data.flow.Enumerator<T>;
 
 	public function new(subject:Enumerable<T>)
-		_subject = subject
+		_subject = subject;
 
 	public override function moveNext():Bool {
 		if (_reversed == null)

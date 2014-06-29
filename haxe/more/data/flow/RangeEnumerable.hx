@@ -16,5 +16,5 @@ class RangeEnumerable#if!H<T>#end implements Enumerable<T> {
 	}
 
 	public function getEnumerator():Enumerator<T>
-		return new RangeEnumerator(_subject.getEnumerator(), _skip, _take)
+		return new RangeEnumerator(_subject.getEnumerator(), _skip, _take);
 }

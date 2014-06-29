@@ -26,5 +26,5 @@ class AfterEnumerable#if!H<T>#end implements Enumerable<T> {
 	}
 
 	public function getEnumerator():Enumerator<T>
-		return new AfterEnumerator(_subject.getEnumerator(), _predicate)
+		return new AfterEnumerator(_subject.getEnumerator(), _predicate);
 }

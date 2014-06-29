@@ -40,25 +40,25 @@ class Default {
 	 * @param	b
 	 * @return the highest  argument, [a] or[b].
 	 */
-	public static inline function max(a:Float, b:Float):Float return a > b ? a : b
+	public static inline function max(a:Float, b:Float):Float return a > b ? a : b;
 
 	/**
 	 * Tests for a float to be NaN/null.
 	 * @param	a? The float to test for NaN.
 	 * @return True if [a] equals NaN.
 	 */
-	public static inline function isNaN(?a:Float):Bool return (a == null || Math.isNaN(a) || a.string() == "NaN")
+	public static inline function isNaN(?a:Float):Bool return (a == null || Math.isNaN(a) || a.string() == "NaN");
 
-	public static inline function sign(a:Float):Float return (a < 0 ? -1 : 1)
+	public static inline function sign(a:Float):Float return (a < 0 ? -1 : 1);
 
-	public static inline function equals(a:Float, b:Float, margin:Float):Bool return (abs(a - b) < margin)
+	public static inline function equals(a:Float, b:Float, margin:Float):Bool return (abs(a - b) < margin);
 
 
 	public static inline function abs(a:Float):Float {
 		return a < 0 ? -a : a;
 	}
 
-	public static inline function random(max:Float, min:Float = 0) return (Math.random() * (max - min) + min)
+	public static inline function random(max:Float, min:Float = 0) return (Math.random() * (max - min) + min);
 
 	/**
 	 * Returns the lowest  argument, [a] or [b].
@@ -66,13 +66,13 @@ class Default {
 	 * @param	b
 	 * @return the lowest  argument, [a] or [b].
 	 */
-	public static inline function min(a:Float, b:Float):Float return a < b ? a : b
+	public static inline function min(a:Float, b:Float):Float return a < b ? a : b;
 
 	public static inline function as<T>(subject:Dynamic, to:Class<T>):T
-		return subject.is(to) ? subject : null
+		return subject.is(to) ? subject : null;
 
 	public static inline function isNullOrEmpty(string:String):Bool
-		return string == null || string == ""
+		return string == null || string == "";
 
 	public static function isNullOrWhiteSpace(string:String):Bool
 		return string == null || string.iterable().all(function(char) return " \t\r\n".indexOf(char) != -1)

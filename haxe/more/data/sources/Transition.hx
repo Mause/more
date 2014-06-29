@@ -45,7 +45,7 @@ private class TransitionIterable<A, B, C> {
 	}
 
 	public function iterator():Iterator<C>
-		return new TransitionIterator<A, B, C>(_transition, _parts)
+		return new TransitionIterator<A, B, C>(_transition, _parts);
 }
 private class TransitionIterator<A, B, C> {
 	var _transition:Transition<A, B, C>;
@@ -56,7 +56,7 @@ private class TransitionIterator<A, B, C> {
 		_step = 1 / parts;
 		_current = 0;
 	}
-	public function hasNext() return _current <= 1
+	public function hasNext() return _current <= 1;
 
 	public function next():C {
 		if (hasNext()) {

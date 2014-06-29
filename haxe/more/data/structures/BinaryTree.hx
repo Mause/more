@@ -22,11 +22,11 @@ typedef Finder<T, K> = K -> T -> Int;
 
 class BinaryTree#if!H<T>#end {
 	public static function integerComparator(left:Int, right:Int):Int
-		return left - right
+		return left - right;
 
 	public var comperator(default, default):Comperator<T>;
 	public var node(default, null):BinaryTreeNode<T>;
-	function sNode(value) node = value
+	function sNode(value) node = value;
 	public var operator:BinaryTreeNodeOperator<T>;
 
 	public function new(comperator:Comperator<T>) {
@@ -56,11 +56,11 @@ class BinaryTree#if!H<T>#end {
 		return null;
 	}
 
-	public function iterator():Iterator<T> 	return node.iterator()
-	public function preOrderIterator():Iterator<T> return node.preOrderIterator()
-	public function postOrderIterator():Iterator<T> return node.postOrderIterator()
-	public function inOrderIterator():Iterator<T>  return node.inOrderIterator()
-	public function levelOrderIterator():Iterator<T> return node.levelOrderIterator()
+	public function iterator():Iterator<T> 	return node.iterator();
+	public function preOrderIterator():Iterator<T> return node.preOrderIterator();
+	public function postOrderIterator():Iterator<T> return node.postOrderIterator();
+	public function inOrderIterator():Iterator<T>  return node.inOrderIterator();
+	public function levelOrderIterator():Iterator<T> return node.levelOrderIterator();
 }
 // I want acces to the BinaryTreeNode's internals, but not expose this in the public BinaryTree. This internal class solves the problem nicely.
 private class BinaryTreeNodeOperator<T> extends BinaryTreeNode<T> {

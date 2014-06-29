@@ -133,7 +133,7 @@ class SingleLinkedListNode#if!H<T>#end {
 	}
 
 	public function toString():String
-		return Std.string(value)
+		return Std.string(value);
 }
 
 private class SingleLinkedListIterator<T> {

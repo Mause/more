@@ -30,7 +30,7 @@ class FuncDelegate#if!H<R>#end {
 	}
 
 	public var isEmpty(gIsEmpty, null):Bool;
-	function gIsEmpty() return _handlers.isEmpty
+	function gIsEmpty() return _handlers.isEmpty;
 
 	public function add(handler:Func<R>):Void {
 		_handlers.push(handler);

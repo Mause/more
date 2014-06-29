@@ -26,5 +26,5 @@ class UntilEnumerable#if!H<T>#end implements Enumerable<T> {
 	}
 
 	public function getEnumerator():Enumerator<T>
-		return new UntilEnumerator(_subject.getEnumerator(), _predicate)
+		return new UntilEnumerator(_subject.getEnumerator(), _predicate);
 }

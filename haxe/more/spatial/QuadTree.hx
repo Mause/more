@@ -88,7 +88,7 @@ class QuadTree#if!H<T:PointDef>#end {
 	}
 
 	public function iterator():Iterator<T>
-		return _points.iterator()
+		return _points.iterator();
 
 	public  function get(quad:Quad):QuadTree<T> {
 		initialize();
@@ -162,7 +162,7 @@ class QuadTree#if!H<T:PointDef>#end {
 	}
 
 	inline function initialize()
-		if (!_initialized) initializeQuads()
+		if (!_initialized) initializeQuads();
 
 	function initializeQuads() {
 		_initialized = true;

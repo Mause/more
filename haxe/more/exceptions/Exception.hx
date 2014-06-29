@@ -91,5 +91,5 @@ class Exception {
 	 * Returns an iterator to iterate through the stackTrace.
 	 * @return an iterator to iterate through the stackTrace.
 	 */
-	public function iterator():Iterator<StackItem> return _rawStackTrace.iterator()
+	public function iterator():Iterator<StackItem> return _rawStackTrace.iterator();
 }

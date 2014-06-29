@@ -22,17 +22,17 @@ class EmptyIterable#if!H<T>#end implements Enumerable<T> {
 	/**
 	 * Creates a new nothing iterator.
 	 */
-	public function new() _enumerator = new EmptyEnumerator()
+	public function new() _enumerator = new EmptyEnumerator();
 
 	/**
 	 * Returns always an empty iterator.
 	 * @return always an empty iterator.
 	 */
-	public function getEnumerator():Iterator<T> return _enumerator
+	public function getEnumerator():Iterator<T> return _enumerator;
 
 	/**
 	 * Returns the string representation of this.
 	 * @return the string representation of this.
 	 */
-	public function toString():String return "An empty enumerable."
+	public function toString():String return "An empty enumerable.";
 }

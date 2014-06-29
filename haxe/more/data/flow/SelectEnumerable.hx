@@ -26,5 +26,5 @@ class SelectEnumerable#if!H<T, V>#end implements Enumerable<V> {
 	}
 
 	public function getEnumerator():Enumerator<V>
-		return new SelectEnumerator(_subject.getEnumerator(), _selector)
+		return new SelectEnumerator(_subject.getEnumerator(), _selector);
 }

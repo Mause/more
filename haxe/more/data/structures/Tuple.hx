@@ -44,11 +44,11 @@ class Tuple {
 	}
 
 	public static inline function asTuple2<T1, T2, T3>(tuple:Tuple3<T1, T2, T3>):Tuple2<T1, T2>
-		return tuple
+		return tuple;
 	public static inline function asTuple3<T1, T2, T3, T4>(tuple:Tuple4<T1, T2, T3, T4>):Tuple3<T1, T2, T3>
-		return tuple
+		return tuple;
 	public static inline function asTuple4<T1, T2, T3, T4, T5>(tuple:Tuple5<T1, T2, T3, T4, T5>):Tuple4<T1, T2, T3, T4>
-		return tuple
+		return tuple;
 }
 
 private class InternalTuple2<T1, T2> {

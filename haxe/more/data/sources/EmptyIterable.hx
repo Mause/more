@@ -21,17 +21,17 @@ class EmptyIterable#if!H<T>#end {
 	/**
 	 * Creates a new nothing iterator.
 	 */
-	public function new() _iterator = new EmptyIterator()
+	public function new() _iterator = new EmptyIterator();
 
 	/**
 	 * Returns always an empty iterator.
 	 * @return always an empty iterator.
 	 */
-	public function iterator():Iterator<T> return _iterator
+	public function iterator():Iterator<T> return _iterator;
 
 	/**
 	 * Returns the string representation of this.
 	 * @return the string representation of this.
 	 */
-	public function toString():String return "An empty iterable."
+	public function toString():String return "An empty iterable.";
 }

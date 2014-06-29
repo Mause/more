@@ -28,7 +28,7 @@ class Action3Delegate#if!H<A1, A2, A3>#end {
 	}
 
 	public var isEmpty(gIsEmpty, null):Bool;
-	function gIsEmpty() return _handlers.isEmpty
+	function gIsEmpty() return _handlers.isEmpty;
 
 	public function add(handler:Action3<A1, A2, A3>):Void {
 		_handlers.push(handler);
